@@ -1,24 +1,23 @@
-
-#include <math.h>
+#include <float.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-double calculate(double *matrix, double *x, double *b, double *new_x, int n,
-                 double tao, int cnt, int first) {
+const double EPSILON = 0.0000001;
+const double TAU = 0.000001;
+const int N = 1000;
 
+double calc(double *matrix, double *xVector, double *bVector,
+            double *xVectorNew, int n, double tao, int cnt, int first) {
     double res = 0;
-
     for (int i = 0; i < cnt; ++i) {
-        double s = -b[i];
+        double s = -bVector[i];
         for (int j = 0; j < n; ++j) {
-            s += matrix[i * n + j] * x[j];
+            s += matrix[i * n + j] * xVector[j];
         }
-
         res += s * s;
-        new_x[i] = x[first + i] - tao * s;
+        xVectorNew[i] = xVector[first + i] - tao * s;
     }
-
     return res;
 }
 
@@ -26,153 +25,125 @@ int countOfLines(int n, int rank, int size) {
     return n / size + (rank < n % size);
 }
 
-int first_line(int n, int rank, int size) {
-
-    int res = 0;
-    for (int i = 0; i < rank; ++i) {
-        res += countOfLines(n, i, size);
-    }
-
-    return res;
-}
-
-void init(double *matrix, double *b, double *x, int n) {
-
+void init(double *matrix, double *bVector, double *xVector, int n) {
     for (int i = 0; i < n; ++i) {
+        xVector[i] = 0;
+        bVector[i] = n + 1;
         for (int j = 0; j < n; ++j) {
-            matrix[i * n + j] = 1;
+            matrix[i * n + j] = 1 + (i == j);
         }
     }
-
-    for (int i = 0; i < n; ++i) {
-        x[i] = 0;
-        b[i] = n + 1;
-        matrix[i * n + i] = 2;
-    }
 }
 
-#define MESSAGE_TAG 666
-
 int main(int argc, char **argv) {
-
     MPI_Init(&argc, &argv);
     int size, rank;
+
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int n;
-    double eps;
-    double tao;
-
-    if (rank == 0) {
-        n = 100;
-        eps = 0.000001;
-        tao = 0.001;
-    }
-
-    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&tao, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-    int *linesCount = (int *) malloc(size * sizeof(int));
-    int *firstLines = (int *) malloc(size * sizeof(int));
+    int *linesCount = (int *)malloc(size * sizeof(int));
+    int *firstLines = (int *)malloc(size * sizeof(int));
     firstLines[0] = 0;
 
     for (int i = 0; i < size; ++i) {
-        linesCount[i] = countOfLines(n, i, size);
-        if (i > 0)
-            firstLines[i] = firstLines[i - 1] + linesCount[i - 1];
-
-        printf("linesCount[%d] = %d\n", i, linesCount[i]);
-        printf("firstLines[%d] = %d\n", i, firstLines[i]);
-
+        linesCount[i] = countOfLines(N, i, size);
+        if (i > 0) firstLines[i] = firstLines[i - 1] + linesCount[i - 1];
     }
 
-    double *matrix = (double *) malloc(sizeof(double) * n *
-                                       (rank == 0 ? n : linesCount[rank]));
-    double *x = (double *) malloc(sizeof(double) * n);
-    double *b =
-            (double *) malloc(sizeof(double) * (rank == 0 ? n : linesCount[rank]));
+    double *matrix = (double *)malloc(sizeof(double) * N *
+                                      (rank == 0 ? N : linesCount[rank]));
+    double *xVector = (double *)malloc(sizeof(double) * N);
+    double *bVector =
+        (double *)malloc(sizeof(double) * (rank == 0 ? N : linesCount[rank]));
 
-    int buff_size = sizeof(double) * (linesCount[0] * n + n + linesCount[0]);
-    char *buff = (char *) malloc(buff_size);
+    int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
+    void *buff = (void *)malloc(buffSize);
 
     if (rank == 0) {
-        init(matrix, b, x, n);
-
+        init(matrix, bVector, xVector, N);
         for (int i = 1; i < size; ++i) {
-
             int pos = 0;
-            MPI_Pack(matrix + n * firstLines[i], n * linesCount[i], MPI_DOUBLE,
-                     buff, buff_size, &pos, MPI_COMM_WORLD);
-            MPI_Pack(x, n, MPI_DOUBLE, buff, buff_size, &pos, MPI_COMM_WORLD);
-            MPI_Pack(b + firstLines[i], linesCount[i], MPI_DOUBLE, buff, buff_size,
-                     &pos, MPI_COMM_WORLD);
-
-            MPI_Send(buff, buff_size, MPI_BYTE, i, MESSAGE_TAG, MPI_COMM_WORLD);
+            MPI_Pack(matrix + N * firstLines[i], N * linesCount[i], MPI_DOUBLE,
+                     buff, buffSize, &pos, MPI_COMM_WORLD);
+            MPI_Pack(xVector, N, MPI_DOUBLE, buff, buffSize, &pos,
+                     MPI_COMM_WORLD);
+            MPI_Pack(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, buff,
+                     buffSize, &pos, MPI_COMM_WORLD);
+            MPI_Send(buff, buffSize, MPI_BYTE, i, 0, MPI_COMM_WORLD);
         }
     } else {
-
-        MPI_Recv(buff, buff_size, MPI_BYTE, 0, MESSAGE_TAG, MPI_COMM_WORLD,
-                 MPI_STATUS_IGNORE);
-
         int pos = 0;
-        MPI_Unpack(buff, buff_size, &pos, matrix, n * linesCount[rank], MPI_DOUBLE,
+        MPI_Recv(buff, buffSize, MPI_BYTE, 0, 0, MPI_COMM_WORLD,
+                 MPI_STATUS_IGNORE);
+        MPI_Unpack(buff, buffSize, &pos, matrix, N * linesCount[rank],
+                   MPI_DOUBLE, MPI_COMM_WORLD);
+        MPI_Unpack(buff, buffSize, &pos, xVector, N, MPI_DOUBLE,
                    MPI_COMM_WORLD);
-        MPI_Unpack(buff, buff_size, &pos, x, n, MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Unpack(buff, buff_size, &pos, b, linesCount[rank], MPI_DOUBLE,
+        MPI_Unpack(buff, buffSize, &pos, bVector, linesCount[rank], MPI_DOUBLE,
                    MPI_COMM_WORLD);
     }
     free(buff);
 
-    double b_norm_sqr = 0;
+    double bLen = 0;
     if (rank == 0) {
-        for (int i = 0; i < n; ++i) {
-            b_norm_sqr += b[i] * b[i];
+        for (int i = 0; i < N; ++i) {
+            bLen += bVector[i] * bVector[i];
         }
     }
+    bLen *= EPSILON * EPSILON;
 
-    double *new_x = (double *) malloc(sizeof(double) * linesCount[rank]);
+    double *xVectorNew = (double *)malloc(sizeof(double) * linesCount[rank]);
     double *d;
     if (rank == 0) {
-        d = (double *) malloc(sizeof(double) * size);
+        d = (double *)malloc(sizeof(double) * size);
     }
 
     int flag = 1;
+    int useTau = 0;
+    double tau = TAU;
+    double prevParam = DBL_MAX;
     while (flag) {
+        double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
+                         linesCount[rank], firstLines[rank]);
 
-        double dd = calculate(matrix, x, b, new_x, n, tao, linesCount[rank],
-                              firstLines[rank]);
-
-        MPI_Allgatherv(new_x, linesCount[rank], MPI_DOUBLE, x, linesCount,
-                       firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
+        // Собираем вектор по кусочкам
+        MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
+                       linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
         MPI_Gather(&dd, 1, MPI_DOUBLE, d, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         if (rank == 0) {
-            double s = 0;
+            double endParam = 0;
             for (int i = 0; i < size; ++i) {
-                s += d[i];
+                endParam += d[i];
             }
-            flag = sqrt(s / b_norm_sqr) > eps;
+            if (prevParam <= endParam) {    // условие смены знака скаляра.
+                if (useTau) {
+                    flag = 0;    // Очевидно, что на прямой к числу можно
+                } else {
+                    tau *= -1;
+                    useTau = 1;
+                    MPI_Bcast(&tau, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                    MPI_Bcast(&useTau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+                }
+            }
+            flag = endParam > bLen;
         }
 
+        // выходим все
         MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
 
     if (rank == 0) {
-        for (int i = 0; i < n; ++i) {
-            printf("%.3f ", x[i]);
-        }
-        printf("\n");
+        printf("\n%f\n", xVector[0]);
+        printf("\n--------------\n");
+        printf("Count of MPI process: %d\n", size);
     }
 
-    if (rank == 0) {
-        fprintf(stderr, "\n============================\n");
-        fprintf(stderr, "Count of MPI process: %d\n", size);
-    }
     free(matrix);
-    free(x);
-    free(new_x);
-    free(b);
+    free(xVector);
+    free(xVectorNew);
+    free(bVector);
     if (rank == 0) {
         free(d);
     }
@@ -182,4 +153,3 @@ int main(int argc, char **argv) {
     MPI_Finalize();
     return 0;
 }
-
