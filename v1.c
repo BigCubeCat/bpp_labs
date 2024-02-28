@@ -81,8 +81,6 @@ int main(int argc, char **argv) {
     double *xVector = (double *)malloc(sizeof(double) * N);
     double *bVector = (double *)malloc(sizeof(double) * currentSize);
     double *xVectorNew = (double *)calloc(linesCount[rank], sizeof(double));
-    double *sVector = malloc(linesCount[0] * sizeof(double));
-    double *xVectorPart = (double *)malloc(linesCount[0] * sizeof(double));
     int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
     void *buff = (void *)malloc(buffSize);
 
@@ -113,10 +111,7 @@ int main(int argc, char **argv) {
 
     double bLen = (rank == 0) ? calcEndValue(bVector, N, EPSILON) : 0;
 
-    double *d;
-    if (rank == 0) {
-        d = (double *)malloc(sizeof(double) * size);
-    }
+    double *d = (double *)malloc(sizeof(double) * ((rank == 0) ? size : 1));
 
     int flag = 1;
     int useTau = 0;
@@ -164,9 +159,7 @@ int main(int argc, char **argv) {
     free(xVector);
     free(xVectorNew);
     free(bVector);
-    if (rank == 0) {
-        free(d);
-    }
+    free(d);
     free(linesCount);
     free(firstLines);
 
