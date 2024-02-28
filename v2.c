@@ -61,8 +61,8 @@ double sumVector(double *vector, int size) {
 
 int main(int argc, char **argv) {
     int size, rank;
-    MPE_Init_log();
     MPI_Init(&argc, &argv);
+    MPE_Init_log();
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
