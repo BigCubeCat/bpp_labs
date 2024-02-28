@@ -8,17 +8,24 @@ const double EPSILON = 0.000001;
 const double TAU = 0.00001;
 const int N = 10000;
 
-/*
- * countOfLine
- * Возращает количество строчек в процессе с номером rank
- */
+double calc(double *matrix, double *xVector, double *bVector,
+            double *xVectorNew, int n, double tao, int cnt, int first) {
+    double res = 0;
+    for (int i = 0; i < cnt; ++i) {
+        double s = -bVector[i];
+        for (int j = 0; j < n; ++j) {
+            s += matrix[i * n + j] * xVector[j];
+        }
+        res += s * s;
+        xVectorNew[i] = xVector[first + i] - tao * s;
+    }
+    return res;
+}
+
 int countOfLines(int n, int rank, int size) {
     return n / size + (rank < n % size);
 }
 
-/*
- * Генерация данных
- */
 void init(double *matrix, double *bVector, double *xVector, int n) {
     for (int i = 0; i < n; ++i) {
         xVector[i] = 0;
@@ -117,32 +124,12 @@ int main(int argc, char **argv) {
     double prevParam = DBL_MAX;
     int countIter = 0;
 
-    int right_rank = (rank + 1) % size;
-    int left_rank = (rank - 1 + size) % size;
-
     for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
-        double dd = 0;
-        for (int i = 0; i < linesCount[rank]; ++i) {
-            sVector[i] = -bVector[i];
-            xVectorPart[i] = xVectorNew[i];
-        }
-        for (int partId = 0; partId < size; ++partId) {
-            // copy answer vector to copys;
-            MPI_Sendrecv_replace(xVectorPart, linesCount[0], MPI_DOUBLE,
-                                 left_rank, 0, right_rank, 0, MPI_COMM_WORLD,
-                                 MPI_STATUS_IGNORE);
-            for (int i = 0; i < linesCount[rank]; ++i) {
-                for (int j = 0; j < linesCount[partId]; ++j) {
-                    sVector[i] += matrix[i * N + j + firstLines[partId]] *
-                                  xVectorPart[j];
-                }
-            }
-        }
-        for (int i = 0; i < linesCount[rank]; ++i) {
-            dd += sVector[i] * sVector[i];
-            xVectorNew[i] = xVectorPart[i] - tau * sVector[i];
-        }
-
+        double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
+                         linesCount[rank], firstLines[rank]);
+        // Собираем вектор по кусочкам
+        MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
+                       linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
         MPI_Gather(&dd, 1, MPI_DOUBLE, d, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
         if (rank == 0) {
@@ -159,16 +146,15 @@ int main(int argc, char **argv) {
                 }
             }
             prevParam = endParam;
-            flag = flag && (endParam > bLen);
+            flag = flag && endParam > bLen;
         }
-
         MPI_Bcast(&tau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD); // Выходим из цикла всем процессам
+        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
 
     if (rank == 0) {
         printf("\n--------------\n");
-        printf("\n%f\n", xVectorNew[0]);    // достаточно вывести один
+        printf("\n%f\n", xVectorNew[0]);
         printf("count iterations = %d\n", countIter);
         printf("Count of MPI process: %d\n", size);
         printf("\n--------------\n");
@@ -178,7 +164,6 @@ int main(int argc, char **argv) {
     free(xVector);
     free(xVectorNew);
     free(bVector);
-    free(sVector);
     if (rank == 0) {
         free(d);
     }
