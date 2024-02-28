@@ -65,19 +65,19 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     /* Считаем конфигурацию себя и других */
-    int *linesCount = (int *) malloc(size * sizeof(int));
-    int *firstLines = (int *) malloc(size * sizeof(int));
+    int *linesCount = (int *)malloc(size * sizeof(int));
+    int *firstLines = (int *)malloc(size * sizeof(int));
     initLinesSettings(linesCount, firstLines, size, N);
     int currentSize = (rank == 0 ? N : linesCount[rank]);
     /* выделение памяти */
-    double *matrix = (double *) malloc(sizeof(double) * N * currentSize);
-    double *xVector = (double *) malloc(sizeof(double) * N);
-    double *bVector = (double *) malloc(sizeof(double) * currentSize);
-    double *xVectorNew = (double *) calloc(linesCount[rank], sizeof(double));
+    double *matrix = (double *)malloc(sizeof(double) * N * currentSize);
+    double *xVector = (double *)malloc(sizeof(double) * N);
+    double *bVector = (double *)malloc(sizeof(double) * currentSize);
+    double *xVectorNew = (double *)calloc(linesCount[rank], sizeof(double));
     double *sVector = malloc(linesCount[0] * sizeof(double));
-    double *xVectorPart = (double *) malloc(linesCount[0] * sizeof(double));
+    double *xVectorPart = (double *)malloc(linesCount[0] * sizeof(double));
     int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
-    void *buff = (void *) malloc(buffSize);
+    void *buff = (void *)malloc(buffSize);
 
     if (rank == 0) {
         init(matrix, bVector, xVector, N);
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 
     double *d;
     if (rank == 0) {
-        d = (double *) malloc(sizeof(double) * size);
+        d = (double *)malloc(sizeof(double) * size);
     }
 
     int flag = 1;
@@ -133,8 +133,8 @@ int main(int argc, char **argv) {
                                  MPI_STATUS_IGNORE);
             for (int i = 0; i < linesCount[rank]; ++i) {
                 for (int j = 0; j < linesCount[partId]; ++j) {
-                    sVector[i] += matrix[i * N + j + firstLines[partId]] *
-                                  xVectorPart[j];
+                    sVector[i] +=
+                        matrix[i * N + j + firstLines[partId]] * xVectorPart[j];
                 }
             }
         }
@@ -163,7 +163,8 @@ int main(int argc, char **argv) {
         }
 
         MPI_Bcast(&tau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD); // Выходим из цикла всем процессам
+        MPI_Bcast(&flag, 1, MPI_INT, 0,
+                  MPI_COMM_WORLD);    // Выходим из цикла всем процессам
     }
 
     if (rank == 0) {
