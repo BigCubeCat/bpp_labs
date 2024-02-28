@@ -1,4 +1,5 @@
 #include <float.h>
+#include <mpe.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,6 +61,7 @@ double sumVector(double *vector, int size) {
 
 int main(int argc, char **argv) {
     int size, rank;
+    MPE_Init_log();
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
