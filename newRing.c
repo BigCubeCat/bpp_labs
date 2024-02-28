@@ -98,6 +98,8 @@ int main(int argc, char **argv) {
     int right_rank = (rank + 1) % size;
     int left_rank = (rank - 1 + size) % size;
 
+    int hasChange = 0;
+
     for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
         double dd = 0;
         for (int i = 0; i < linesCount[rank]; ++i) {
@@ -134,13 +136,13 @@ int main(int argc, char **argv) {
                 endParam += d[i];
             }
             if (prevParam <= endParam) {    // условие смены знака скаляра.
+                flag = 0;    // Очевидно, что на прямой к числу можно
                 if (useTau) {
                     flag = 0;    // Очевидно, что на прямой к числу можно
                 } else {
                     tau *= -1;
                     useTau = 1;
-                    MPI_Bcast(&tau, 1, MPI_INT, 0, MPI_COMM_WORLD);
-                    MPI_Bcast(&useTau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+                    hasChange = 1;
                 }
             }
             prevParam = endParam;
@@ -149,6 +151,12 @@ int main(int argc, char **argv) {
 
         // выходим все
         MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        if (hasChange) {
+            MPI_Bcast(&useTau, 1, MPI_INT, 0, MPI_COMM_WORLD);
+            MPI_Bcast(&tau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            hasChange = 0;
+        }
+
     }
 
     if (rank == 0) {
