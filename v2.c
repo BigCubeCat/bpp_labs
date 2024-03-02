@@ -66,6 +66,8 @@ int main(int argc, char **argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    double startTime = MPI_Wtime();
+
     /* Считаем конфигурацию себя и других */
     int *linesCount = (int *)malloc(size * sizeof(int));
     int *firstLines = (int *)malloc(size * sizeof(int));
@@ -166,6 +168,7 @@ int main(int argc, char **argv) {
                   MPI_COMM_WORLD);    // Выходим из цикла всем процессам
     }
 
+    /*
     if (rank == 0) {
         printf("\n--------------\n");
         printf("\n%f\n", xVectorNew[0]);    // достаточно вывести один
@@ -173,6 +176,7 @@ int main(int argc, char **argv) {
         printf("Count of MPI process: %d\n", size);
         printf("\n--------------\n");
     }
+    */
 
     free(matrix);
     free(xVector);
@@ -182,6 +186,15 @@ int main(int argc, char **argv) {
     free(d);
     free(linesCount);
     free(firstLines);
+
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
+
+    double maxTime;
+    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
+
+    if (rank == 0) printf("%f\n", maxTime);
 
     MPI_Finalize();
     return 0;
