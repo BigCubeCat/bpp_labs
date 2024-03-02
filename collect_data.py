@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/python3
 import os
 import sys
 
@@ -23,7 +23,7 @@ for file in files:
                 res = float(content)
                 header.append(file)
                 data.append(str(res))
-            except expression as identifier:
+            except:
                 pass
 
 file_content = ';'.join(header) + '\n' + ';'.join(data)
