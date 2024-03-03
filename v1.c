@@ -7,14 +7,14 @@
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
 const double TAU = 0.00001;
-const int N = 45000;
+const size_t N = 45000;
 
 double calc(double *matrix, double *xVector, double *bVector,
-            double *xVectorNew, int n, double tao, int cnt, int first) {
+            double *xVectorNew, size_t n, double tao, size_t cnt, int first) {
     double res = 0;
-    for (int i = 0; i < cnt; ++i) {
+    for (size_t i = 0; i < cnt; ++i) {
         double s = -bVector[i];
-        for (int j = 0; j < n; ++j) {
+        for (size_t j = 0; j < n; ++j) {
             s += matrix[i * n + j] * xVector[j];
         }
         res += s * s;
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
             int pos = 0;
             MPI_Pack(matrix + N * firstLines[i], N * linesCount[i], MPI_DOUBLE,
                      buff, buffSize, &pos, MPI_COMM_WORLD);
-            MPI_Pack(xVector, N, MPI_DOUBLE, buff, buffSize, &pos,
+            MPI_Pack(xVector, (int)N, MPI_DOUBLE, buff, buffSize, &pos,
                      MPI_COMM_WORLD);
             MPI_Pack(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, buff,
                      buffSize, &pos, MPI_COMM_WORLD);
@@ -106,14 +106,14 @@ int main(int argc, char **argv) {
                  MPI_STATUS_IGNORE);
         MPI_Unpack(buff, buffSize, &pos, matrix, N * linesCount[rank],
                    MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Unpack(buff, buffSize, &pos, xVector, N, MPI_DOUBLE,
+        MPI_Unpack(buff, buffSize, &pos, xVector, (int)N, MPI_DOUBLE,
                    MPI_COMM_WORLD);
         MPI_Unpack(buff, buffSize, &pos, bVector, linesCount[rank], MPI_DOUBLE,
                    MPI_COMM_WORLD);
     }
     free(buff);
 
-    double bLen = (rank == 0) ? calcEndValue(bVector, N, EPSILON) : 0;
+    double bLen = (rank == 0) ? calcEndValue(bVector, (int)N, EPSILON) : 0;
 
     double *d = (double *)malloc(sizeof(double) * ((rank == 0) ? size : 1));
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
 
     for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
         double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
-                         linesCount[rank], firstLines[rank]);
+                         (size_t)linesCount[rank], (size_t)firstLines[rank]);
         // Собираем вектор по кусочкам
         MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
                        linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
