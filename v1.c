@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
     int *linesCount = (int *)malloc(size * sizeof(int));
     int *firstLines = (int *)malloc(size * sizeof(int));
     initLinesSettings(linesCount, firstLines, size, N);
-    int currentSize = (rank == 0 ? N : linesCount[rank]);
+    size_t currentSize = (rank == 0 ? N : linesCount[rank]);
     /* выделение памяти */
     double *matrix = (double *)malloc(sizeof(double) * N * currentSize);
     double *xVector = (double *)malloc(sizeof(double) * N);
