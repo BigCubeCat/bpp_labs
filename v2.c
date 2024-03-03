@@ -80,33 +80,25 @@ int main(int argc, char **argv) {
     double *xVectorNew = (double *)calloc(linesCount[rank], sizeof(double));
     double *sVector = malloc(linesCount[0] * sizeof(double));
     double *xVectorPart = (double *)malloc(linesCount[0] * sizeof(double));
+    /*
     int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
     void *buff = (void *)malloc(buffSize);
-
+*/
     if (rank == 0) {
         init(matrix, bVector, xVector, N);
         for (int i = 1; i < size; ++i) {
-            int pos = 0;
-            MPI_Pack(matrix + N * firstLines[i], N * linesCount[i], MPI_DOUBLE,
-                     buff, buffSize, &pos, MPI_COMM_WORLD);
-            MPI_Pack(xVector, N, MPI_DOUBLE, buff, buffSize, &pos,
-                     MPI_COMM_WORLD);
-            MPI_Pack(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, buff,
-                     buffSize, &pos, MPI_COMM_WORLD);
-            MPI_Send(buff, buffSize, MPI_BYTE, i, 0, MPI_COMM_WORLD);
+            //int pos = 0;
+            MPI_Send(matrix + N * firstLines[i], N * firstLines[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
+            MPI_Send(xVector, N, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
+            MPI_Send(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
         }
     } else {
-        int pos = 0;
-        MPI_Recv(buff, buffSize, MPI_BYTE, 0, 0, MPI_COMM_WORLD,
-                 MPI_STATUS_IGNORE);
-        MPI_Unpack(buff, buffSize, &pos, matrix, N * linesCount[rank],
-                   MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Unpack(buff, buffSize, &pos, xVector, N, MPI_DOUBLE,
-                   MPI_COMM_WORLD);
-        MPI_Unpack(buff, buffSize, &pos, bVector, linesCount[rank], MPI_DOUBLE,
-                   MPI_COMM_WORLD);
+        //int pos = 0;
+        MPI_Recv(matrix, N * linesCount[rank], MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(xVector, N, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(bVector, linesCount[rank], MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-    free(buff);
+    //free(buff);
 
     double bLen = (rank == 0) ? calcEndValue(bVector, N, EPSILON) : 0;
 
