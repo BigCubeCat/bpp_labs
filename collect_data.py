@@ -22,11 +22,11 @@ for file in files:
             try:
                 res = float(content)
                 header.append(file)
-                data.append(str(res))
+                data.append(str(res).replace(".", ","))
             except:
                 pass
 
-file_content = ';'.join(header) + '\n' + ';'.join(data)
+file_content = ';'.join(header) + '\n' + ';'.join(data) + '\n'
 with open(res_path, "w", encoding="utf-8") as res_file: 
     res_file.write(file_content)
 

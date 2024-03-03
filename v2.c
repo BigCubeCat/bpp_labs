@@ -7,7 +7,7 @@
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
 const double TAU = 0.00001;
-const int N = 10000;
+const int N = 45000;
 
 /*
  * countOfLine
