@@ -151,23 +151,6 @@ int main(int argc, char **argv) {
         MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
 
-    /*
-    if (rank == 0) {
-        printf("\n--------------\n");
-        printf("\n%f\n", xVectorNew[0]);
-        printf("count iterations = %d\n", countIter);
-        printf("Count of MPI process: %d\n", size);
-        printf("\n--------------\n");
-    }
-  */
-    free(matrix);
-    free(xVector);
-    free(xVectorNew);
-    free(bVector);
-    free(d);
-    free(linesCount);
-    free(firstLines);
-
     double endTime = MPI_Wtime();
     double elapsedTime = endTime - startTime;
 
@@ -175,7 +158,21 @@ int main(int argc, char **argv) {
     MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
                MPI_COMM_WORLD);
 
-    if (rank == 0) printf("%f\n", maxTime);
+    if (rank == 0) {
+        printf("%f\n", maxTime);
+        printf("\n--------------\n");
+        printf("\n%f\n", xVectorNew[0]);
+        printf("count iterations = %d\n", countIter);
+        printf("Count of MPI process: %d\n", size);
+        printf("\n--------------\n");
+    }
+    free(matrix);
+    free(xVector);
+    free(xVectorNew);
+    free(bVector);
+    free(d);
+    free(linesCount);
+    free(firstLines);
 
     MPI_Finalize();
     return 0;

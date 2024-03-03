@@ -168,15 +168,21 @@ int main(int argc, char **argv) {
                   MPI_COMM_WORLD);    // Выходим из цикла всем процессам
     }
 
-    /*
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
+
+    double maxTime;
+    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
+
     if (rank == 0) {
+        printf("%f\n", maxTime);
         printf("\n--------------\n");
         printf("\n%f\n", xVectorNew[0]);    // достаточно вывести один
         printf("count iterations = %d\n", countIter);
         printf("Count of MPI process: %d\n", size);
         printf("\n--------------\n");
     }
-    */
 
     free(matrix);
     free(xVector);
@@ -186,15 +192,6 @@ int main(int argc, char **argv) {
     free(d);
     free(linesCount);
     free(firstLines);
-
-    double endTime = MPI_Wtime();
-    double elapsedTime = endTime - startTime;
-
-    double maxTime;
-    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
-               MPI_COMM_WORLD);
-
-    if (rank == 0) printf("%f\n", maxTime);
 
     MPI_Finalize();
     return 0;
