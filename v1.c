@@ -1,17 +1,40 @@
 #include <float.h>
-#include <mpe.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef USE_MPE
+#include <mpe.h>
+#endif
+
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
 const double TAU = 0.00001;
-const size_t N = 45000;
+const size_t N = 10000;
+
+void getElapsedTime(double *xVectorNew, int startTime, int size, int rank,
+                    int countIter) {
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
+
+    double maxTime;
+    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        printf("%f\n", maxTime);
+        printf("\n--------------\n");
+        printf("\n%f\n", xVectorNew[0]);
+        printf("count iterations = %d\n", countIter);
+        printf("Count of MPI process: %d\n", size);
+        printf("\n--------------\n");
+    }
+}
 
 double calc(double *matrix, double *xVector, double *bVector,
             double *xVectorNew, size_t n, double tao, size_t cnt, int first) {
     double res = 0;
+#pragma omp parallel for
     for (size_t i = 0; i < cnt; ++i) {
         double s = -bVector[i];
         for (size_t j = 0; j < n; ++j) {
@@ -66,10 +89,39 @@ double sumVector(double *vector, int size) {
     return result;
 }
 
+int solve(double *matrix, double *xVector, double *bVector, double *xVectorNew,
+          int *linesCount, int *firstLines, int rank, int size, int bLen,
+          double prevParam, double tau) {
+    int countIter = 0;
+    int flag = 1;
+
+    for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
+        double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
+                         (size_t)linesCount[rank], (size_t)firstLines[rank]);
+        // Собираем вектор по кусочкам
+        MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
+                       linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
+        double endParam;
+        MPI_Reduce(&dd, &endParam, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+        if (rank == 0) {
+            if (prevParam <= endParam || endParam <= bLen) {
+                flag = 0;
+            }
+            prevParam = endParam;
+            flag = flag && (endParam > bLen);
+        }
+        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    }
+    return countIter;
+}
+
 int main(int argc, char **argv) {
     int size, rank;
     MPI_Init(&argc, &argv);
+#ifdef USE_MATH_LIB
     MPE_Init_log();
+#endif
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -114,63 +166,19 @@ int main(int argc, char **argv) {
     free(buff);
 
     double bLen = (rank == 0) ? calcEndValue(bVector, (int)N, EPSILON) : 0;
-
-    double *d = (double *)malloc(sizeof(double) * ((rank == 0) ? size : 1));
-
-    int flag = 1;
-    int useTau = 0;
-    double tau = TAU;
     double prevParam = DBL_MAX;
-    int countIter = 0;
 
-    for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
-        double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
-                         (size_t)linesCount[rank], (size_t)firstLines[rank]);
-        // Собираем вектор по кусочкам
-        MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
-                       linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
-        MPI_Gather(&dd, 1, MPI_DOUBLE, d, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    int countIter = solve(matrix, xVector, bVector, xVectorNew, linesCount,
+                          firstLines, rank, size, bLen, prevParam, TAU);
+    countIter += solve(matrix, xVector, bVector, xVectorNew, linesCount,
+                       firstLines, rank, size, bLen, prevParam, -TAU);
 
-        if (rank == 0) {
-            double endParam = 0;
-            for (int i = 0; i < size; ++i) {
-                endParam += d[i];
-            }
-            if (prevParam <= endParam) {    // условие смены знака скаляра.
-                if (useTau) {
-                    flag = 0;    // Очевидно, что на прямой к числу можно
-                } else {
-                    tau *= -1;
-                    useTau = 1;
-                }
-            }
-            prevParam = endParam;
-            flag = flag && endParam > bLen;
-        }
-        MPI_Bcast(&tau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    }
+    getElapsedTime(xVectorNew, startTime, size, rank, countIter);
 
-    double endTime = MPI_Wtime();
-    double elapsedTime = endTime - startTime;
-
-    double maxTime;
-    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
-               MPI_COMM_WORLD);
-
-    if (rank == 0) {
-        printf("%f\n", maxTime);
-        printf("\n--------------\n");
-        printf("\n%f\n", xVectorNew[0]);
-        printf("count iterations = %d\n", countIter);
-        printf("Count of MPI process: %d\n", size);
-        printf("\n--------------\n");
-    }
     free(matrix);
     free(xVector);
     free(xVectorNew);
     free(bVector);
-    free(d);
     free(linesCount);
     free(firstLines);
 
