@@ -90,7 +90,7 @@ double sumVector(double *vector, int size) {
 }
 
 int solve(double *matrix, double *xVector, double *bVector, double *xVectorNew,
-          int *linesCount, int *firstLines, int rank, int size, int bLen,
+          int *linesCount, int *firstLines, int rank, int bLen,
           double prevParam, double tau) {
     int countIter = 0;
     int flag = 1;
@@ -169,9 +169,9 @@ int main(int argc, char **argv) {
     double prevParam = DBL_MAX;
 
     int countIter = solve(matrix, xVector, bVector, xVectorNew, linesCount,
-                          firstLines, rank, size, bLen, prevParam, TAU);
+                          firstLines, rank, bLen, prevParam, TAU);
     countIter += solve(matrix, xVector, bVector, xVectorNew, linesCount,
-                       firstLines, rank, size, bLen, prevParam, -TAU);
+                       firstLines, rank, bLen, prevParam, -TAU);
 
     getElapsedTime(xVectorNew, startTime, size, rank, countIter);
 
