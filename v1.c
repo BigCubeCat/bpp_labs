@@ -34,7 +34,6 @@ void getElapsedTime(double *xVectorNew, int startTime, int size, int rank,
 double calc(double *matrix, double *xVector, double *bVector,
             double *xVectorNew, size_t n, double tao, size_t cnt, int first) {
     double res = 0;
-#pragma omp parallel for
     for (size_t i = 0; i < cnt; ++i) {
         double s = -bVector[i];
         for (size_t j = 0; j < n; ++j) {
