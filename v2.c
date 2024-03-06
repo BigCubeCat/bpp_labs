@@ -1,25 +1,54 @@
 #include <float.h>
-#include <mpe.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef USE_MPE
+#include <mpe.h>
+#endif
+
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
 const double TAU = 0.00001;
-const int N = 45000;
+const size_t N = 25000;
 
-/*
- * countOfLine
- * Возращает количество строчек в процессе с номером rank
- */
+void getElapsedTime(double *xVectorNew, int startTime, int size, int rank,
+                    int countIter) {
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
+
+    double maxTime;
+    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        printf("%f\n", maxTime);
+        printf("\n--------------\n");
+        printf("\n%f\n", xVectorNew[0]);
+        printf("count iterations = %d\n", countIter);
+        printf("Count of MPI process: %d\n", size);
+        printf("\n--------------\n");
+    }
+}
+
+double calc(double *matrix, double *xVector, double *bVector,
+            double *xVectorNew, size_t n, double tao, size_t cnt, int first) {
+    double res = 0;
+    for (size_t i = 0; i < cnt; ++i) {
+        double s = -bVector[i];
+        for (size_t j = 0; j < n; ++j) {
+            s += matrix[i * n + j] * xVector[j];
+        }
+        res += s * s;
+        xVectorNew[i] = xVector[first + i] - tao * s;
+    }
+    return res;
+}
+
 int countOfLines(int n, int rank, int size) {
     return n / size + (rank < n % size);
 }
 
-/*
- * Генерация данных
- */
 void init(double *matrix, double *bVector, double *xVector, int n) {
     for (int i = 0; i < n; ++i) {
         xVector[i] = 0;
@@ -59,56 +88,12 @@ double sumVector(double *vector, int size) {
     return result;
 }
 
-int main(int argc, char **argv) {
-    int size, rank;
-    MPI_Init(&argc, &argv);
-    MPE_Init_log();
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    double startTime = MPI_Wtime();
-
-    /* Считаем конфигурацию себя и других */
-    int *linesCount = (int *)malloc(size * sizeof(int));
-    int *firstLines = (int *)malloc(size * sizeof(int));
-    initLinesSettings(linesCount, firstLines, size, N);
-    int currentSize = (rank == 0 ? N : linesCount[rank]);
-    /* выделение памяти */
-    double *matrix = (double *)malloc(sizeof(double) * N * currentSize);
-    double *xVector = (double *)malloc(sizeof(double) * N);
-    double *bVector = (double *)malloc(sizeof(double) * currentSize);
-    double *xVectorNew = (double *)calloc(linesCount[rank], sizeof(double));
-    double *sVector = malloc(linesCount[0] * sizeof(double));
-    double *xVectorPart = (double *)malloc(linesCount[0] * sizeof(double));
-    /*
-    int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
-    void *buff = (void *)malloc(buffSize);
-*/
-    if (rank == 0) {
-        init(matrix, bVector, xVector, N);
-        for (int i = 1; i < size; ++i) {
-            //int pos = 0;
-            MPI_Send(matrix + N * firstLines[i], N * firstLines[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-            MPI_Send(xVector, N, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-            MPI_Send(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-        }
-    } else {
-        //int pos = 0;
-        MPI_Recv(matrix, N * linesCount[rank], MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(xVector, N, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(bVector, linesCount[rank], MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    }
-    //free(buff);
-
-    double bLen = (rank == 0) ? calcEndValue(bVector, N, EPSILON) : 0;
-
-    double *d = (double *)malloc(sizeof(double) * ((rank == 0) ? size : 1));
-
-    int flag = 1;
-    int useTau = 0;
-    double tau = TAU;
-    double prevParam = DBL_MAX;
+int solve(double *matrix, double *xVectorPart, double *sVector, double *bVector,
+          double *xVectorNew, int *linesCount, int *firstLines, int rank,
+          int size, int bLen, double prevParam, double tau) {
     int countIter = 0;
+    int flag = 1;
+    double endParam;
 
     int right_rank = (rank + 1) % size;
     int left_rank = (rank - 1 + size) % size;
@@ -135,53 +120,84 @@ int main(int argc, char **argv) {
             dd += sVector[i] * sVector[i];
             xVectorNew[i] = xVectorPart[i] - tau * sVector[i];
         }
-
-        MPI_Gather(&dd, 1, MPI_DOUBLE, d, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-        if (rank == 0) {
-            double endParam = 0;
-            for (int i = 0; i < size; ++i) {
-                endParam += d[i];
-            }
-            if (prevParam <= endParam) {    // условие смены знака скаляра.
-                if (useTau) {
-                    flag = 0;    // Очевидно, что на прямой к числу можно
-                } else {
-                    tau *= -1;
-                    useTau = 1;
-                }
-            }
-            prevParam = endParam;
-            flag = flag && (endParam > bLen);
+        MPI_Allreduce(&dd, &endParam, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+        if (prevParam <= endParam || endParam <= bLen) {
+            flag = 0;
         }
-
-        MPI_Bcast(&tau, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&flag, 1, MPI_INT, 0,
-                  MPI_COMM_WORLD);    // Выходим из цикла всем процессам
+        prevParam = endParam;
+        flag = flag && (endParam > bLen);
     }
+    return countIter;
+}
 
-    double endTime = MPI_Wtime();
-    double elapsedTime = endTime - startTime;
+int main(int argc, char **argv) {
+    int size, rank;
+    MPI_Init(&argc, &argv);
+#ifdef USE_MATH_LIB
+    MPE_Init_log();
+#endif
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    double maxTime;
-    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
-               MPI_COMM_WORLD);
+    double startTime = MPI_Wtime();
+
+    /* Считаем конфигурацию себя и других */
+    int *linesCount = (int *)malloc(size * sizeof(int));
+    int *firstLines = (int *)malloc(size * sizeof(int));
+    initLinesSettings(linesCount, firstLines, size, N);
+    size_t currentSize = (rank == 0 ? N : (size_t)linesCount[rank]);
+    /* выделение памяти */
+    double *matrix = (double *)malloc(sizeof(double) * N * currentSize);
+    double *xVector = (double *)malloc(sizeof(double) * N);
+    double *bVector = (double *)malloc(sizeof(double) * currentSize);
+    double *xVectorNew = (double *)calloc(linesCount[rank], sizeof(double));
+    double *sVector = malloc(linesCount[0] * sizeof(double));
+    double *xVectorPart = (double *)malloc(linesCount[0] * sizeof(double));
+
+    int buffSize = sizeof(double) * (linesCount[0] * N + N + linesCount[0]);
+    void *buff = (void *)malloc(buffSize);
 
     if (rank == 0) {
-        printf("%f\n", maxTime);
-        printf("\n--------------\n");
-        printf("\n%f\n", xVectorNew[0]);    // достаточно вывести один
-        printf("count iterations = %d\n", countIter);
-        printf("Count of MPI process: %d\n", size);
-        printf("\n--------------\n");
+        init(matrix, bVector, xVector, N);
+        for (int i = 1; i < size; ++i) {
+            int pos = 0;
+            MPI_Pack(matrix + N * firstLines[i], N * linesCount[i], MPI_DOUBLE,
+                     buff, buffSize, &pos, MPI_COMM_WORLD);
+            MPI_Pack(xVector, (int)N, MPI_DOUBLE, buff, buffSize, &pos,
+                     MPI_COMM_WORLD);
+            MPI_Pack(bVector + firstLines[i], linesCount[i], MPI_DOUBLE, buff,
+                     buffSize, &pos, MPI_COMM_WORLD);
+            MPI_Send(buff, buffSize, MPI_BYTE, i, 0, MPI_COMM_WORLD);
+        }
+    } else {
+        int pos = 0;
+        MPI_Recv(buff, buffSize, MPI_BYTE, 0, 0, MPI_COMM_WORLD,
+                 MPI_STATUS_IGNORE);
+        MPI_Unpack(buff, buffSize, &pos, matrix, N * linesCount[rank],
+                   MPI_DOUBLE, MPI_COMM_WORLD);
+        MPI_Unpack(buff, buffSize, &pos, xVector, (int)N, MPI_DOUBLE,
+                   MPI_COMM_WORLD);
+        MPI_Unpack(buff, buffSize, &pos, bVector, linesCount[rank], MPI_DOUBLE,
+                   MPI_COMM_WORLD);
     }
+    free(buff);
+
+    double bLen = (rank == 0) ? calcEndValue(bVector, (int)N, EPSILON) : 0;
+    double prevParam = DBL_MAX;
+
+    int countIter =
+        solve(matrix, xVectorPart, sVector, bVector, xVectorNew, linesCount,
+              firstLines, rank, size, bLen, prevParam, TAU);
+    countIter +=
+        solve(matrix, xVectorPart, sVector, bVector, xVectorNew, linesCount,
+              firstLines, rank, size, bLen, prevParam, -TAU);
+
+    getElapsedTime(xVectorNew, startTime, size, rank, countIter);
 
     free(matrix);
     free(xVector);
     free(xVectorNew);
     free(bVector);
-    free(sVector);
-    free(d);
     free(linesCount);
     free(firstLines);
 

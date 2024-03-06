@@ -10,7 +10,7 @@
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
 const double TAU = 0.00001;
-const size_t N = 10000;
+const size_t N = 25000;
 
 void getElapsedTime(double *xVectorNew, int startTime, int size, int rank,
                     int countIter) {
@@ -93,6 +93,7 @@ int solve(double *matrix, double *xVector, double *bVector, double *xVectorNew,
           double prevParam, double tau) {
     int countIter = 0;
     int flag = 1;
+    double endParam;
 
     for (; flag && (countIter < MAX_ITERATIONS); ++countIter) {
         double dd = calc(matrix, xVector, bVector, xVectorNew, N, tau,
@@ -100,17 +101,12 @@ int solve(double *matrix, double *xVector, double *bVector, double *xVectorNew,
         // Собираем вектор по кусочкам
         MPI_Allgatherv(xVectorNew, linesCount[rank], MPI_DOUBLE, xVector,
                        linesCount, firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
-        double endParam;
-        MPI_Reduce(&dd, &endParam, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-
-        if (rank == 0) {
-            if (prevParam <= endParam || endParam <= bLen) {
-                flag = 0;
-            }
-            prevParam = endParam;
-            flag = flag && (endParam > bLen);
+        MPI_Allreduce(&dd, &endParam, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+        if (prevParam <= endParam || endParam <= bLen) {
+            flag = 0;
         }
-        MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        prevParam = endParam;
+        flag = flag && (endParam > bLen);
     }
     return countIter;
 }
