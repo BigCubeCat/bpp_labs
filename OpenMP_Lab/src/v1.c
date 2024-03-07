@@ -67,11 +67,15 @@ int main(int argc, char **argv) {
             {
                 ++countIters;
                 if (prevParam <= nextParam) {    // условие смены знака скаляра.
-                    tau *= -1;
-                    if (useTau) {
-                        flag = 0;
+                                                 /*
+                                                 tau *= -1;
+                                                 if (useTau) {
+                                                     */
+                    flag = 0;
+                    /*
                     }
                     useTau = 1;
+                */
                 }
                 memcpy(x_n, x, n * sizeof(double));    // swap
                 if (nextParam < bLen) {

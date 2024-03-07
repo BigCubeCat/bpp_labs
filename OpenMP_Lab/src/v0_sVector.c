@@ -26,8 +26,8 @@ double calcEndValue(const double *bVector, int n, double eps) {
     return res * eps * eps;
 }
 
-int solve(const double *A, const double *b, double *sumVector, double *x, double *x_n, int n, double bLen,
-          double tau) {
+int solve(const double *A, const double *b, double *sumVector, double *x,
+          double *x_n, int n, double bLen, double tau) {
     int countIters = 0;
     double nextParam;
     double prevParam = DBL_MAX;
@@ -75,9 +75,7 @@ int main(int argc, char **argv) {
 
     double bLen = calcEndValue(b, n, EPSILON);
 
-
-    int countIters =
-        solve(A, b, sVector, x, x_n, n, bLen, TAU) + solve(A, b, sVector, x, x_n, n, bLen, -TAU);
+    int countIters = solve(A, b, sVector, x, x_n, n, bLen, TAU);
 
     ftime = omp_get_wtime();
     exec_time = ftime - itime;
