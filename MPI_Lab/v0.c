@@ -8,14 +8,7 @@
 #define TAU 0.000001
 #define MAX_ITERATIONS 100000
 #define N 1000
-//
-// void print(double *x, const int n) {
-//     for (int i = 0; i < n; ++i) {
-//         printf("%.3f ", x[i]);
-//     }
-//     printf("\n");
-// }
-//
+
 void InitA(double *A, const int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
