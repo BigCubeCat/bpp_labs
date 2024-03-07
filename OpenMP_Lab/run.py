@@ -11,6 +11,7 @@ versions = [
 ]
 
 os.system("mkdir res")
+os.system("mkdir exe")
 
 
 def build(src: str, dest: str):
