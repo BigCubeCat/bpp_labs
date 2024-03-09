@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 
     double *A = (double *)malloc(n * n * sizeof(double));
     double *b = (double *)malloc(n * sizeof(double));
-    double *x_n = (double *)malloc(n * sizeof(double));
+    double *x_n = (double *)calloc(n, sizeof(double));
     double *x = (double *)calloc(n, sizeof(double));
     double bLen = 0;
     Init(A, b, n);
@@ -36,7 +36,6 @@ int main(int argc, char **argv) {
 
     int countIters = 0;
     double nextParam = DBL_MAX;
-    double prevParam = DBL_MAX;
     int flag = 1;
     double tau = TAU;
     int useTau = 0;
@@ -49,39 +48,29 @@ int main(int argc, char **argv) {
         for (int i = 0; i < n; ++i) {
             bLen += b[i] * b[i];
         }
-        bLen *= EPSILON * EPSILON;
 
         while (flag) {
+#pragma omp single
             nextParam = 0;
 #pragma omp for schedule(static) reduction(+ : nextParam)
             for (int i = 0; i < n; ++i) {
                 double sum = -b[i];
                 for (int j = 0; j < n; ++j) {
-                    sum += A[i * n + j] * x_n[j];
+                    sum += A[i * n + j] * x[j];
                 }
-                x[i] = x_n[i] - sum * tau;
-#pragma omp atomic
+                x_n[i] = x[i] - sum * tau;
                 nextParam += sum * sum;
             }
 #pragma omp single
             {
+                double *tmp = x;
+                x = x_n;
+                x_n = tmp;
+
                 ++countIters;
-                if (prevParam <= nextParam) {    // условие смены знака скаляра.
-                                                 /*
-                                                 tau *= -1;
-                                                 if (useTau) {
-                                                     */
-                    flag = 0;
-                    /*
-                    }
-                    useTau = 1;
-                */
-                }
-                memcpy(x_n, x, n * sizeof(double));    // swap
-                if (nextParam < bLen) {
+                if (nextParam < EPSILON * bLen) {
                     flag = 0;
                 }
-                prevParam = nextParam;
             }
         }
     }

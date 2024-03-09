@@ -48,7 +48,10 @@ int solve(const double *A, const double *b, double *sumVector, double *x,
         if (prevParam <= nextParam) {
             flag = 0;
         }
-        memcpy(x_n, x, n * sizeof(double));    // swap
+        double *tmp = x;
+        x = x_n;
+        x_n = tmp;
+
         if (nextParam < bLen || nextParam == DBL_MAX) {
             break;
         }

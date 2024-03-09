@@ -5,9 +5,9 @@ size = 2000
 start = 1
 end = 4
 versions = [
+    'v1.c',
     'v0_sVector.c',
     'v0_reduction.c',
-    'v1.c',
 ]
 
 os.system("mkdir res")
