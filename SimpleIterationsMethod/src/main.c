@@ -10,8 +10,8 @@
 
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
-const double TAU = 0.01;
-const size_t N = 20;
+const double TAU = 0.00001;
+const size_t N = 1000;
 
 
 #ifdef USE_MPE
@@ -48,6 +48,8 @@ int main(int argc, char *argv[]) {
 
     CtxData data;
 
+    prepare(&data, size);
+
     if (rank == 0 && argparse(argc, argv, &data)) {
         MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
@@ -57,7 +59,11 @@ int main(int argc, char *argv[]) {
     MPI_Bcast(&data.b_length, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(&data.n, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
 
-    prepare(&data, size);
+    printf("b = %lf; data.n = %zu\n", data.b_length, data.n);
+
+    initLinesSettings(data.linesCount, data.firstLines, size, (int) data.n);
+    data.x_new_vector = (double *) calloc(data.linesCount[0], sizeof(double));
+
     size_t currentSize = (rank == 0 ? data.n : (size_t) data.linesCount[rank]);
 
     if (rank != 0) {
@@ -69,7 +75,7 @@ int main(int argc, char *argv[]) {
     }
     syncStartData(&data, rank, size);
 
-    int countIter = solve(&data, TAU, rank, MAX_ITERATIONS);
+    int countIter = solve(&data, TAU, rank, MAX_ITERATIONS) + solve(&data, -TAU, rank, MAX_ITERATIONS);
 
     double endTime = MPI_Wtime();
     double elapsedTime = endTime - startTime;

@@ -4,8 +4,10 @@ project(SimpleIterationsMethod C)
 set(CMAKE_C_STANDARD 11)
 
 # -fopenmp flag (enables OpenMP)
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -funroll-loops -fopenmp")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3")
+# set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -funroll-loops -fopenmp")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 add_executable(SimpleIterationsMethod src/main.c
         src/parser/parser.h
@@ -15,11 +17,17 @@ add_executable(SimpleIterationsMethod src/main.c
         src/CtxData/CtxData.h
         src/CtxData/CtxData.c
         src/solve/solve.h
-        src/solve/solve.c)
+        src/solve/solve.c
+)
+
+# OpenMP
+find_package(OpenMP)
+if (OpenMP_C_FOUND)
+    target_link_libraries(SimpleIterationsMethod PUBLIC OpenMP::OpenMP_C)
+endif ()
 
 # MPI
 find_package(MPI REQUIRED)
 target_link_libraries(SimpleIterationsMethod PUBLIC MPI::MPI_C)
-
 
 

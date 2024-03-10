@@ -19,8 +19,6 @@ void initLinesSettings(int *linesCount, int *firstLines, int size, int n) {
 void prepare(CtxData *data, int size) {
     data->linesCount = (int *) malloc(size * sizeof(int));
     data->firstLines = (int *) malloc(size * sizeof(int));
-    initLinesSettings(data->linesCount, data->firstLines, size, (int) data->n);
-    data->x_new_vector = (double *) calloc(data->linesCount[0], sizeof(double));
 }
 
 void syncStartData(CtxData *data, int rank, int size) {
