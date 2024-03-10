@@ -10,8 +10,8 @@
 
 const int MAX_ITERATIONS = 10000;
 const double EPSILON = 0.000001;
-const double TAU = 0.00001;
-const size_t N = 2500;
+const double TAU = 0.01;
+const size_t N = 20;
 
 
 #ifdef USE_MPE
@@ -47,15 +47,17 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     CtxData data;
-    data.n = N;
 
     if (rank == 0 && argparse(argc, argv, &data)) {
         MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
     }
     double startTime = MPI_Wtime();
+    if (rank == 0) bLenCalc(&data, EPSILON);
+    MPI_Bcast(&data.b_length, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&data.n, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
+
     prepare(&data, size);
-    printf("data.n = %zd\n", data.n);
     size_t currentSize = (rank == 0 ? data.n : (size_t) data.linesCount[rank]);
 
     if (rank != 0) {
@@ -66,7 +68,6 @@ int main(int argc, char *argv[]) {
         data.x_new_vector = (double *) calloc(data.linesCount[rank], sizeof(double));
     }
     syncStartData(&data, rank, size);
-    if (rank == 0) bLenCalc(&data, EPSILON);
 
     int countIter = solve(&data, TAU, rank, MAX_ITERATIONS);
 

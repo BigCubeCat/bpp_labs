@@ -17,7 +17,7 @@ double calc(CtxData *data, double tao, int rank) {
 
 
 double sumVector(const double *vector, int size) {
-    int result = 0;
+    double result = 0;
     for (int i = 0; i < size; ++i) {
         result += vector[i];
     }
@@ -32,12 +32,10 @@ int solve(CtxData *data,  double tao, int rank, size_t max_iterations) {
 
     for (; flag && (countIter < max_iterations); ++countIter) {
         double dd = calc(data, tao, rank);
-        // Собираем вектор по кусочкам
         MPI_Allgatherv(data->x_new_vector, data->linesCount[rank], MPI_DOUBLE, data->x_vector,
                        data->linesCount, data->firstLines, MPI_DOUBLE, MPI_COMM_WORLD);
         MPI_Allreduce(&dd, &next, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
-
-        flag = (prev <= next) && (next > data->b_length);
+        flag = (prev >= next) && (next >= data->b_length);
         prev = next;
     }
     return countIter;

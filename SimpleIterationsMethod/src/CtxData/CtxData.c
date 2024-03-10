@@ -7,7 +7,6 @@ void bLenCalc(CtxData *data, double epsilon) {
         data->b_length += data->b_vector[i] * data->b_vector[i];
     }
     data->b_length *= epsilon;
-    data->b_length *= epsilon;
 }
 
 void freeCtx(CtxData *data) {
