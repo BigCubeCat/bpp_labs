@@ -2,6 +2,7 @@
 #include <string.h>
 #include <mpi.h>
 #include <malloc.h>
+#include <omp.h>
 
 #include "parser/parser.h"
 #include "CtxData/CtxData.h"
@@ -51,6 +52,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    printf("nt = %d\n", omp_get_num_threads());
+
     CtxData data;
 
     prepare(&data, size);
@@ -91,7 +94,8 @@ int main(int argc, char *argv[]) {
         printf("\n--------------\n");
         printf("\n%f\n", data.x_new_vector[0]);
         printf("count iterations = %d\n", countIter);
-        printf("Count of MPI process: %d\n", size);
+        printf("Count MPI process: %d\n", size);
+        printf("Count OpenMP threads: %d\n", omp_get_num_threads());
         printf("\n--------------\n");
     }
 

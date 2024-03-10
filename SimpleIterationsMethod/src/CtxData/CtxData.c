@@ -1,12 +1,14 @@
 #include <stdlib.h>
+#include <omp.h>
 #include "./CtxData.h"
 
 void bLenCalc(CtxData *data, double epsilon) {
-    data->b_length = 0;
+    double res = 0;
+#pragma omp parallel for reduction(+ : res)
     for (int i = 0; i < data->n; ++i) {
-        data->b_length += data->b_vector[i] * data->b_vector[i];
+        res +=  data->b_vector[i] * data->b_vector[i];
     }
-    data->b_length *= epsilon;
+    data->b_length = res * epsilon * epsilon;
 }
 
 void freeCtx(CtxData *data) {

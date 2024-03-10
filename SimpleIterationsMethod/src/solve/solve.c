@@ -4,8 +4,10 @@
 
 double calc(CtxData *data, double tao, int rank) {
     double res = 0;
+#pragma omp parallel for reduction(+ : res)
     for (size_t i = 0; i < (size_t) data->linesCount[rank]; ++i) {
         double s = -data->b_vector[i];
+#pragma omp parallel for reduction(+ : s)
         for (size_t j = 0; j < data->n; ++j) {
             s += data->matrix[i * data->n + j] * data->x_vector[j];
         }
@@ -24,7 +26,7 @@ double sumVector(const double *vector, int size) {
     return result;
 }
 
-int solve(CtxData *data,  double tao, int rank, size_t max_iterations) {
+int solve(CtxData *data, double tao, int rank, size_t max_iterations) {
     int countIter = 0;
     int flag = 1;
     double prev = DBL_MAX;
