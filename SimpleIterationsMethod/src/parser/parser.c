@@ -44,5 +44,4 @@ void generateData(CtxData *data, size_t n) {
             data->matrix[i * n + j] = 1 + (i == j);
         }
     }
-    printf("generateData\n");
 }

@@ -26,7 +26,7 @@ void printUsage() {
 
 int argparse(int argc, char *argv[], CtxData *data) {
     if (argc != 2) {
-        printf("no input file; generating data for n = %ld\n", N);
+        // printf("no input file; generating data for n = %ld\n", N);
         generateData(data, N);
         return 0;
     } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
@@ -46,6 +46,11 @@ int main(int argc, char *argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    if (size == 1) {
+        printf("Ты серъёзно?!\n");
+        return 1;
+    }
+
     CtxData data;
 
     prepare(&data, size);
@@ -58,8 +63,6 @@ int main(int argc, char *argv[]) {
     if (rank == 0) bLenCalc(&data, EPSILON);
     MPI_Bcast(&data.b_length, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(&data.n, 1, MPI_UNSIGNED_LONG_LONG, 0, MPI_COMM_WORLD);
-
-    printf("b = %lf; data.n = %zu\n", data.b_length, data.n);
 
     initLinesSettings(data.linesCount, data.firstLines, size, (int) data.n);
     data.x_new_vector = (double *) calloc(data.linesCount[0], sizeof(double));
