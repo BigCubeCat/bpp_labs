@@ -51,9 +51,6 @@ int main(int argc, char *argv[]) {
         printf("Ты серъёзно?!\n");
         return 1;
     }
-
-    printf("nt = %d\n", omp_get_num_threads());
-
     CtxData data;
 
     prepare(&data, size);
