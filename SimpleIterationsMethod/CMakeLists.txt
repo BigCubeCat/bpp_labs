@@ -4,9 +4,8 @@ project(SimpleIterationsMethod C)
 set(CMAKE_C_STANDARD 11)
 
 # -fopenmp flag (enables OpenMP)
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3")
-# set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -funroll-loops -fopenmp")
-
+set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -ftree-vectorize")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 add_executable(SimpleIterationsMethod src/main.c
