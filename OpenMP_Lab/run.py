@@ -1,12 +1,11 @@
 #!/bin/python3
 import os
 
-size = 2000
+size = 25000
 start = 1
-end = 4
+end = 16
 versions = [
     'v1.c',
-    'v0_sVector.c',
     'v0_reduction.c',
 ]
 
@@ -15,7 +14,7 @@ os.system("mkdir exe")
 
 
 def build(src: str, dest: str):
-    return os.system(f"gcc {src} -O3 -fopenmp -o {dest}")
+    return os.system(f"gcc {src} -O2 -fopenmp -o {dest}")
 
 
 def read_time(file_name: str):

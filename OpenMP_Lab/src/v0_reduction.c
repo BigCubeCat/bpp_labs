@@ -2,7 +2,6 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 const double EPSILON = 0.0000001;
 const double TAU = 0.000001;
@@ -34,6 +33,7 @@ int solve(const double *A, const double *b, double *x, double *x_n, int n,
     int flag = 1;
     for (; flag && (countIters < MAX_ITERATIONS); ++countIters) {
         nextParam = 0;
+        // scheldue (static, 1)
 #pragma omp parallel for reduction(+ : nextParam)
         for (int i = 0; i < n; ++i) {
             double sum = -b[i];
@@ -47,7 +47,10 @@ int solve(const double *A, const double *b, double *x, double *x_n, int n,
         if (prevParam <= nextParam) {
             flag = 0;
         }
-        memcpy(x_n, x, n * sizeof(double));    // swap
+        double *tmp = x;
+        x = x_n;
+        x_n = tmp;
+
         if (nextParam < bLen || nextParam == DBL_MAX) {
             break;
         }

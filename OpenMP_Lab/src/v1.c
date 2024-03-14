@@ -2,7 +2,6 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 const double EPSILON = 0.0000001;
 const double TAU = 0.000001;
@@ -50,6 +49,7 @@ int main(int argc, char **argv) {
         }
 
         while (flag) {
+            // Выполняется в одном каком то потоке
 #pragma omp single
             nextParam = 0;
 #pragma omp for schedule(static) reduction(+ : nextParam)

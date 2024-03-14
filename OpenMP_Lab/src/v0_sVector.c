@@ -2,7 +2,6 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 const double EPSILON = 0.0000001;
 const double TAU = 0.000001;
