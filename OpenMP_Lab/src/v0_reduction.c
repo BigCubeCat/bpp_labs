@@ -37,7 +37,7 @@ int solve(const double *A, const double *b, double *x, double *x_n, int n,
 #pragma omp parallel for reduction(+ : nextParam)
         for (int i = 0; i < n; ++i) {
             double sum = -b[i];
-#pragma omp parallel for reduction(+ : sum)
+#pragma omp for reduction(+ : sum)
             for (int j = 0; j < n; ++j) {
                 sum += A[i * n + j] * x_n[j];
             }

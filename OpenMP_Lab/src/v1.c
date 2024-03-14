@@ -40,9 +40,11 @@ int main(int argc, char **argv) {
     int useTau = 0;
 
     omp_set_num_threads(countThreads);
+    omp_set_nested(1);
 
 #pragma omp parallel
     {
+        // Вот тут нет распаралеливания, omp for нужен чтобы сделать редукцию
 #pragma omp for schedule(static) reduction(+ : bLen)
         for (int i = 0; i < n; ++i) {
             bLen += b[i] * b[i];
