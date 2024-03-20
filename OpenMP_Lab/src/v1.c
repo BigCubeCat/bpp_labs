@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 #pragma omp parallel
     {
         // Вот тут нет распаралеливания, omp for нужен чтобы сделать редукцию
-#pragma omp for schedule(static) reduction(+ : bLen)
+#pragma omp for schedule(@) reduction(+ : bLen)
         for (int i = 0; i < n; ++i) {
             bLen += b[i] * b[i];
         }
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
             // Выполняется в одном каком то потоке
 #pragma omp single
             nextParam = 0;
-#pragma omp for schedule(static) reduction(+ : nextParam)
+#pragma omp for schedule(@) reduction(+ : nextParam)
             for (int i = 0; i < n; ++i) {
                 double sum = -b[i];
                 for (int j = 0; j < n; ++j) {
