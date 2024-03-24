@@ -10,7 +10,7 @@ void MatrixModel::Malloc() {
 }
 
 MatrixModel::~MatrixModel() {
-    delete data;
+    delete[] data;
 }
 
 void MatrixModel::setValue(size_t row, size_t col, double value) const {

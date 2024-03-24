@@ -18,7 +18,7 @@ void Init(double *A, double *B, const int n) {
 
 double calcEndValue(const double *bVector, int n, double eps) {
     double res = 0;
-#pragma omp parallel for reduction(+ : res)
+#pragma omp parallel for scheldue(@) reduction(+ : res)
     for (int i = 0; i < n; ++i) {
         res += bVector[i] * bVector[i];
     }
@@ -34,10 +34,10 @@ int solve(const double *A, const double *b, double *x, double *x_n, int n,
     for (; flag && (countIters < MAX_ITERATIONS); ++countIters) {
         nextParam = 0;
         // scheldue (static, 1)
-#pragma omp parallel for reduction(+ : nextParam)
+#pragma omp parallel for scheldue(@) reduction(+ : nextParam)
         for (int i = 0; i < n; ++i) {
             double sum = -b[i];
-#pragma omp for reduction(+ : sum)
+#pragma omp for scheldue(@) reduction(+ : sum)
             for (int j = 0; j < n; ++j) {
                 sum += A[i * n + j] * x_n[j];
             }

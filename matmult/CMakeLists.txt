@@ -15,7 +15,9 @@ add_executable(matmult src/main.cpp
         src/FileWorker/FileWorker.cpp
         src/MatrixModel/MatrixModel.cpp
         src/utils/utils.h
-        src/utils/utils.cpp)
+        src/utils/utils.cpp
+        src/CalculationController/CalculationController.h
+        src/CalculationController/CalculationController.cpp)
 
 
 # MPI

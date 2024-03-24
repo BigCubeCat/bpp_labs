@@ -38,8 +38,3 @@ void FileWorker::readMat(MatrixModel *mat) {
         }
     }
 }
-
-TConfigStruct::~TConfigStruct() {
-    delete matrixB;
-    delete matrixA;
-}

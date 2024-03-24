@@ -4,6 +4,6 @@
 #include <cstdio>
 #include <utility>
 
-std::pair<size_t, size_t> getOptimalGeometry(int countProcess);
+std::pair<int, int> getOptimalGeometry(int countProcess);
 
 #endif

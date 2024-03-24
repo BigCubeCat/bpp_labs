@@ -9,7 +9,6 @@
 struct TConfigStruct {
     MatrixModel *matrixA;
     MatrixModel *matrixB;
-    ~TConfigStruct();
 };
 
 class FileWorker {
