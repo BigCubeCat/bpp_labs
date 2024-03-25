@@ -22,6 +22,10 @@ TConfigStruct FileWorker::readData() {
     readMat(configStruct.matrixA);
     readMat(configStruct.matrixB);
 
+    configStruct.n = static_cast<int>(configStruct.matrixA->countRows);
+    configStruct.m = static_cast<int>(configStruct.matrixA->countColumns);
+    configStruct.k = static_cast<int>(configStruct.matrixB->countColumns);
+
     return configStruct;
 }
 
@@ -31,8 +35,8 @@ FileWorker::~FileWorker() {
 
 void FileWorker::readMat(MatrixModel *mat) {
     std::string word;
-    for (size_t row = 0; row < mat->height; ++row) {
-        for (size_t col = 0; col < mat->width; ++col) {
+    for (size_t row = 0; row < mat->countRows; ++row) {
+        for (size_t col = 0; col < mat->countColumns; ++col) {
             inputStream >> word;
             mat->setValue(row, col, std::atof(word.c_str()));
         }

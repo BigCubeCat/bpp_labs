@@ -16,9 +16,11 @@ add_executable(matmult src/main.cpp
         src/MatrixModel/MatrixModel.cpp
         src/utils/utils.h
         src/utils/utils.cpp
-        src/CalculationController/CalculationController.h
-        src/CalculationController/CalculationController.cpp)
-
+        src/algo/algo.h
+        src/algo/algo.cpp
+        src/runner/runner.h
+        src/runner/runner.cpp
+)
 
 # MPI
 find_package(MPI REQUIRED)

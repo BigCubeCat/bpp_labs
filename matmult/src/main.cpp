@@ -1,40 +1,25 @@
 #include <iostream>
 #include <mpi.h>
-#include "MatrixModel/MatrixModel.h"
-#include "FileWorker/FileWorker.h"
-#include "CalculationController/CalculationController.h"
+#include "runner/runner.h"
 
 
 int main(int argc, char **argv) {
-    int mpiRank, mpiSize, rootRowRank, rootColRank, rankComm2D, coordX, coordY;
-    int dims[2] = {0, 0}, periods[2] = {0, 0}, coords[2];
+    int mpiRank, mpiSize;
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
-    MPI_Comm comm2d;
-    MPI_Dims_create(mpiSize, 2, dims);
-    MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 1, &comm2d);
-
-    MPI_Comm_rank(comm2d, &rankComm2D);
-    MPI_Cart_get(comm2d, 2, dims, periods, coords);
-    coordY = coords[0];
-    coordX = coords[1];
-    MPI_Cart_coords(comm2d, 0, 2, coords);
-    rootRowRank = coords[0];
-    rootColRank = coords[1];
-
-    double startTime = MPI_Wtime();
-    TConfigStruct calculationSetup;
-    if (mpiRank == 0) {
-        FileWorker fw = FileWorker("testdata/test1.matrix");
-        calculationSetup = fw.readData();
-        std::cout << "A matrix:\n";
-        calculationSetup.matrixA->printMatrix();
-        std::cout << "B matrix:\n";
-        calculationSetup.matrixB->printMatrix();
-        CalculationController calculator = CalculationController(calculationSetup, mpiRank, mpiSize);
+    std::string filename = argv[1];
+    bool debug = false;
+    if (argc == 3) {
+        debug = std::string(argv[2]) == "debug";
     }
+    double startTime = MPI_Wtime();
+
+    RunMultiplication(filename, mpiRank, mpiSize, debug);
+
+    // через MPI_Vector_type разрезать на колонки.
+    // должно быть несколько типов: причем некоторые колонки шире других
 
     double endTime = MPI_Wtime();
     double elapsedTime = endTime - startTime;

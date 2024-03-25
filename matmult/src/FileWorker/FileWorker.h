@@ -7,6 +7,7 @@
 #include <fstream>
 
 struct TConfigStruct {
+    int n, k, m;
     MatrixModel *matrixA;
     MatrixModel *matrixB;
 };
