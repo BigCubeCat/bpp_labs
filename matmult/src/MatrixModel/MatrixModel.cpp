@@ -2,10 +2,8 @@
 #include "./MatrixModel.h"
 
 MatrixModel::MatrixModel(size_t rows, size_t cols) : countRows(rows), countColumns(cols) {
-    data = new double *[countRows];
-    for (int i = 0; i < countRows; ++i) {
-        data[i] = new double[countColumns];
-    }
+    dataSize = countColumns * countRows;
+    data = new double[dataSize];
 }
 
 MatrixModel::~MatrixModel() {
@@ -13,7 +11,7 @@ MatrixModel::~MatrixModel() {
 }
 
 void MatrixModel::setValue(size_t row, size_t col, double value) const {
-    data[row][col] = value;
+    data[row * width() + col] = value;
 }
 
 void MatrixModel::printMatrix() const {
@@ -26,5 +24,13 @@ void MatrixModel::printMatrix() const {
 }
 
 double MatrixModel::getValue(size_t row, size_t col) const {
-    return data[row][col];
+    return data[row * width() + col];
+}
+
+size_t MatrixModel::width() const {
+    return countColumns;
+}
+
+size_t MatrixModel::height() const {
+    return countRows;
 }

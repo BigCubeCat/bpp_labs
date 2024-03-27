@@ -2,15 +2,10 @@
 #define FILEWORKER_H
 
 #include "../MatrixModel/MatrixModel.h"
+#include "../ConfigStruct/TConfigStruct.h"
 
 #include <string>
 #include <fstream>
-
-struct TConfigStruct {
-    int n, k, m;
-    MatrixModel *matrixA;
-    MatrixModel *matrixB;
-};
 
 class FileWorker {
 private:

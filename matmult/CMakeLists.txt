@@ -3,12 +3,11 @@ cmake_minimum_required(VERSION 3.2)
 project(matmult)
 
 set(CMAKE_CXX_STANDARD 17)
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -ftree-vectorize")
+set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 
-# Use imported targets would make things much eazier. Thanks Levi for pointing it out.
 add_executable(matmult src/main.cpp
         src/MatrixModel/MatrixModel.h
         src/FileWorker/FileWorker.h
@@ -20,6 +19,8 @@ add_executable(matmult src/main.cpp
         src/algo/algo.cpp
         src/runner/runner.h
         src/runner/runner.cpp
+        src/ConfigStruct/TConfigStruct.h
+        src/ConfigStruct/TConfigStruct.cpp
 )
 
 # MPI

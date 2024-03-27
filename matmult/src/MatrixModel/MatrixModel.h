@@ -5,7 +5,8 @@
 #include <cstdlib>
 
 struct MatrixModel {
-    double **data;
+    double *data;
+    size_t dataSize = 0;
     size_t countRows = 0;
     size_t countColumns = 0;
 
@@ -16,6 +17,9 @@ struct MatrixModel {
     double getValue(size_t row, size_t col) const;
 
     void printMatrix() const;
+
+    size_t width() const;
+    size_t height() const;
 
     ~MatrixModel();
 };

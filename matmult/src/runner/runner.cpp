@@ -2,12 +2,24 @@
 #include <iostream>
 #include "./runner.h"
 #include "../FileWorker/FileWorker.h"
+#include "../algo/algo.h"
 
-TConfigStruct readFile(const std::string &filename) {
+TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     FileWorker fw = FileWorker(filename);
     TConfigStruct calculationSetup = fw.readData();
 
-    return calculationSetup
+    n = calculationSetup.n;
+    m = calculationSetup.m;
+    k = calculationSetup.k;
+
+    return calculationSetup;
+}
+
+void printArr(int *arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
 }
 
 void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bool debug) {
@@ -28,23 +40,74 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     rootRowRank = coords[0];
     rootColRank = coords[1];
 
-    if (isRoot) {
-        auto calculationSetup = readFile(filename);
-        n = calculationSetup.n;
-        m = calculationSetup.m;
-        k = calculationSetup.k;
+    MPI_Comm rowCommunicator, columnCommunicator;
+    MPI_Comm_split(comm2d, coordY, coordX, &rowCommunicator);
+    MPI_Comm_split(comm2d, coordX, coordY, &columnCommunicator);
 
-        if (debug) {
-            std::cout << "A:\n";
-            calculationSetup.matrixA->printMatrix();
-            std::cout << "B:\n";
-            calculationSetup.matrixB->printMatrix();
-        }
+    TConfigStruct calculationSetup;
+    if (isRoot) {
+        calculationSetup = readFile(filename, n, m, k);
+        if (debug) calculationSetup.print();
+    }
+    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&k, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    MPI_Datatype largeRowType;
+    MPI_Type_contiguous(m, MPI_DOUBLE, &largeRowType);
+    MPI_Type_commit(&largeRowType);
+
+    int *linesCount = new int[dims[0]];
+    int *firstLines = new int[dims[0]];
+    int *columnsCount = new int[dims[1]];
+    int *firstColumns = new int[dims[1]];
+
+    std::cout << "n = " << n << std::endl;
+    for (int i = 0; i < dims[0]; ++i) {
+        linesCount[i] = countOfLines(n, i, dims[0]) * m;
+        firstLines[i] = firstLine(n, i, dims[0]) * m;
     }
 
-    MPI_Bcast(&n, 1, MPI_INT, 0, comm2d);
-    MPI_Bcast(&k, 1, MPI_INT, 0, comm2d);
-    MPI_Bcast(&m, 1, MPI_INT, 0, comm2d);
+    for (int i = 0; i < dims[1]; ++i) {
+        columnsCount[i] = countOfLines(k, i, dims[1]);
+        firstColumns[i] = firstLine(k, i, dims[1]);
+    }
+
+    if (debug && mpiRank == 0) {
+        std::cout << "linesCount = " << std::endl;
+        printArr(linesCount, dims[0]);
+        std::cout << "firstLines = " << std::endl;
+        printArr(firstLines, dims[0]);
+
+        std::cout << "columnsCount = " << std::endl;
+        printArr(columnsCount, dims[1]);
+        std::cout << "firstColumns = " << std::endl;
+        printArr(firstColumns, dims[1]);
+    }
+
+    MatrixModel horizontalStrip = MatrixModel(linesCount[coordY], m);
+    MatrixModel verticalStrip = MatrixModel(m, columnsCount[coordX]);
+
+    if (mpiRank == 0) {
+        horizontalStrip.data = calculationSetup.matrixA->data;
+        for (int i = 1; i < dims[0]; ++i) {
+            MPI_Send(calculationSetup.matrixA->data + firstLines[i], linesCount[i], MPI_DOUBLE, i, 0,
+                     columnCommunicator);
+        }
+
+        if (debug) {
+            std::cout << "-----\nworld rank = " << mpiRank << std::endl;
+            std::cout << "m = " << m << "recv strip = \n";
+            for (int i = 0; i < m; ++i) {
+                std::cout << horizontalStrip.data[i] << " ";
+            }
+            std::cout << "---" << std::endl;
+        }
+    } else if (coordX == 0) {
+        MPI_Recv(horizontalStrip.data, linesCount[coordY], MPI_DOUBLE, 0, 0, columnCommunicator, MPI_STATUS_IGNORE);
+    }
 
 
+    delete[] linesCount;
+    delete[] firstLines;
 }

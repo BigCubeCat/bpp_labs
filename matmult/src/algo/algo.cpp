@@ -13,3 +13,27 @@ void multMatrixPart(const double *A, const double *B, double *C, size_t stripSiz
         }
     }
 }
+
+
+int countOfLines(int n, int rank, int size) {
+    return n / size + ((rank < n && n % size != 0) ? 1 : 0);
+}
+
+int firstLine(int n, int rank, int size) {
+    int res = 0;
+    for (int i = 0; i < rank; ++i) {
+        res += countOfLines(n, i, size);
+    }
+
+    return res;
+}
+
+void initLinesSettings(int *linesCount, int *firstLines, int size, int n) {
+    firstLines[0] = 0;
+    linesCount[0] = countOfLines(n, 0, size);
+
+    for (int i = 1; i < size; ++i) {
+        linesCount[i] = countOfLines(n, i, size);
+        firstLines[i] = firstLines[i - 1] + linesCount[i - 1];
+    }
+}
