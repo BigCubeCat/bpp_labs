@@ -91,13 +91,13 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     if (mpiRank == 0) {
         horizontalStrip.data = calculationSetup.matrixA->data;
         for (int i = 1; i < dims[0]; ++i) {
-            MPI_Send(calculationSetup.matrixA->data + firstLines[i] * m, linesCount[i] * m, MPI_DOUBLE, i, 0,
+            MPI_Send(calculationSetup.matrixA->data + firstLines[i] * m, linesCount[i], largeRowType, i, 0,
                      columnCommunicator);
         }
     } else if (coordX == 0) {
-        MPI_Recv(horizontalStrip.data, linesCount[coordY] * m, MPI_DOUBLE, 0, 0, columnCommunicator, MPI_STATUS_IGNORE);
+        MPI_Recv(horizontalStrip.data, linesCount[coordY], largeRowType, 0, 0, columnCommunicator, MPI_STATUS_IGNORE);
     }
-    MPI_Bcast(horizontalStrip.data, linesCount[coordY] * m, MPI_DOUBLE, rootRowRank, rowCommunicator);
+    MPI_Bcast(horizontalStrip.data, linesCount[coordY], largeRowType, rootRowRank, rowCommunicator);
 
     std::cout << mpiRank << "strip = ";
     horizontalStrip.printMatrix();
