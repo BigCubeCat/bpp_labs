@@ -4,6 +4,15 @@
 #include <mpi.h>
 
 /*
+ * Создание сети комуникаторов.
+ */
+void setupComm(
+        MPI_Comm &comm2d, MPI_Comm &rowCommunicator, MPI_Comm &columnCommunicator,
+        int &coordX, int &coordY, int &rootColRank, int &rootRowRank, int *dims,
+        int mpiSize
+);
+
+/*
  * Настройка типов
  * rowType, columnType - строка и столбец
  * Остальное - клетки. Каждая клетка либо чуть больше либо чуть уже

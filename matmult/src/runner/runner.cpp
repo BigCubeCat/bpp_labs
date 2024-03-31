@@ -15,27 +15,12 @@ TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     return calculationSetup;
 }
 
+
 void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bool debug) {
-    int rootRowRank, rootColRank, rankComm2D, coordX, coordY;
-    int dims[2] = {0, 0}, periods[2] = {0, 0}, coords[2];
-    int n, k, m;
+    MPI_Comm comm2d, rowCommunicator, columnCommunicator;
+    int rootRowRank, rootColRank, rankComm2D, coordX, coordY, n, k, m, dims[2] = {0, 0};
     bool isRoot = mpiRank == 0;
-
-    MPI_Comm comm2d;
-    MPI_Dims_create(mpiSize, 2, dims);
-    MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 1, &comm2d);
-
-    MPI_Comm_rank(comm2d, &rankComm2D);
-    MPI_Cart_get(comm2d, 2, dims, periods, coords);
-    coordY = coords[0];
-    coordX = coords[1];
-    MPI_Cart_coords(comm2d, 0, 2, coords);
-    rootRowRank = coords[0];
-    rootColRank = coords[1];
-
-    MPI_Comm rowCommunicator, columnCommunicator;
-    MPI_Comm_split(comm2d, coordY, coordX, &rowCommunicator);
-    MPI_Comm_split(comm2d, coordX, coordY, &columnCommunicator);
+    setupComm(comm2d, rowCommunicator, columnCommunicator, coordX, coordY, rootColRank, rootRowRank, dims, mpiSize);
 
     TConfigStruct calculationSetup;
     if (isRoot) {
@@ -59,48 +44,39 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
             dims, n, m, k
     );
 
-    auto horizontalStrip = new MatrixModel(linesCount[coordY], m);
-    auto verticalStrip = new MatrixModel(columnsCount[coordX], m);
+    auto horizontalStrip = MatrixModel(linesCount[coordY], m);
+    auto verticalStrip = MatrixModel(columnsCount[coordX], m);
 
     // Рассылаем строки по нулевому столбцу
-    if (coordX == 0) {
+    if (coordX == rootColRank) {
         MPI_Scatterv(
-                (mpiRank == 0 ? calculationSetup.matrixA->data : nullptr),
+                (isRoot ? calculationSetup.matrixA->data : nullptr),
                 linesCount, firstLines,
-                rowType, horizontalStrip->data, linesCount[coordY],
-                rowType, 0, columnCommunicator
+                rowType, horizontalStrip.data, linesCount[coordY],
+                rowType, rootColRank, columnCommunicator
         );
     }
-
-    if (coordY == 0) {
+    // Рассылаем колонки по нулевой строке
+    if (coordY == rootRowRank) {
         MPI_Scatterv(
-                (mpiRank == 0 ? calculationSetup.matrixB->data : nullptr),
+                (isRoot ? calculationSetup.matrixB->data : nullptr),
                 columnsCount, firstColumns,
-                columnType, verticalStrip->data, columnsCount[coordX],
-                rowType, 0, rowCommunicator
+                columnType, verticalStrip.data, columnsCount[coordX],
+                rowType, rootRowRank, rowCommunicator
         );
     }
-    MPI_Bcast(horizontalStrip->data, linesCount[coordY], rowType, rootColRank, rowCommunicator);
-    MPI_Bcast(verticalStrip->data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
+    MPI_Bcast(horizontalStrip.data, linesCount[coordY], rowType, rootColRank, rowCommunicator);
+    MPI_Bcast(verticalStrip.data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
 
-    if (mpiRank == 0) {
-        std::cout << "--\n";
-        horizontalStrip->printMatrix();
-        std::cout << "\n";
-        verticalStrip->printMatrix();
-        std::cout << "--\n";
+    auto result = horizontalStrip * verticalStrip;
+    if (debug) {
+        std::cout << "rank = " << mpiRank << "\n---\n";
+        result.printMatrix();
+        std::cout << "---\n";
     }
-
-    auto result = (*horizontalStrip) * (*verticalStrip);
-    std::cout << "rank = " << mpiRank << "\n---\n";
-    result.printMatrix();
-    std::cout << "---\n";
 
     delete[] firstLines;
     delete[] linesCount;
     delete[] firstColumns;
     delete[] columnsCount;
-
-    delete horizontalStrip;
-    delete verticalStrip;
 }

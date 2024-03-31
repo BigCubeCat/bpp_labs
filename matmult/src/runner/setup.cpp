@@ -1,5 +1,24 @@
 #include "./setup.h"
 
+void setupComm(
+        MPI_Comm &comm2d, MPI_Comm &rowCommunicator, MPI_Comm &columnCommunicator,
+        int &coordX, int &coordY, int &rootColRank, int &rootRowRank, int *dims,
+        int mpiSize) {
+    int rankComm2D;
+    int periods[2] = {0, 0}, coords[2];
+    MPI_Dims_create(mpiSize, 2, dims);
+    MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 1, &comm2d);
+    MPI_Comm_rank(comm2d, &rankComm2D);
+    MPI_Cart_get(comm2d, 2, dims, periods, coords);
+    coordY = coords[0];
+    coordX = coords[1];
+    MPI_Cart_coords(comm2d, 0, 2, coords);
+    rootRowRank = coords[0];
+    rootColRank = coords[1];
+    MPI_Comm_split(comm2d, coordY, coordX, &rowCommunicator);
+    MPI_Comm_split(comm2d, coordX, coordY, &columnCommunicator);
+}
+
 void setupDatatypes(
         MPI_Datatype *rowType, MPI_Datatype *columnType,
         MPI_Datatype *wideLongCell, MPI_Datatype *wideShortCell,
