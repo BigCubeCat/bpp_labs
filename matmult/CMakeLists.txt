@@ -15,8 +15,6 @@ add_executable(matmult src/main.cpp
         src/MatrixModel/MatrixModel.cpp
         src/utils/utils.h
         src/utils/utils.cpp
-        src/algo/algo.h
-        src/algo/algo.cpp
         src/runner/runner.h
         src/runner/runner.cpp
         src/ConfigStruct/TConfigStruct.h

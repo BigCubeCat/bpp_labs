@@ -24,5 +24,7 @@ struct MatrixModel {
     ~MatrixModel();
 };
 
+MatrixModel operator*(const MatrixModel& a, const MatrixModel& b);
+
 
 #endif

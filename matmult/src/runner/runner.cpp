@@ -59,17 +59,15 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
             dims, n, m, k
     );
 
-    auto *resultMat = new MatrixModel(linesCount[coordY], columnsCount[coordX]);
-
-    auto horizontalStrip = new double[linesCount[coordY] * m];
-    auto verticalStrip = new double[m * columnsCount[coordX]];
+    auto horizontalStrip = new MatrixModel(linesCount[coordY], m);
+    auto verticalStrip = new MatrixModel(columnsCount[coordX], m);
 
     // Рассылаем строки по нулевому столбцу
     if (coordX == 0) {
         MPI_Scatterv(
                 (mpiRank == 0 ? calculationSetup.matrixA->data : nullptr),
                 linesCount, firstLines,
-                rowType, horizontalStrip, linesCount[coordY],
+                rowType, horizontalStrip->data, linesCount[coordY],
                 rowType, 0, columnCommunicator
         );
     }
@@ -78,19 +76,31 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
         MPI_Scatterv(
                 (mpiRank == 0 ? calculationSetup.matrixB->data : nullptr),
                 columnsCount, firstColumns,
-                columnType, verticalStrip, columnsCount[coordX],
+                columnType, verticalStrip->data, columnsCount[coordX],
                 rowType, 0, rowCommunicator
         );
     }
-    MPI_Bcast(horizontalStrip, linesCount[coordY], rowType, rootColRank, rowCommunicator);
-    MPI_Bcast(verticalStrip, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
+    MPI_Bcast(horizontalStrip->data, linesCount[coordY], rowType, rootColRank, rowCommunicator);
+    MPI_Bcast(verticalStrip->data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
+
+    if (mpiRank == 0) {
+        std::cout << "--\n";
+        horizontalStrip->printMatrix();
+        std::cout << "\n";
+        verticalStrip->printMatrix();
+        std::cout << "--\n";
+    }
+
+    auto result = (*horizontalStrip) * (*verticalStrip);
+    std::cout << "rank = " << mpiRank << "\n---\n";
+    result.printMatrix();
+    std::cout << "---\n";
 
     delete[] firstLines;
     delete[] linesCount;
     delete[] firstColumns;
     delete[] columnsCount;
 
-    delete resultMat;
-    delete[] horizontalStrip;
-    delete[] verticalStrip;
+    delete horizontalStrip;
+    delete verticalStrip;
 }
