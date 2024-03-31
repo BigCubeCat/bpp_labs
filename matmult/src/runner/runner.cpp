@@ -67,18 +67,15 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     auto verticalStrip = new double[m * columnsCount[coordX]];
 
     // Рассылаем строки по нулевому столбцу
-    double *data = (mpiRank == 0 ? calculationSetup.matrixA->data : NULL);
     if (coordX == 0) {
         MPI_Scatterv(
-                data, linesCount, firstLines,
+                (mpiRank == 0 ? calculationSetup.matrixA->data : nullptr),
+                linesCount, firstLines,
                 rowType, horizontalStrip, linesCount[coordX],
                 rowType, 0, columnCommunicator
         );
     }
     MPI_Bcast(horizontalStrip, linesCount[coordY], rowType, rootColRank, rowCommunicator);
-    std::cout << "rank = " << mpiRank << std::endl;
-    std::cout << horizontalStrip[0] << " " << horizontalStrip[1] << " " << horizontalStrip[2] << std::endl;
-    // Раздаем каждую строку
 
     delete[] firstLines;
     delete[] linesCount;
