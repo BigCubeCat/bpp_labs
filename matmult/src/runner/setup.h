@@ -16,13 +16,14 @@ void setupComm(
  * Настройка типов
  * rowType, columnType - строка и столбец
  * Остальное - клетки. Каждая клетка либо чуть больше либо чуть уже
- * wide\narrow - является ли колонка широкой или узкой
- * Long\Short - является ли полоска выше или ниже
+ * cells[0] - большая по X и по Y
+ * cells[1] - большая по Y, малая по X
+ * cells[2] - большая по X, малая по Y
+ * cells[3] - малая
  */
 void setupDatatypes(
         MPI_Datatype *rowType, MPI_Datatype *columnType,
-        MPI_Datatype *wideLongCell, MPI_Datatype *wideShortCell,
-        MPI_Datatype *narrowLongCell, MPI_Datatype *narrowShortCell,
+        MPI_Datatype *cels,
         const int *dims, int n, int m, int k
 );
 

@@ -21,8 +21,7 @@ void setupComm(
 
 void setupDatatypes(
         MPI_Datatype *rowType, MPI_Datatype *columnType,
-        MPI_Datatype *wideLongCell, MPI_Datatype *wideShortCell,
-        MPI_Datatype *narrowLongCell, MPI_Datatype *narrowShortCell,
+        MPI_Datatype *cells,
         const int *dims, int n, int m, int k) {
     //row
     MPI_Type_contiguous(m, MPI_DOUBLE, rowType);
@@ -32,21 +31,21 @@ void setupDatatypes(
     MPI_Type_create_resized(*columnType, 0, sizeof(double), columnType);
     MPI_Type_commit(columnType);
 
-    MPI_Type_vector(n / dims[0], k / dims[1], k, MPI_DOUBLE, narrowShortCell);
-    MPI_Type_create_resized(*narrowShortCell, 0, k / dims[1] * sizeof(double), narrowShortCell);
-    MPI_Type_commit(narrowShortCell);
+    MPI_Type_vector(n / dims[0], k / dims[1], k, MPI_DOUBLE, &cells[3]);
+    MPI_Type_create_resized(cells[3], 0, k / dims[1] * sizeof(double), &cells[3]);
+    MPI_Type_commit(&cells[3]);
 
-    MPI_Type_vector(n / dims[0] + 1, k / dims[1], k, MPI_DOUBLE, wideShortCell);
-    MPI_Type_create_resized(*wideShortCell, 0, k / dims[1] * sizeof(double), wideShortCell);
-    MPI_Type_commit(wideShortCell);
+    MPI_Type_vector(n / dims[0] + 1, k / dims[1], k, MPI_DOUBLE, &cells[2]);
+    MPI_Type_create_resized(cells[2], 0, k / dims[1] * sizeof(double), &cells[2]);
+    MPI_Type_commit(&cells[2]);
 
-    MPI_Type_vector(n / dims[0], k / dims[1] + 1, k, MPI_DOUBLE, narrowLongCell);
-    MPI_Type_create_resized(*narrowLongCell, 0, (k / dims[1] + 1) * sizeof(double), narrowLongCell);
-    MPI_Type_commit(narrowLongCell);
+    MPI_Type_vector(n / dims[0], k / dims[1] + 1, k, MPI_DOUBLE, &cells[1]);
+    MPI_Type_create_resized(cells[1], 0, (k / dims[1] + 1) * sizeof(double), &cells[1]);
+    MPI_Type_commit(&cells[1]);
 
-    MPI_Type_vector(n / dims[0] + 1, k / dims[1] + 1, k, MPI_DOUBLE, wideLongCell);
-    MPI_Type_create_resized(*wideLongCell, 0, (k / dims[1] + 1) * sizeof(double), wideLongCell);
-    MPI_Type_commit(wideLongCell);
+    MPI_Type_vector(n / dims[0] + 1, k / dims[1] + 1, k, MPI_DOUBLE, &cells[0]);
+    MPI_Type_create_resized(cells[0], 0, (k / dims[1] + 1) * sizeof(double), &cells[0]);
+    MPI_Type_commit(&cells[0]);
 }
 
 void setupLines(int *firstLines, int *linesCount, int *firstColumns, int *columnsCount, const int *dims, int n, int k) {

@@ -18,7 +18,7 @@ TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
 
 void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bool debug) {
     MPI_Comm comm2d, rowCommunicator, columnCommunicator;
-    int rootRowRank, rootColRank, rankComm2D, coordX, coordY, n, k, m, dims[2] = {0, 0};
+    int rootRowRank, rootColRank, coordX, coordY, n, k, m, dims[2] = {0, 0};
     bool isRoot = mpiRank == 0;
     setupComm(comm2d, rowCommunicator, columnCommunicator, coordX, coordY, rootColRank, rootRowRank, dims, mpiSize);
 
@@ -37,10 +37,11 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     int *columnsCount = new int[dims[1]];
     setupLines(firstLines, linesCount, firstColumns, columnsCount, dims, n, k);
 
-    MPI_Datatype rowType, columnType, wideLongCell, wideShortCell, narrowLongCell, narrowShortCell;
+    MPI_Datatype rowType, columnType;
+    MPI_Datatype cells[4];
     setupDatatypes(
             &rowType, &columnType,
-            &wideLongCell, &wideShortCell, &narrowLongCell, &narrowShortCell,
+            cells,
             dims, n, m, k
     );
 
@@ -74,6 +75,19 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
         result.printMatrix();
         std::cout << "---\n";
     }
+    /*
+    if (isRoot) {
+        MPI_Status status;
+        for (int slaveId = 1; slaveId < mpiSize; ++slaveId) {
+            MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, comm2d, &status);
+            int senderCoords[2], startCoords[2] = {0, 0};
+            MPI_Datatype senderType;
+            MPI_Cart_coords(comm2d, status.MPI_SOURCE, 2, senderCoords);
+        }
+    } else {
+        MPI_Send(result.data, static_cast<int>(result.dataSize), MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+    }
+     */
 
     delete[] firstLines;
     delete[] linesCount;
