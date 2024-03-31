@@ -2,6 +2,7 @@
 #define MATMULT_SETUP_H
 
 #include <mpi.h>
+#include <utility>
 
 /*
  * Создание сети комуникаторов.
@@ -28,5 +29,11 @@ void setupDatatypes(
 );
 
 void setupLines(int *firstLines, int *linesCount, int *firstColumns, int *columnsCount, const int *dims, int n, int k);
+
+std::pair<int, int> findStartCoord(
+        const int *senderCoords, const int *dims,
+        int normalSizeX, int normalSizeY, int n, int k,
+        int &typeIndex
+);
 
 #endif

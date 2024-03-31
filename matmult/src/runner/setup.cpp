@@ -52,19 +52,43 @@ void setupLines(int *firstLines, int *linesCount, int *firstColumns, int *column
     firstLines[0] = 0;
     linesCount[0] = n / dims[0] + ((n % dims[0] > 0) ? 1 : 0);
     for (int i = 1; i < dims[0]; ++i) {
-        linesCount[i] = n / dims[0];
-        if (n % dims[0] > 0 && i < n % dims[0]) {
-            linesCount[i]++;
-        }
+        linesCount[i] = n / dims[0] + ((n % dims[0] > 0 && i < n % dims[0]) ? 1 : 0);
         firstLines[i] = linesCount[i - 1] + firstLines[i - 1];
     }
     firstColumns[0] = 0;
     columnsCount[0] = k / dims[1] + ((k % dims[1] > 0) ? 1 : 0);
     for (int i = 1; i < dims[1]; ++i) {
-        columnsCount[i] = k / dims[1];
-        if (k % dims[1] > 0 && i < k % dims[1]) {
-            columnsCount[i]++;
-        }
+        columnsCount[i] = k / dims[1] + ((k % dims[1] > 0 && i < k % dims[1]) ? 1 : 0);
         firstColumns[i] = columnsCount[i - 1] + firstColumns[i - 1];
     }
+}
+
+std::pair<int, int> findStartCoord(
+        const int *senderCoords, const int *dims,
+        int normalSizeX, int normalSizeY, int n, int k,
+        int &typeIndex
+) {
+    std::pair<int, int> result;
+    if (senderCoords[0] < normalSizeY) {
+        if (senderCoords[1] < normalSizeX) {
+            typeIndex = 0;
+            result.first = senderCoords[0] * (n / dims[0] + 1);
+            result.second = senderCoords[1] * (k / dims[1] + 1);
+        } else {
+            typeIndex = 2;
+            result.first = senderCoords[0] * (n / dims[0] + 1);
+            result.second = senderCoords[1] * (k / dims[1]) + normalSizeX;
+        }
+    } else {
+        if (senderCoords[1] < normalSizeX) {
+            typeIndex = 1;
+            result.first = senderCoords[0] * (n / dims[0]) + normalSizeY;
+            result.second = senderCoords[1] * (k / dims[1] + 1);
+        } else {
+            typeIndex = 3;
+            result.first = senderCoords[0] * (n / dims[0]) + normalSizeY;
+            result.second = senderCoords[1] * (k / dims[1]) + normalSizeX;
+        }
+    }
+    return result;
 }

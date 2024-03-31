@@ -7,14 +7,11 @@
 TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     FileWorker fw = FileWorker(filename, true);
     TConfigStruct calculationSetup = fw.readData();
-
     n = calculationSetup.n;
     m = calculationSetup.m;
     k = calculationSetup.k;
-
     return calculationSetup;
 }
-
 
 void RunMultiplication(
         const std::string &input, const std::string &output,
@@ -45,11 +42,7 @@ void RunMultiplication(
 
     MPI_Datatype rowType, columnType;
     MPI_Datatype cells[4];
-    setupDatatypes(
-            &rowType, &columnType,
-            cells,
-            dims, n, m, k
-    );
+    setupDatatypes(&rowType, &columnType, cells, dims, n, m, k);
 
     auto horizontalStrip = MatrixModel(linesCount[coordY], m);
     auto verticalStrip = MatrixModel(columnsCount[coordX], m);
@@ -76,46 +69,19 @@ void RunMultiplication(
     MPI_Bcast(verticalStrip.data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
 
     auto result = horizontalStrip * verticalStrip;
-    if (debug) {
-        std::cout << "rank = " << mpiRank << "\n---\n";
-        result.printMatrix();
-        std::cout << "---\n";
-    }
     if (isRoot) {
         MatrixModel resultMatrix = MatrixModel(n, k);
         resultMatrix.copy(result);
         MPI_Status status;
-        int senderCoords[2], startCoords[2] = {0, 0};
+        int senderCoords[2] = {0, 0};
         for (int slaveId = 1; slaveId < mpiSize; ++slaveId) {
-            MPI_Datatype senderType;
             MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, comm2d, &status);
             MPI_Cart_coords(comm2d, status.MPI_SOURCE, 2, senderCoords);
-
-            if (senderCoords[0] < normalSizeY) {
-                if (senderCoords[1] < normalSizeX) {
-                    senderType = cells[0];
-                    startCoords[0] = senderCoords[0] * (n / dims[0] + 1);
-                    startCoords[1] = senderCoords[1] * (k / dims[1] + 1);
-                } else {
-                    senderType = cells[2];
-                    startCoords[0] = senderCoords[0] * (n / dims[0] + 1);
-                    startCoords[1] = senderCoords[1] * (k / dims[1]) + normalSizeX;
-                }
-            } else {
-                if (senderCoords[1] < normalSizeX) {
-                    senderType = cells[1];
-                    startCoords[0] = senderCoords[0] * (n / dims[0]) + normalSizeY;
-                    startCoords[1] = senderCoords[1] * (k / dims[1] + 1);
-                } else {
-                    senderType = cells[3];
-                    startCoords[0] = senderCoords[0] * (n / dims[0]) + normalSizeY;
-                    startCoords[1] = senderCoords[1] * (k / dims[1]) + normalSizeX;
-                }
-            }
-
+            int typeIndex;
+            auto startCoords = findStartCoord(senderCoords, dims, normalSizeX, normalSizeY, n, k, typeIndex);
             MPI_Recv(
-                    resultMatrix.data + startCoords[0] * k + startCoords[1],
-                    1, senderType, status.MPI_SOURCE, 0, comm2d, &status
+                    resultMatrix.data + startCoords.first * k + startCoords.second,
+                    1, cells[typeIndex], status.MPI_SOURCE, 0, comm2d, &status
             );
         }
         FileWorker(output, false).writeMat(resultMatrix);
@@ -126,7 +92,6 @@ void RunMultiplication(
     } else {
         MPI_Send(result.data, static_cast<int>(result.dataSize), MPI_DOUBLE, 0, 0, comm2d);
     }
-
     delete[] firstLines;
     delete[] linesCount;
     delete[] firstColumns;
