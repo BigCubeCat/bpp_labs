@@ -21,6 +21,8 @@ add_executable(matmult src/main.cpp
         src/runner/runner.cpp
         src/ConfigStruct/TConfigStruct.h
         src/ConfigStruct/TConfigStruct.cpp
+        src/runner/setup.h
+        src/runner/setup.cpp
 )
 
 # MPI

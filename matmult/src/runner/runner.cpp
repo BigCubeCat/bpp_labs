@@ -2,7 +2,7 @@
 #include <iostream>
 #include "./runner.h"
 #include "../FileWorker/FileWorker.h"
-#include "../algo/algo.h"
+#include "setup.h"
 
 TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     FileWorker fw = FileWorker(filename);
@@ -13,13 +13,6 @@ TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     k = calculationSetup.k;
 
     return calculationSetup;
-}
-
-void printArr(int *arr, int size) {
-    for (int i = 0; i < size; ++i) {
-        std::cout << arr[i] << " ";
-    }
-    std::cout << std::endl;
 }
 
 void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bool debug) {
@@ -53,75 +46,43 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     MPI_Bcast(&k, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    MPI_Datatype rowStrip, columnStrip;
-    MPI_Type_contiguous(m, MPI_DOUBLE, &rowStrip);
-    MPI_Type_vector(n, 1, k - 1, MPI_DOUBLE, &columnStrip);
-    MPI_Type_commit(&rowStrip);
-    MPI_Type_commit(&columnStrip);
-
-    // TODO: вынести в отдельную функцию следующий код
-    int *linesCount = new int[dims[0]];
     int *firstLines = new int[dims[0]];
-    int *columnsCount = new int[dims[1]];
+    int *linesCount = new int[dims[0]];
     int *firstColumns = new int[dims[1]];
-    firstLines[0] = 0;
-    linesCount[0] = n / dims[0] + ((n % dims[0] > 0) ? 1 : 0);
-    for (int i = 1; i < dims[0]; ++i) {
-        linesCount[i] = n / dims[0];
-        if (n % dims[0] > 0 && i < n % dims[0]) {
-            linesCount[i]++;
-        }
-        firstLines[i] = linesCount[i - 1] + firstLines[i - 1];
-    }
-    firstColumns[0] = 0;
-    columnsCount[0] = k / dims[1] + ((k % dims[1] > 0) ? 1 : 0);
-    for (int i = 1; i < dims[1]; ++i) {
-        columnsCount[i] = k / dims[1];
-        if (k % dims[1] > 0 && i < k % dims[1]) {
-            columnsCount[i]++;
-        }
-        firstColumns[i] = firstLine(k, i, dims[1]);
-    }
-    // end TODO
+    int *columnsCount = new int[dims[1]];
+    setupLines(firstLines, linesCount, firstColumns, columnsCount, dims, n, k);
 
-    if (debug && mpiRank == 0) {
-        std::cout << "linesCount = " << std::endl;
-        printArr(linesCount, dims[0]);
-        std::cout << "firstLines = " << std::endl;
-        printArr(firstLines, dims[0]);
+    MPI_Datatype rowType, columnType, wideLongCell, wideShortCell, narrowLongCell, narrowShortCell;
+    setupDatatypes(
+            &rowType, &columnType,
+            &wideLongCell, &wideShortCell, &narrowLongCell, &narrowShortCell,
+            dims, n, m, k
+    );
 
-        std::cout << "columnsCount = " << std::endl;
-        printArr(columnsCount, dims[1]);
-        std::cout << "firstColumns = " << std::endl;
-        printArr(firstColumns, dims[1]);
-    }
+    MatrixModel *horizontalStrip = nullptr;
+    MatrixModel *verticalStrip = nullptr;
+    auto *resultMat = new MatrixModel(linesCount[coordY], columnsCount[coordX]);
 
-    std::cout << "linesCount = " << linesCount[coordY] << " " << m << std::endl;
-    MatrixModel horizontalStrip = MatrixModel(linesCount[coordY], m);
-    MatrixModel verticalStrip = MatrixModel(m, columnsCount[coordX]);
+    horizontalStrip = new MatrixModel(linesCount[coordY], m);
+    verticalStrip = new MatrixModel(m, columnsCount[coordX]);
 
     if (mpiRank == 0) {
-        horizontalStrip.data = calculationSetup.matrixA->data;
-        for (int i = 1; i < dims[0]; ++i) {
-            MPI_Send(calculationSetup.matrixA->data + firstLines[i] * m, linesCount[i], rowStrip, i, 0,
-                     columnCommunicator);
-        }
-
-    } else if (coordX == 0) {
-        MPI_Recv(horizontalStrip.data, linesCount[coordY], rowStrip, 0, 0, columnCommunicator, MPI_STATUS_IGNORE);
+        // Рассылаем строки по нулевому столбцу
+        MPI_Scatterv(calculationSetup.matrixA->data, linesCount, firstLines, rowType, horizontalStrip->data,
+                     linesCount[coordX], rowType, 0, columnCommunicator);
+    } else {
+        std::cout << "rank = " << mpiRank << std::endl;
+        horizontalStrip->printMatrix();
     }
-    MPI_Bcast(horizontalStrip.data, linesCount[coordY], rowStrip, rootRowRank, rowCommunicator);
-    //MPI_Bcast(verticalStrip.data, columnsCount[coordX], columnStrip, rootColRank, columnCommunicator);
+    // Раздаем каждую строку
+    MPI_Bcast(horizontalStrip->data, horizontalStrip->dataSize, MPI_DOUBLE, rootColRank, rowCommunicator);
 
-    std::cout << mpiRank << "horizontal strip = ";
-    horizontalStrip.printMatrix();
-
-    std::cout << mpiRank << "vertical strip = ";
-    verticalStrip.printMatrix();
-
-    MPI_Type_free(&rowStrip);
-    MPI_Type_free(&columnStrip);
-
-    delete[] linesCount;
     delete[] firstLines;
+    delete[] linesCount;
+    delete[] firstColumns;
+    delete[] columnsCount;
+
+    delete resultMat;
+    delete horizontalStrip;
+    delete verticalStrip;
 }
