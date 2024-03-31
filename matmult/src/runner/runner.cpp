@@ -85,19 +85,37 @@ void RunMultiplication(
         MatrixModel resultMatrix = MatrixModel(n, k);
         resultMatrix.copy(result);
         MPI_Status status;
-        int typeIndex;
         int senderCoords[2], startCoords[2] = {0, 0};
         for (int slaveId = 1; slaveId < mpiSize; ++slaveId) {
-            std::cout << "slaveId = " << slaveId << std::endl;
+            MPI_Datatype senderType;
             MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, comm2d, &status);
             MPI_Cart_coords(comm2d, status.MPI_SOURCE, 2, senderCoords);
-            // TODO: fix MPI_Recv
-            typeIndex = (senderCoords[0] < normalSizeY) ? 1 : 0;
-            typeIndex += (senderCoords[1] < normalSizeX) ? 2 : 0;
-            std::cout << status.MPI_SOURCE << std::endl;
+
+            if (senderCoords[0] < normalSizeY) {
+                if (senderCoords[1] < normalSizeX) {
+                    senderType = cells[0];
+                    startCoords[0] = senderCoords[0] * (n / dims[0] + 1);
+                    startCoords[1] = senderCoords[1] * (k / dims[1] + 1);
+                } else {
+                    senderType = cells[2];
+                    startCoords[0] = senderCoords[0] * (n / dims[0] + 1);
+                    startCoords[1] = senderCoords[1] * (k / dims[1]) + normalSizeX;
+                }
+            } else {
+                if (senderCoords[1] < normalSizeX) {
+                    senderType = cells[1];
+                    startCoords[0] = senderCoords[0] * (n / dims[0]) + normalSizeY;
+                    startCoords[1] = senderCoords[1] * (k / dims[1] + 1);
+                } else {
+                    senderType = cells[3];
+                    startCoords[0] = senderCoords[0] * (n / dims[0]) + normalSizeY;
+                    startCoords[1] = senderCoords[1] * (k / dims[1]) + normalSizeX;
+                }
+            }
+
             MPI_Recv(
-                    resultMatrix.data + startCoords[0] * k + startCoords[1], 1,
-                    cells[typeIndex], status.MPI_SOURCE, 0, comm2d, MPI_STATUS_IGNORE
+                    resultMatrix.data + startCoords[0] * k + startCoords[1],
+                    1, senderType, status.MPI_SOURCE, 0, comm2d, &status
             );
         }
         FileWorker(output, false).writeMat(resultMatrix);
