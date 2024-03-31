@@ -59,8 +59,6 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
             dims, n, m, k
     );
 
-    std::cout << rowType << std::endl;
-
     auto *resultMat = new MatrixModel(linesCount[coordY], columnsCount[coordX]);
 
     auto horizontalStrip = new double[linesCount[coordY] * m];
@@ -71,11 +69,21 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
         MPI_Scatterv(
                 (mpiRank == 0 ? calculationSetup.matrixA->data : nullptr),
                 linesCount, firstLines,
-                rowType, horizontalStrip, linesCount[coordX],
+                rowType, horizontalStrip, linesCount[coordY],
                 rowType, 0, columnCommunicator
         );
     }
+
+    if (coordY == 0) {
+        MPI_Scatterv(
+                (mpiRank == 0 ? calculationSetup.matrixB->data : nullptr),
+                columnsCount, firstColumns,
+                columnType, verticalStrip, columnsCount[coordX],
+                rowType, 0, rowCommunicator
+        );
+    }
     MPI_Bcast(horizontalStrip, linesCount[coordY], rowType, rootColRank, rowCommunicator);
+    MPI_Bcast(verticalStrip, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
 
     delete[] firstLines;
     delete[] linesCount;
