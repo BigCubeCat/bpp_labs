@@ -75,7 +75,7 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
                 rowType, 0, columnCommunicator
         );
     }
-    MPI_Bcast(horizontalStrip, linesCount[coordY] * m, MPI_DOUBLE, rootColRank, rowCommunicator);
+    MPI_Bcast(horizontalStrip, linesCount[coordY], rowType, rootColRank, rowCommunicator);
     std::cout << "rank = " << mpiRank << std::endl;
     std::cout << horizontalStrip[0] << " " << horizontalStrip[1] << " " << horizontalStrip[2] << std::endl;
     // Раздаем каждую строку
