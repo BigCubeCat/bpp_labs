@@ -59,23 +59,26 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
             dims, n, m, k
     );
 
-    MatrixModel *horizontalStrip = nullptr;
-    MatrixModel *verticalStrip = nullptr;
+    std::cout << rowType << std::endl;
+
     auto *resultMat = new MatrixModel(linesCount[coordY], columnsCount[coordX]);
 
-    horizontalStrip = new MatrixModel(linesCount[coordY], m);
-    verticalStrip = new MatrixModel(m, columnsCount[coordX]);
+    auto horizontalStrip = new double[linesCount[coordY] * m];
+    auto verticalStrip = new double[m * columnsCount[coordX]];
 
-    if (mpiRank == 0) {
-        // Рассылаем строки по нулевому столбцу
-        MPI_Scatterv(calculationSetup.matrixA->data, linesCount, firstLines, rowType, horizontalStrip->data,
-                     linesCount[coordX], rowType, 0, columnCommunicator);
-    } else {
-        std::cout << "rank = " << mpiRank << std::endl;
-        horizontalStrip->printMatrix();
+    // Рассылаем строки по нулевому столбцу
+    double *data = (mpiRank == 0 ? calculationSetup.matrixA->data : NULL);
+    if (coordX == 0) {
+        MPI_Scatterv(
+                data, linesCount, firstLines,
+                rowType, horizontalStrip, linesCount[coordX],
+                rowType, 0, columnCommunicator
+        );
     }
+    MPI_Bcast(horizontalStrip, linesCount[coordY] * m, MPI_DOUBLE, rootColRank, rowCommunicator);
+    std::cout << "rank = " << mpiRank << std::endl;
+    std::cout << horizontalStrip[0] << " " << horizontalStrip[1] << " " << horizontalStrip[2] << std::endl;
     // Раздаем каждую строку
-    MPI_Bcast(horizontalStrip->data, horizontalStrip->dataSize, MPI_DOUBLE, rootColRank, rowCommunicator);
 
     delete[] firstLines;
     delete[] linesCount;
@@ -83,6 +86,6 @@ void RunMultiplication(const std::string &filename, int mpiRank, int mpiSize, bo
     delete[] columnsCount;
 
     delete resultMat;
-    delete horizontalStrip;
-    delete verticalStrip;
+    delete[] horizontalStrip;
+    delete[] verticalStrip;
 }

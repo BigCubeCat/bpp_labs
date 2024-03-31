@@ -4,28 +4,28 @@ void setupDatatypes(
         MPI_Datatype *rowType, MPI_Datatype *columnType,
         MPI_Datatype *wideLongCell, MPI_Datatype *wideShortCell,
         MPI_Datatype *narrowLongCell, MPI_Datatype *narrowShortCell,
-        int *dims, int n, int m, int k) {
+        const int *dims, int n, int m, int k) {
     //row
-    MPI_Type_contiguous(n, MPI_DOUBLE, rowType);
+    MPI_Type_contiguous(m, MPI_DOUBLE, rowType);
     MPI_Type_commit(rowType);
     //column
-    MPI_Type_vector(n, 1, k, MPI_DOUBLE, columnType);
+    MPI_Type_vector(m, 1, k, MPI_DOUBLE, columnType);
     MPI_Type_create_resized(*columnType, 0, sizeof(double), columnType);
     MPI_Type_commit(columnType);
 
-    MPI_Type_vector(m / dims[0], k / dims[1], k, MPI_DOUBLE, narrowShortCell);
+    MPI_Type_vector(n / dims[0], k / dims[1], k, MPI_DOUBLE, narrowShortCell);
     MPI_Type_create_resized(*narrowShortCell, 0, k / dims[1] * sizeof(double), narrowShortCell);
     MPI_Type_commit(narrowShortCell);
 
-    MPI_Type_vector(m / dims[0] + 1, k / dims[1], k, MPI_DOUBLE, wideShortCell);
+    MPI_Type_vector(n / dims[0] + 1, k / dims[1], k, MPI_DOUBLE, wideShortCell);
     MPI_Type_create_resized(*wideShortCell, 0, k / dims[1] * sizeof(double), wideShortCell);
     MPI_Type_commit(wideShortCell);
 
-    MPI_Type_vector(m / dims[0], k / dims[1] + 1, k, MPI_DOUBLE, narrowLongCell);
+    MPI_Type_vector(n / dims[0], k / dims[1] + 1, k, MPI_DOUBLE, narrowLongCell);
     MPI_Type_create_resized(*narrowLongCell, 0, (k / dims[1] + 1) * sizeof(double), narrowLongCell);
     MPI_Type_commit(narrowLongCell);
 
-    MPI_Type_vector(m / dims[0] + 1, k / dims[1] + 1, k, MPI_DOUBLE, wideLongCell);
+    MPI_Type_vector(n / dims[0] + 1, k / dims[1] + 1, k, MPI_DOUBLE, wideLongCell);
     MPI_Type_create_resized(*wideLongCell, 0, (k / dims[1] + 1) * sizeof(double), wideLongCell);
     MPI_Type_commit(wideLongCell);
 }

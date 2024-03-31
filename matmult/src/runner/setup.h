@@ -14,7 +14,7 @@ void setupDatatypes(
         MPI_Datatype *rowType, MPI_Datatype *columnType,
         MPI_Datatype *wideLongCell, MPI_Datatype *wideShortCell,
         MPI_Datatype *narrowLongCell, MPI_Datatype *narrowShortCell,
-        int *dims, int n, int m, int k
+        const int *dims, int n, int m, int k
 );
 
 void setupLines(int *firstLines, int *linesCount, int *firstColumns, int *columnsCount, const int *dims, int n, int k);
