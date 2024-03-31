@@ -21,6 +21,8 @@ struct MatrixModel {
     size_t width() const;
     size_t height() const;
 
+    void copy(const MatrixModel &other) const;
+
     ~MatrixModel();
 };
 

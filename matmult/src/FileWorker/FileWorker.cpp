@@ -2,9 +2,9 @@
 #include <utility>
 #include "./FileWorker.h"
 
-FileWorker::FileWorker(std::string file) : filename(std::move(file)) {
-    inputStream.open(filename);
-    isOpen = inputStream.is_open();
+FileWorker::FileWorker(std::string file, bool input) : filename(std::move(file)), isInput(input) {
+    stream.open(filename, (isInput) ? std::ios::in : std::ios::out);
+    isOpen = stream.is_open();
 }
 
 TConfigStruct FileWorker::readData() {
@@ -13,7 +13,7 @@ TConfigStruct FileWorker::readData() {
     std::string word;
     int sizes[3] = {0};
     for (int i = 0; i < 3; ++i) {
-        inputStream >> word;
+        stream >> word;
         sizes[i] = std::stoi(word);
     }
     configStruct.matrixA = new MatrixModel(sizes[0], sizes[1]);
@@ -30,15 +30,25 @@ TConfigStruct FileWorker::readData() {
 }
 
 FileWorker::~FileWorker() {
-    inputStream.close();
+    stream.close();
 }
 
 void FileWorker::readMat(MatrixModel *mat) {
     std::string word;
     for (size_t row = 0; row < mat->countRows; ++row) {
         for (size_t col = 0; col < mat->countColumns; ++col) {
-            inputStream >> word;
+            stream >> word;
             mat->setValue(row, col, std::atof(word.c_str()));
         }
+    }
+}
+
+void FileWorker::writeMat(const MatrixModel &mat) {
+    stream << std::to_string(mat.height()) << " " << std::to_string(mat.width()) << "\n";
+    for (size_t i = 0; i < mat.countRows; ++i) {
+        for (size_t j = 0; j < mat.countColumns; ++j) {
+            stream << mat.getValue(i, j) << " ";
+        }
+        stream << "\n";
     }
 }

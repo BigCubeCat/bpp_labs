@@ -9,14 +9,15 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
-    std::string filename = argv[1];
+    std::string inputFileName = argv[1];
+    std::string outputFileName = argv[2];
     bool debug = false;
-    if (argc == 3) {
-        debug = std::string(argv[2]) == "debug";
+    if (argc == 4) {
+        debug = std::string(argv[3]) == "debug";
     }
     double startTime = MPI_Wtime();
 
-    RunMultiplication(filename, mpiRank, mpiSize, debug);
+    RunMultiplication(inputFileName, outputFileName, mpiRank, mpiSize, debug);
 
     // через MPI_Vector_type разрезать на колонки.
     // должно быть несколько типов: причем некоторые колонки шире других

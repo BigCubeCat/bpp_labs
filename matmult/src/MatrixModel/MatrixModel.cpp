@@ -36,6 +36,14 @@ size_t MatrixModel::height() const {
     return countRows;
 }
 
+void MatrixModel::copy(const MatrixModel &other) const {
+    for (int i = 0; i < other.height(); ++i) {
+        for (int j = 0; j < other.width(); ++j) {
+            setValue(i, j, other.getValue(i, j));
+        }
+    }
+}
+
 MatrixModel operator*(const MatrixModel &a, const MatrixModel &b) {
     size_t rows = a.height();
     size_t cols = b.width();
