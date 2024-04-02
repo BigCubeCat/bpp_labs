@@ -46,14 +46,14 @@ void MatrixModel::copy(const MatrixModel &other) const {
 
 MatrixModel operator*(const MatrixModel &a, const MatrixModel &b) {
     size_t rows = a.height();
-    size_t cols = b.width();
-    size_t stripSize = a.width();
-    MatrixModel result = MatrixModel(rows, b.height());
+    size_t cols = b.height();
+    size_t stripSize = b.width();
+    MatrixModel result = MatrixModel(rows, cols);
     for (size_t row = 0; row < rows; ++row) {
-        for (size_t col = 0; col < b.height(); ++col) {
+        for (size_t col = 0; col < cols; ++col) {
             result.setValue(row, col, 0);
-            for (size_t i = 0; i < stripSize; ++i) {
-                result.data[row * cols + col] += a.getValue(row, i) * b.getValue(col, i);
+            for (size_t k = 0; k < stripSize; ++k) {
+                result.data[row * cols + col] += a.getValue(row, k) * b.getValue(col, k);
             }
         }
     }

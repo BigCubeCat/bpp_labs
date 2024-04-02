@@ -1,5 +1,5 @@
 #include <mpi.h>
-#include <iostream>
+
 #include "./runner.h"
 #include "../FileWorker/FileWorker.h"
 #include "setup.h"
@@ -65,10 +65,18 @@ void RunMultiplication(
                 rowType, rootRowRank, rowCommunicator
         );
     }
+
     MPI_Bcast(horizontalStrip.data, linesCount[coordY], rowType, rootColRank, rowCommunicator);
     MPI_Bcast(verticalStrip.data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
 
     auto result = horizontalStrip * verticalStrip;
+    if (mpiRank == 3) {
+        horizontalStrip.printMatrix();
+        verticalStrip.printMatrix();
+        result.printMatrix();
+    }
+
+    // приходит тоже вроде верно
     if (isRoot) {
         MatrixModel resultMatrix = MatrixModel(n, k);
         resultMatrix.copy(result);
@@ -85,10 +93,6 @@ void RunMultiplication(
             );
         }
         FileWorker(output, false).writeMat(resultMatrix);
-        if (debug) {
-            std::cout << "Total:\n";
-            resultMatrix.printMatrix();
-        }
     } else {
         MPI_Send(result.data, static_cast<int>(result.dataSize), MPI_DOUBLE, 0, 0, comm2d);
     }

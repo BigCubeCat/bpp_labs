@@ -26,3 +26,14 @@ add_executable(matmult src/main.cpp
 # MPI
 find_package(MPI REQUIRED)
 target_link_libraries(matmult PUBLIC MPI::MPI_CXX)
+
+# MKL
+#set(MKL_ARCH intel64)
+#set(MKL_THREADING sequential)
+#set(MKL_INTERFACE lp64)
+#find_package(MKL CONFIG REQUIRED PATHS $ENV{MKLROOT})
+#message(STATUS "Imported oneMKL targets: ${MKL_IMPORTED_TARGETS}")
+#
+#target_compile_options(matmult PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_COMPILE_OPTIONS>)
+#target_include_directories(matmult PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES>)
+#target_link_libraries(matmult PUBLIC $<LINK_ONLY:MKL::MKL>)
