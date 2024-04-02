@@ -1,0 +1,24 @@
+[
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "1x16",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/err",
+      "out": "~/22209/bit/count/out/1x16.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult1x16",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/1x16.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 1,
+      "columns": 16
+    }
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "1x16",
+      "time": "01:00:00",
+      "err": "~/22209/bit/grid/err/1x16.err",
+      "out": "~/22209/bit/grid/out/1x16.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult1x16",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/1x16.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 1,
+      "columns": 16
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "2x8",
+      "time": "01:00:00",
+      "err": "~/22209/bit/grid/err/2x8.err",
+      "out": "~/22209/bit/grid/out/2x8.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult2x8",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/2x8.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 2,
+      "columns": 8
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "4x4",
+      "time": "01:00:00",
+      "err": "~/22209/bit/grid/err/4x4.err",
+      "out": "~/22209/bit/grid/out/4x4.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult4x4",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/4x4.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 4,
+      "columns": 4
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "8x2",
+      "time": "01:00:00",
+      "err": "~/22209/bit/grid/err/8x2.err",
+      "out": "~/22209/bit/grid/out/8x2.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult8x2",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/8x2.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 8,
+      "columns": 2
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "16x1",
+      "time": "01:00:00",
+      "err": "~/22209/bit/grid/err/16x1.err",
+      "out": "~/22209/bit/grid/out/16x1.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "~/22209/bit/grid/matmult16x1",
+      "input": "~/22209/bit/grid/input.mat",
+      "output": "~/22209/bit/grid/output/16x1.mat"
+    },
+    "grid": {
+      "custom": true,
+      "rows": 16,
+      "columns": 1
+    }
+  }
+]

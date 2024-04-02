@@ -10,13 +10,21 @@ class TestSetup:
         self.count_mpi_process = slurm_config["mpi_process"]
         self.time = slurm_config["time"]
         self.is_trace = slurm_config["trace"]
+        self.delay_after = slurm_config["delay"]
 
         script_config = data["script_config"]
         self.executable_path = script_config["exe"]
         self.input_path = script_config["input"]
         self.output_path = f'{script_config["output"]}_N{self.count_nodes}_n{self.count_mpi_process}'
 
-        self.delay_after = slurm_config["delay"]
+        grid_config = data["grid"]
+        self.custom = grid_config["custom"]
+        if self.custom:
+            self.grid_rows = grid_config["rows"]
+            self.grid_columns = grid_config["columns"]
+        else:
+            self.grid_rows = 0
+            self.grid_columns = 0
 
     def generate_slurm_command(self) -> str:
         result = f'sbatch -J {self.job_name} -p {self.p} -o {self.out} -e {self.err} '
@@ -30,7 +38,10 @@ class TestSetup:
         if self.is_trace:
             result += '-trace '
         result += f'-ppn {self.count_nodes} -n {self.count_mpi_process} '
-        result += f'{self.executable_path} {self.input_path} {self.output_path}'
+        result += f'{self.executable_path} {self.input_path} {self.output_path} deploy'
+        if self.custom:
+            result += f'{self.grid_rows} {self.grid_columns}'
+        result += "\nEOF"
 
         return result
 

@@ -1,22 +1,32 @@
-import random
+#!/bin/python3
+import sys
 
 
-def random_value():
-    return random.randint(100, 1000)
+def generate_file(filename, n, m, k):
+    with open(filename, 'a', encoding="utf-8") as file:
+        file.write(f"{n} {m} {k}\n")
+
+    for i in range(n):
+        with open(filename, 'a', encoding="utf-8") as file:
+            file.write(" ".join([str(int(i == j)) for j in range(m)]) + "\n")
+
+    for i in range(m):
+        with open(filename, 'a', encoding="utf-8") as file:
+            file.write(" ".join([str(int(i == j)) for j in range(k)]) + "\n")
 
 
-OUT_FILENAME = "../input.mat"
-n = 25000
-m = 25000
-k = 25000
+def main():
+    if len(sys.argv) != 5:
+        print("Usage:")
+        print("./input_generator.py <outfile.mat> <n> <m> <k>")
+        return
 
-with open(OUT_FILENAME, 'a', encoding="utf-8") as file:
-    file.write(f"{n} {m} {k}\n")
+    filename = sys.argv[1]
+    n = int(sys.argv[2])
+    m = int(sys.argv[3])
+    k = int(sys.argv[4])
+    generate_file(filename, n, m, k)
 
-for i in range(n):
-    with open(OUT_FILENAME, 'a', encoding="utf-8") as file:
-        file.write(" ".join([str(bool(i == j)) for j in range(m)]) + "\n")
 
-for i in range(m):
-    with open(OUT_FILENAME, 'a', encoding="utf-8") as file:
-        file.write(" ".join([str(bool(i == j)) for j in range(k)]) + "\n")
+if __name__ == "__main__":
+    main()
