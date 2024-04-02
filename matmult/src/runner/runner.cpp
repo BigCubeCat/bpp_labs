@@ -79,10 +79,10 @@ double RunMultiplication(const std::string &input, const std::string &output, in
 
     auto result = horizontalStrip * verticalStrip;
 
+    auto *resultMatrix = (mpiRank == 0) ? new MatrixModel(n, k) : nullptr;
     // приходит тоже вроде верно
     if (isRoot) {
-        MatrixModel resultMatrix = MatrixModel(n, k);
-        resultMatrix.copy(result);
+        resultMatrix->copy(result);
         MPI_Status status;
         int senderCoords[2] = {0, 0};
         for (int slaveId = 1; slaveId < mpiSize; ++slaveId) {
@@ -91,11 +91,10 @@ double RunMultiplication(const std::string &input, const std::string &output, in
             int typeIndex;
             auto startCoords = findStartCoord(senderCoords, dims, normalSizeX, normalSizeY, n, k, typeIndex);
             MPI_Recv(
-                    resultMatrix.data + startCoords.first * k + startCoords.second,
+                    resultMatrix->data + startCoords.first * k + startCoords.second,
                     1, cells[typeIndex], status.MPI_SOURCE, 0, comm2d, &status
             );
         }
-        FileWorker(output, false).writeMat(resultMatrix);
     } else {
         MPI_Send(result.data, static_cast<int>(result.dataSize), MPI_DOUBLE, 0, 0, comm2d);
     }
@@ -105,6 +104,10 @@ double RunMultiplication(const std::string &input, const std::string &output, in
     MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
                MPI_COMM_WORLD);
     MPI_Finalize();
+    if (mpiRank == 0) {
+        FileWorker(output, false).writeMat(*resultMatrix);
+    }
+    delete resultMatrix;
     delete[] firstLines;
     delete[] linesCount;
     delete[] firstColumns;
