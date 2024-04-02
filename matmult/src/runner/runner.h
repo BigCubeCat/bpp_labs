@@ -3,6 +3,6 @@
 
 #include <string>
 
-double RunMultiplication(const std::string &filename, const std::string &output, bool debug);
+double RunMultiplication(const std::string &filename, const std::string &output, int *dims, bool debug);
 
 #endif

@@ -1,4 +1,5 @@
 #include <mpi.h>
+#include <iostream>
 
 #include "./runner.h"
 #include "../FileWorker/FileWorker.h"
@@ -13,16 +14,19 @@ TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     return calculationSetup;
 }
 
-double RunMultiplication(const std::string &input, const std::string &output, bool debug) {
+double RunMultiplication(const std::string &input, const std::string &output, int *dims, bool debug) {
     int mpiRank, mpiSize;
     MPI_Init(nullptr, nullptr);
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
     MPI_Comm comm2d, rowCommunicator, columnCommunicator;
-    int rootRowRank, rootColRank, coordX, coordY, n, k, m, dims[2] = {0, 0};
+    int rootRowRank, rootColRank, coordX, coordY, n, k, m;
     bool isRoot = mpiRank == 0;
     setupComm(comm2d, rowCommunicator, columnCommunicator, coordX, coordY, rootColRank, rootRowRank, dims, mpiSize);
+    if (debug) {
+        std::cout << "dims = " << dims[0] << " " << dims[1] << std::endl;
+    }
 
     TConfigStruct calculationSetup;
     if (isRoot) {

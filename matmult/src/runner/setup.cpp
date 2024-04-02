@@ -6,7 +6,8 @@ void setupComm(
         int mpiSize) {
     int rankComm2D;
     int periods[2] = {0, 0}, coords[2];
-    MPI_Dims_create(mpiSize, 2, dims);
+    if (dims[0] == 0 && dims[1] == 0)
+        MPI_Dims_create(mpiSize, 2, dims);
     MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 1, &comm2d);
     MPI_Comm_rank(comm2d, &rankComm2D);
     MPI_Cart_get(comm2d, 2, dims, periods, coords);
