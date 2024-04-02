@@ -1,24 +1,202 @@
 [
   {
     "slurm_config": {
-      "delay": 0,
-      "job": "1x16",
+      "delay": 100,
+      "job": "1k",
       "time": "01:00:00",
-      "err": "~/22209/bit/count/err/err",
-      "out": "~/22209/bit/count/out/1x16.out",
+      "err": "~/22209/bit/count/err/1k.out",
+      "out": "~/22209/bit/count/out/1k.out",
       "nodes": 4,
       "mpi_process": 16,
-      "trace": true
+      "trace": false
     },
     "script_config": {
-      "exe": "~/22209/bit/grid/matmult1x16",
-      "input": "~/22209/bit/grid/input.mat",
-      "output": "~/22209/bit/grid/output/1x16.mat"
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/1k.mat",
+      "output": "~/22209/bit/count/output/1k.mat"
     },
     "grid": {
-      "custom": true,
-      "rows": 1,
-      "columns": 16
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "2k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/2k.out",
+      "out": "~/22209/bit/count/out/2k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/2k.mat",
+      "output": "~/22209/bit/count/output/2k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "3k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/3k.out",
+      "out": "~/22209/bit/count/out/3k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/3k.mat",
+      "output": "~/22209/bit/count/output/3k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "4k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/4k.out",
+      "out": "~/22209/bit/count/out/4k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/4k.mat",
+      "output": "~/22209/bit/count/output/4k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "5k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/5k.out",
+      "out": "~/22209/bit/count/out/5k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/5k.mat",
+      "output": "~/22209/bit/count/output/5k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "6k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/6k.out",
+      "out": "~/22209/bit/count/out/6k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/6k.mat",
+      "output": "~/22209/bit/count/output/6k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "7k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/7k.out",
+      "out": "~/22209/bit/count/out/7k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/7k.mat",
+      "output": "~/22209/bit/count/output/1k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "8k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/8k.out",
+      "out": "~/22209/bit/count/out/8k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/8k.mat",
+      "output": "~/22209/bit/count/output/8k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "9k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/9k.out",
+      "out": "~/22209/bit/count/out/9k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/9k.mat",
+      "output": "~/22209/bit/count/output/9k.mat"
+    },
+    "grid": {
+      "custom": false
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "10k",
+      "time": "01:00:00",
+      "err": "~/22209/bit/count/err/10k.out",
+      "out": "~/22209/bit/count/out/10k.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "~/22209/bit/matmult",
+      "input": "~/22209/bit/count/data/10k.mat",
+      "output": "~/22209/bit/count/output/10k.mat"
+    },
+    "grid": {
+      "custom": false
     }
   }
 ]

@@ -27,17 +27,6 @@ mkdir ~/22209/bit/count/data
 mkdir ~/22209/bit/count/err
 mkdir ~/22209/bit/count/out
 mkdir ~/22209/bit/count/output
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_1K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_2K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_3K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_4K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_5K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_6K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_7K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_8K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_9K
-cp ~/22209/bit/matmult ~/22209/bit/count/matmult_10K
-
 ./input_generator.py ~/22209/bit/count/data/1k.mat 1000 1000 1000
 ./input_generator.py ~/22209/bit/count/data/2k.mat 2000 2000 2000
 ./input_generator.py ~/22209/bit/count/data/3k.mat 3000 3000 3000
