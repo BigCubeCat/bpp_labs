@@ -13,10 +13,12 @@ TConfigStruct readFile(const std::string &filename, int &n, int &m, int &k) {
     return calculationSetup;
 }
 
-void RunMultiplication(
-        const std::string &input, const std::string &output,
-        int mpiRank, int mpiSize, bool debug
-) {
+double RunMultiplication(const std::string &input, const std::string &output, bool debug) {
+    int mpiRank, mpiSize;
+    MPI_Init(nullptr, nullptr);
+    MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
+    MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
+
     MPI_Comm comm2d, rowCommunicator, columnCommunicator;
     int rootRowRank, rootColRank, coordX, coordY, n, k, m, dims[2] = {0, 0};
     bool isRoot = mpiRank == 0;
@@ -27,6 +29,8 @@ void RunMultiplication(
         calculationSetup = readFile(input, n, m, k);
         if (debug) calculationSetup.print();
     }
+    double startTime = MPI_Wtime(); // замеряем время ПОСЛЕ чтения из данных,
+    // так как мы тут не файловую систему тестируем
     MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&k, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -70,11 +74,6 @@ void RunMultiplication(
     MPI_Bcast(verticalStrip.data, columnsCount[coordX], rowType, rootRowRank, columnCommunicator);
 
     auto result = horizontalStrip * verticalStrip;
-    if (mpiRank == 3) {
-        horizontalStrip.printMatrix();
-        verticalStrip.printMatrix();
-        result.printMatrix();
-    }
 
     // приходит тоже вроде верно
     if (isRoot) {
@@ -96,8 +95,15 @@ void RunMultiplication(
     } else {
         MPI_Send(result.data, static_cast<int>(result.dataSize), MPI_DOUBLE, 0, 0, comm2d);
     }
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
+    double maxTime;
+    MPI_Reduce(&elapsedTime, &maxTime, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
+    MPI_Finalize();
     delete[] firstLines;
     delete[] linesCount;
     delete[] firstColumns;
     delete[] columnsCount;
+    return (mpiRank == 0) ? maxTime : 0;
 }

@@ -1,4 +1,6 @@
+#include <omp.h>
 #include <iostream>
+
 #include "./MatrixModel.h"
 
 MatrixModel::MatrixModel(size_t rows, size_t cols) : countRows(rows), countColumns(cols) {
@@ -49,6 +51,7 @@ MatrixModel operator*(const MatrixModel &a, const MatrixModel &b) {
     size_t cols = b.height();
     size_t stripSize = b.width();
     MatrixModel result = MatrixModel(rows, cols);
+#pragma omp parallel for
     for (size_t row = 0; row < rows; ++row) {
         for (size_t col = 0; col < cols; ++col) {
             result.setValue(row, col, 0);

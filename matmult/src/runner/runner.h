@@ -3,9 +3,6 @@
 
 #include <string>
 
-void RunMultiplication(
-        const std::string &filename, const std::string &output,
-        int mpiRank, int mpiSize, bool debug
-);
+double RunMultiplication(const std::string &filename, const std::string &output, bool debug);
 
 #endif
