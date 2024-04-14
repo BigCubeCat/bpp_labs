@@ -1,0 +1,2243 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:233 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Linux - 6.7.9-arch1-1 - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/3.28.3/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/3.28.3/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6d766/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_6d766.dir/build.make CMakeFiles/cmTC_6d766.dir/build
+        make[1]: Entering directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA'
+        Building C object CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -o CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.2.1 20230801 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_6d766.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/ccxPN74J.s
+        GNU C17 (GCC) version 13.2.1 20230801 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 13.2.1 20230801, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed
+         /usr/include
+        End of search list.
+        Compiler executable checksum: eb0b45108af02c02a078961940bce3e9
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/'
+         as -v --64 -o CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o /tmp/ccxPN74J.s
+        GNU assembler version 2.42.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.42.0
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_6d766
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d766.dir/link.txt --verbose=1
+        /usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -o cmTC_6d766 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.2.1 20230801 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_6d766' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6d766.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxkA0K0.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_6d766 /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../.. CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_6d766' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6d766.'
+        make[1]: Leaving directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+          add: [/usr/local/include]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6d766/fast]
+        ignore line: [/usr/bin/make  -f CMakeFiles/cmTC_6d766.dir/build.make CMakeFiles/cmTC_6d766.dir/build]
+        ignore line: [make[1]: Entering directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3T8JiA']
+        ignore line: [Building C object CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.2.1 20230801 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_6d766.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/ccxPN74J.s]
+        ignore line: [GNU C17 (GCC) version 13.2.1 20230801 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 13.2.1 20230801  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: eb0b45108af02c02a078961940bce3e9]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o /tmp/ccxPN74J.s]
+        ignore line: [GNU assembler version 2.42.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.42.0]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_6d766]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d766.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -o cmTC_6d766 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.2.1 20230801 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_6d766' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6d766.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxkA0K0.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_6d766 /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../.. CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccxkA0K0.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_6d766] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..]
+          arg [CMakeFiles/cmTC_6d766.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_16cb5/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_16cb5.dir/build.make CMakeFiles/cmTC_16cb5.dir/build
+        make[1]: Entering directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS'
+        Building CXX object CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -v -o CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.2.1 20230801 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_16cb5.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -o /tmp/ccex6jwK.s
+        GNU C++17 (GCC) version 13.2.1 20230801 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 13.2.1 20230801, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed
+         /usr/include
+        End of search list.
+        Compiler executable checksum: f089b864c6bcbc2427e9850aa6414a11
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/'
+         as -v --64 -o CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccex6jwK.s
+        GNU assembler version 2.42.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.42.0
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_16cb5
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16cb5.dir/link.txt --verbose=1
+        /usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_16cb5 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.2.1 20230801 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_16cb5' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_16cb5.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZkQJyT.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_16cb5 /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../.. CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_16cb5' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_16cb5.'
+        make[1]: Leaving directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+          add: [/usr/local/include]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1] ==> [/usr/include/c++/13.2.1]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu] ==> [/usr/include/c++/13.2.1/x86_64-pc-linux-gnu]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward] ==> [/usr/include/c++/13.2.1/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/13.2.1;/usr/include/c++/13.2.1/x86_64-pc-linux-gnu;/usr/include/c++/13.2.1/backward;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_16cb5/fast]
+        ignore line: [/usr/bin/make  -f CMakeFiles/cmTC_16cb5.dir/build.make CMakeFiles/cmTC_16cb5.dir/build]
+        ignore line: [make[1]: Entering directory '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3Fl1DS']
+        ignore line: [Building CXX object CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -v -o CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.2.1 20230801 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_16cb5.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -o /tmp/ccex6jwK.s]
+        ignore line: [GNU C++17 (GCC) version 13.2.1 20230801 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 13.2.1 20230801  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: f089b864c6bcbc2427e9850aa6414a11]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccex6jwK.s]
+        ignore line: [GNU assembler version 2.42.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.42.0]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_16cb5]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16cb5.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_16cb5 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.2.1 20230801 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_16cb5' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_16cb5.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZkQJyT.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_16cb5 /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../.. CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccZkQJyT.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_16cb5] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..]
+          arg [CMakeFiles/cmTC_16cb5.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e4be7/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_e4be7.dir/build.make CMakeFiles/cmTC_e4be7.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r»
+        Building C object CMakeFiles/cmTC_e4be7.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_e4be7.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r/test_mpi.c
+        Linking C executable cmTC_e4be7
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e4be7.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_e4be7.dir/test_mpi.c.o -o cmTC_e4be7  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-pHen4r»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_25c94/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_25c94.dir/build.make CMakeFiles/cmTC_25c94.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb»
+        Building CXX object CMakeFiles/cmTC_25c94.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_25c94.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb/test_mpi.cpp
+        Linking CXX executable cmTC_25c94
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25c94.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_25c94.dir/test_mpi.cpp.o -o cmTC_25c94  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TvhJcb»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_83df8/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_83df8.dir/build.make CMakeFiles/cmTC_83df8.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai»
+        Building CXX object CMakeFiles/cmTC_83df8.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_83df8.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai/test_mpi.cpp
+        Linking CXX executable cmTC_83df8
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_83df8.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_83df8.dir/test_mpi.cpp.o -o cmTC_83df8  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Ik8Jai»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d3e22/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_d3e22.dir/build.make CMakeFiles/cmTC_d3e22.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj»
+        Building C object CMakeFiles/cmTC_d3e22.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_d3e22.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj/test_mpi.c
+        Linking C executable cmTC_d3e22
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d3e22.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_d3e22.dir/test_mpi.c.o -o cmTC_d3e22  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-JLVGMj»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a98a8/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_a98a8.dir/build.make CMakeFiles/cmTC_a98a8.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr»
+        Building CXX object CMakeFiles/cmTC_a98a8.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_a98a8.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr/test_mpi.cpp
+        Linking CXX executable cmTC_a98a8
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a98a8.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_a98a8.dir/test_mpi.cpp.o -o cmTC_a98a8  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-KVh1tr»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_769a1/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_769a1.dir/build.make CMakeFiles/cmTC_769a1.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m»
+        Building CXX object CMakeFiles/cmTC_769a1.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_769a1.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m/test_mpi.cpp
+        Linking CXX executable cmTC_769a1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_769a1.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_769a1.dir/test_mpi.cpp.o -o cmTC_769a1  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-1Wrc2m»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_1993d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_1993d.dir/build.make CMakeFiles/cmTC_1993d.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk»
+        Building C object CMakeFiles/cmTC_1993d.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_1993d.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk/test_mpi.c
+        Linking C executable cmTC_1993d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1993d.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_1993d.dir/test_mpi.c.o -o cmTC_1993d  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-XgzNzk»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0eb7d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_0eb7d.dir/build.make CMakeFiles/cmTC_0eb7d.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC»
+        Building CXX object CMakeFiles/cmTC_0eb7d.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_0eb7d.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC/test_mpi.cpp
+        Linking CXX executable cmTC_0eb7d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0eb7d.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_0eb7d.dir/test_mpi.cpp.o -o cmTC_0eb7d  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-f9DTMC»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_96c32/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_96c32.dir/build.make CMakeFiles/cmTC_96c32.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD»
+        Building CXX object CMakeFiles/cmTC_96c32.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_96c32.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD/test_mpi.cpp
+        Linking CXX executable cmTC_96c32
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_96c32.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_96c32.dir/test_mpi.cpp.o -o cmTC_96c32  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mjMwDD»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9e8b7/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_9e8b7.dir/build.make CMakeFiles/cmTC_9e8b7.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE»
+        Building C object CMakeFiles/cmTC_9e8b7.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_9e8b7.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE/test_mpi.c
+        Linking C executable cmTC_9e8b7
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9e8b7.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_9e8b7.dir/test_mpi.c.o -o cmTC_9e8b7  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-MDq5BE»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_47efb/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_47efb.dir/build.make CMakeFiles/cmTC_47efb.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS»
+        Building CXX object CMakeFiles/cmTC_47efb.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_47efb.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS/test_mpi.cpp
+        Linking CXX executable cmTC_47efb
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47efb.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_47efb.dir/test_mpi.cpp.o -o cmTC_47efb  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zTLhmS»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7f613/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_7f613.dir/build.make CMakeFiles/cmTC_7f613.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v»
+        Building CXX object CMakeFiles/cmTC_7f613.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_7f613.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v/test_mpi.cpp
+        Linking CXX executable cmTC_7f613
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f613.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_7f613.dir/test_mpi.cpp.o -o cmTC_7f613  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G4sk3v»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_206c0/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_206c0.dir/build.make CMakeFiles/cmTC_206c0.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3»
+        Building C object CMakeFiles/cmTC_206c0.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_206c0.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3/test_mpi.c
+        Linking C executable cmTC_206c0
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_206c0.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_206c0.dir/test_mpi.c.o -o cmTC_206c0  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-j0dqP3»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_86b8c/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_86b8c.dir/build.make CMakeFiles/cmTC_86b8c.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc»
+        Building CXX object CMakeFiles/cmTC_86b8c.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_86b8c.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc/test_mpi.cpp
+        Linking CXX executable cmTC_86b8c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_86b8c.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_86b8c.dir/test_mpi.cpp.o -o cmTC_86b8c  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Yo0gbc»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5bbe7/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_5bbe7.dir/build.make CMakeFiles/cmTC_5bbe7.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF»
+        Building CXX object CMakeFiles/cmTC_5bbe7.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_5bbe7.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF/test_mpi.cpp
+        Linking CXX executable cmTC_5bbe7
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5bbe7.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_5bbe7.dir/test_mpi.cpp.o -o cmTC_5bbe7  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-nygmNF»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3fe80/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_3fe80.dir/build.make CMakeFiles/cmTC_3fe80.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2»
+        Building C object CMakeFiles/cmTC_3fe80.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_3fe80.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2/test_mpi.c
+        Linking C executable cmTC_3fe80
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3fe80.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_3fe80.dir/test_mpi.c.o -o cmTC_3fe80  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-PSMsG2»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_23ca4/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_23ca4.dir/build.make CMakeFiles/cmTC_23ca4.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO»
+        Building CXX object CMakeFiles/cmTC_23ca4.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_23ca4.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO/test_mpi.cpp
+        Linking CXX executable cmTC_23ca4
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_23ca4.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_23ca4.dir/test_mpi.cpp.o -o cmTC_23ca4  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-zBeSeO»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2193e/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_2193e.dir/build.make CMakeFiles/cmTC_2193e.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq»
+        Building CXX object CMakeFiles/cmTC_2193e.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_2193e.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq/test_mpi.cpp
+        Linking CXX executable cmTC_2193e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2193e.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_2193e.dir/test_mpi.cpp.o -o cmTC_2193e  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WiC1Kq»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:26 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_1eca1/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH»
+        /usr/bin/make  -f CMakeFiles/cmTC_1eca1.dir/build.make CMakeFiles/cmTC_1eca1.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH»
+        Building C object CMakeFiles/cmTC_1eca1.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_1eca1.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH/test_mpi.c
+        Linking C executable cmTC_1eca1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1eca1.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_1eca1.dir/test_mpi.c.o -o cmTC_1eca1  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-8yCpkH»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:26 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0ef91/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs»
+        /usr/bin/make  -f CMakeFiles/cmTC_0ef91.dir/build.make CMakeFiles/cmTC_0ef91.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs»
+        Building CXX object CMakeFiles/cmTC_0ef91.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_0ef91.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs/test_mpi.cpp
+        Linking CXX executable cmTC_0ef91
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0ef91.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_0ef91.dir/test_mpi.cpp.o -o cmTC_0ef91  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-mlgNgs»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:26 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_c666f/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs»
+        /usr/bin/make  -f CMakeFiles/cmTC_c666f.dir/build.make CMakeFiles/cmTC_c666f.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs»
+        Building CXX object CMakeFiles/cmTC_c666f.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_c666f.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs/test_mpi.cpp
+        Linking CXX executable cmTC_c666f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c666f.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_c666f.dir/test_mpi.cpp.o -o cmTC_c666f  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-3GjxMs»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_24427/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB»
+        /usr/bin/make  -f CMakeFiles/cmTC_24427.dir/build.make CMakeFiles/cmTC_24427.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB»
+        Building C object CMakeFiles/cmTC_24427.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_24427.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB/test_mpi.c
+        Linking C executable cmTC_24427
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_24427.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_24427.dir/test_mpi.c.o -o cmTC_24427  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-WnOCWB»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b68c6/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ»
+        /usr/bin/make  -f CMakeFiles/cmTC_b68c6.dir/build.make CMakeFiles/cmTC_b68c6.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ»
+        Building CXX object CMakeFiles/cmTC_b68c6.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_b68c6.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ/test_mpi.cpp
+        Linking CXX executable cmTC_b68c6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b68c6.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_b68c6.dir/test_mpi.cpp.o -o cmTC_b68c6  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-oIzHrJ»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_221fa/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz»
+        /usr/bin/make  -f CMakeFiles/cmTC_221fa.dir/build.make CMakeFiles/cmTC_221fa.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz»
+        Building CXX object CMakeFiles/cmTC_221fa.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_221fa.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz/test_mpi.cpp
+        Linking CXX executable cmTC_221fa
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_221fa.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_221fa.dir/test_mpi.cpp.o -o cmTC_221fa  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GZDbWz»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_cbfbc/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_cbfbc.dir/build.make CMakeFiles/cmTC_cbfbc.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR»
+        Building C object CMakeFiles/cmTC_cbfbc.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_cbfbc.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR/test_mpi.c
+        Linking C executable cmTC_cbfbc
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cbfbc.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_cbfbc.dir/test_mpi.c.o -o cmTC_cbfbc  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-BscpIR»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7f1ab/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_7f1ab.dir/build.make CMakeFiles/cmTC_7f1ab.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl»
+        Building CXX object CMakeFiles/cmTC_7f1ab.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_7f1ab.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl/test_mpi.cpp
+        Linking CXX executable cmTC_7f1ab
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f1ab.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_7f1ab.dir/test_mpi.cpp.o -o cmTC_7f1ab  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-klorbl»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7a1f0/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_7a1f0.dir/build.make CMakeFiles/cmTC_7a1f0.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO»
+        Building CXX object CMakeFiles/cmTC_7a1f0.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -ftree-vectorize  -o CMakeFiles/cmTC_7a1f0.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO/test_mpi.cpp
+        Linking CXX executable cmTC_7a1f0
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a1f0.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_7a1f0.dir/test_mpi.cpp.o -o cmTC_7a1f0  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tkRPVO»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_fe9d9/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_fe9d9.dir/build.make CMakeFiles/cmTC_fe9d9.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9»
+        Building C object CMakeFiles/cmTC_fe9d9.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_fe9d9.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9/test_mpi.c
+        Linking C executable cmTC_fe9d9
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe9d9.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_fe9d9.dir/test_mpi.c.o -o cmTC_fe9d9  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Af8Rf9»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_af8b6/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_af8b6.dir/build.make CMakeFiles/cmTC_af8b6.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn»
+        Building CXX object CMakeFiles/cmTC_af8b6.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_af8b6.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn/test_mpi.cpp
+        Linking CXX executable cmTC_af8b6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_af8b6.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_af8b6.dir/test_mpi.cpp.o -o cmTC_af8b6  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Amyssn»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:28 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e1d84/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_e1d84.dir/build.make CMakeFiles/cmTC_e1d84.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt»
+        Building CXX object CMakeFiles/cmTC_e1d84.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_e1d84.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt/test_mpi.cpp
+        Linking CXX executable cmTC_e1d84
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e1d84.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_e1d84.dir/test_mpi.cpp.o -o cmTC_e1d84  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SK0Htt»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5bfca/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN»
+        /usr/bin/make  -f CMakeFiles/cmTC_5bfca.dir/build.make CMakeFiles/cmTC_5bfca.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN»
+        Building C object CMakeFiles/cmTC_5bfca.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_5bfca.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN/test_mpi.c
+        Linking C executable cmTC_5bfca
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5bfca.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_5bfca.dir/test_mpi.c.o -o cmTC_5bfca  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-vU02zN»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_19a3c/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG»
+        /usr/bin/make  -f CMakeFiles/cmTC_19a3c.dir/build.make CMakeFiles/cmTC_19a3c.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG»
+        Building CXX object CMakeFiles/cmTC_19a3c.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_19a3c.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG/test_mpi.cpp
+        Linking CXX executable cmTC_19a3c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19a3c.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_19a3c.dir/test_mpi.cpp.o -o cmTC_19a3c  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uA23DG»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_af8df/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG»
+        /usr/bin/make  -f CMakeFiles/cmTC_af8df.dir/build.make CMakeFiles/cmTC_af8df.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG»
+        Building CXX object CMakeFiles/cmTC_af8df.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_af8df.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG/test_mpi.cpp
+        Linking CXX executable cmTC_af8df
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_af8df.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_af8df.dir/test_mpi.cpp.o -o cmTC_af8df  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-G3BxgG»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e739d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_e739d.dir/build.make CMakeFiles/cmTC_e739d.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ»
+        Building C object CMakeFiles/cmTC_e739d.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_e739d.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ/test_mpi.c
+        Linking C executable cmTC_e739d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e739d.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_e739d.dir/test_mpi.c.o -o cmTC_e739d  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-EjNndJ»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9c6bf/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_9c6bf.dir/build.make CMakeFiles/cmTC_9c6bf.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR»
+        Building CXX object CMakeFiles/cmTC_9c6bf.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_9c6bf.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR/test_mpi.cpp
+        Linking CXX executable cmTC_9c6bf
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c6bf.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_9c6bf.dir/test_mpi.cpp.o -o cmTC_9c6bf  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-5VFiQR»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6e511/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_6e511.dir/build.make CMakeFiles/cmTC_6e511.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ»
+        Building CXX object CMakeFiles/cmTC_6e511.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_6e511.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ/test_mpi.cpp
+        Linking CXX executable cmTC_6e511
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e511.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_6e511.dir/test_mpi.cpp.o -o cmTC_6e511  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-uMNmdZ»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_137b0/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_137b0.dir/build.make CMakeFiles/cmTC_137b0.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM»
+        Building C object CMakeFiles/cmTC_137b0.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_137b0.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM/test_mpi.c
+        Linking C executable cmTC_137b0
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_137b0.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_137b0.dir/test_mpi.c.o -o cmTC_137b0  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-HK7lBM»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_41a5f/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_41a5f.dir/build.make CMakeFiles/cmTC_41a5f.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK»
+        Building CXX object CMakeFiles/cmTC_41a5f.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_41a5f.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK/test_mpi.cpp
+        Linking CXX executable cmTC_41a5f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41a5f.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_41a5f.dir/test_mpi.cpp.o -o cmTC_41a5f  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SQ03PK»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_590b3/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_590b3.dir/build.make CMakeFiles/cmTC_590b3.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl»
+        Building CXX object CMakeFiles/cmTC_590b3.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_590b3.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl/test_mpi.cpp
+        Linking CXX executable cmTC_590b3
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_590b3.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_590b3.dir/test_mpi.cpp.o -o cmTC_590b3  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-TEHuKl»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_df307/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_df307.dir/build.make CMakeFiles/cmTC_df307.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA»
+        Building C object CMakeFiles/cmTC_df307.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_df307.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA/test_mpi.c
+        Linking C executable cmTC_df307
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_df307.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_df307.dir/test_mpi.c.o -o cmTC_df307  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-D0jqnA»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_213b3/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_213b3.dir/build.make CMakeFiles/cmTC_213b3.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr»
+        Building CXX object CMakeFiles/cmTC_213b3.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_213b3.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr/test_mpi.cpp
+        Linking CXX executable cmTC_213b3
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_213b3.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_213b3.dir/test_mpi.cpp.o -o cmTC_213b3  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-DW13cr»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:29 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_678c5/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_678c5.dir/build.make CMakeFiles/cmTC_678c5.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ»
+        Building CXX object CMakeFiles/cmTC_678c5.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_678c5.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ/test_mpi.cpp
+        Linking CXX executable cmTC_678c5
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_678c5.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_678c5.dir/test_mpi.cpp.o -o cmTC_678c5  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-OTRztQ»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8d846/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT»
+        /usr/bin/make  -f CMakeFiles/cmTC_8d846.dir/build.make CMakeFiles/cmTC_8d846.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT»
+        Building C object CMakeFiles/cmTC_8d846.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_8d846.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT/test_mpi.c
+        Linking C executable cmTC_8d846
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d846.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_8d846.dir/test_mpi.c.o -o cmTC_8d846  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-GMryvT»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2a992/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13»
+        /usr/bin/make  -f CMakeFiles/cmTC_2a992.dir/build.make CMakeFiles/cmTC_2a992.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13»
+        Building CXX object CMakeFiles/cmTC_2a992.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_2a992.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13/test_mpi.cpp
+        Linking CXX executable cmTC_2a992
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2a992.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_2a992.dir/test_mpi.cpp.o -o cmTC_2a992  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-fYDV13»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a8602/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy»
+        /usr/bin/make  -f CMakeFiles/cmTC_a8602.dir/build.make CMakeFiles/cmTC_a8602.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy»
+        Building CXX object CMakeFiles/cmTC_a8602.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_a8602.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy/test_mpi.cpp
+        Linking CXX executable cmTC_a8602
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a8602.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_a8602.dir/test_mpi.cpp.o -o cmTC_a8602  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-Df0SKy»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4ba35/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_4ba35.dir/build.make CMakeFiles/cmTC_4ba35.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn»
+        Building C object CMakeFiles/cmTC_4ba35.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_4ba35.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn/test_mpi.c
+        Linking C executable cmTC_4ba35
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4ba35.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_4ba35.dir/test_mpi.c.o -o cmTC_4ba35  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YnNkPn»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6e72f/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_6e72f.dir/build.make CMakeFiles/cmTC_6e72f.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM»
+        Building CXX object CMakeFiles/cmTC_6e72f.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_6e72f.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM/test_mpi.cpp
+        Linking CXX executable cmTC_6e72f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e72f.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_6e72f.dir/test_mpi.cpp.o -o cmTC_6e72f  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-db4uBM»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3205e/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_3205e.dir/build.make CMakeFiles/cmTC_3205e.dir/build
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig»
+        Building CXX object CMakeFiles/cmTC_3205e.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_3205e.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig/test_mpi.cpp
+        Linking CXX executable cmTC_3205e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3205e.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_3205e.dir/test_mpi.cpp.o -o cmTC_3205e  /usr/lib/libmpi.so 
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-YOrOig»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d88a9/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ»
+        /usr/bin/make  -f CMakeFiles/cmTC_d88a9.dir/build.make CMakeFiles/cmTC_d88a9.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ»
+        Building C object CMakeFiles/cmTC_d88a9.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_d88a9.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ/test_mpi.c
+        Linking C executable cmTC_d88a9
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d88a9.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_d88a9.dir/test_mpi.c.o -o cmTC_d88a9  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-weXoPQ»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bfe97/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe»
+        /usr/bin/make  -f CMakeFiles/cmTC_bfe97.dir/build.make CMakeFiles/cmTC_bfe97.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe»
+        Building CXX object CMakeFiles/cmTC_bfe97.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_bfe97.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe/test_mpi.cpp
+        Linking CXX executable cmTC_bfe97
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bfe97.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_bfe97.dir/test_mpi.cpp.o -o cmTC_bfe97  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-kLytGe»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_03604/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI»
+        /usr/bin/make  -f CMakeFiles/cmTC_03604.dir/build.make CMakeFiles/cmTC_03604.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI»
+        Building CXX object CMakeFiles/cmTC_03604.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_03604.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI/test_mpi.cpp
+        Linking CXX executable cmTC_03604
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03604.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_03604.dir/test_mpi.cpp.o -o cmTC_03604  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-9G82jI»
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6993e/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae»
+        /usr/bin/make  -f CMakeFiles/cmTC_6993e.dir/build.make CMakeFiles/cmTC_6993e.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae»
+        Building C object CMakeFiles/cmTC_6993e.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_6993e.dir/test_mpi.c.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae/test_mpi.c
+        Linking C executable cmTC_6993e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6993e.dir/link.txt --verbose=1
+        /usr/bin/cc -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_6993e.dir/test_mpi.c.o -o cmTC_6993e  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-SmjUae»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3b730/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm»
+        /usr/bin/make  -f CMakeFiles/cmTC_3b730.dir/build.make CMakeFiles/cmTC_3b730.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm»
+        Building CXX object CMakeFiles/cmTC_3b730.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_3b730.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm/test_mpi.cpp
+        Linking CXX executable cmTC_3b730
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3b730.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_3b730.dir/test_mpi.cpp.o -o cmTC_3b730  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-tjgvlm»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:27 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu"
+      binary: "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5f39b/fast
+        make[1]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu»
+        /usr/bin/make  -f CMakeFiles/cmTC_5f39b.dir/build.make CMakeFiles/cmTC_5f39b.dir/build
+        make[2]: вход в каталог «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu»
+        Building CXX object CMakeFiles/cmTC_5f39b.dir/test_mpi.cpp.o
+        /usr/bin/c++   -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -o CMakeFiles/cmTC_5f39b.dir/test_mpi.cpp.o -c /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu/test_mpi.cpp
+        Linking CXX executable cmTC_5f39b
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5f39b.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize  -rdynamic -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_5f39b.dir/test_mpi.cpp.o -o cmTC_5f39b  /usr/lib/libmpi.so 
+        make[2]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu»
+        make[1]: выход из каталога «/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/CMakeScratch/TryCompile-I2DJUu»
+        
+      exitCode: 0
+...

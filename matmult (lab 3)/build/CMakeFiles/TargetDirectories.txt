@@ -1,0 +1,3 @@
+/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/matmult.dir
+/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/edit_cache.dir
+/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/matmult/build/CMakeFiles/rebuild_cache.dir
