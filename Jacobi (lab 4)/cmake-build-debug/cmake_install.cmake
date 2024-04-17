@@ -1,4 +1,4 @@
-# Install script for directory: /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi
+# Install script for directory: /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi (lab 4)
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi (lab 4)/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

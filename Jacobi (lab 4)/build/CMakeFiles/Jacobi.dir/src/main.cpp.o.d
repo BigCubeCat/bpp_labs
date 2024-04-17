@@ -1,5 +1,5 @@
 CMakeFiles/Jacobi.dir/src/main.cpp.o: \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/main.cpp \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13.2.1/iostream \
  /usr/include/c++/13.2.1/bits/requires_hosted.h \
  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -136,7 +136,7 @@ CMakeFiles/Jacobi.dir/src/main.cpp.o: \
  /usr/include/c++/13.2.1/bits/basic_ios.tcc \
  /usr/include/c++/13.2.1/bits/ostream.tcc /usr/include/c++/13.2.1/istream \
  /usr/include/c++/13.2.1/bits/istream.tcc \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Conf/ConfReader.h \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Algo/Algo.h \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Algo/../Conf/ConfReader.h \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Algo/Vector3.h
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Conf/ConfReader.h \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Algo/Algo.h \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Algo/../Conf/ConfReader.h \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Algo/Vector3.h

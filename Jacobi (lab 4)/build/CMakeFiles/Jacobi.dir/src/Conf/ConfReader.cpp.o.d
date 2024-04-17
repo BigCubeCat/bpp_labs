@@ -1,7 +1,7 @@
 CMakeFiles/Jacobi.dir/src/Conf/ConfReader.cpp.o: \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Conf/ConfReader.cpp \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Conf/ConfReader.cpp \
  /usr/include/stdc-predef.h \
- /home/bigcubecat/Projects/NSU/sem4/pp/Jacobi/src/Conf/ConfReader.h \
+ /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi\ (lab\ 4)/src/Conf/ConfReader.h \
  /usr/include/c++/13.2.1/string \
  /usr/include/c++/13.2.1/bits/requires_hosted.h \
  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
