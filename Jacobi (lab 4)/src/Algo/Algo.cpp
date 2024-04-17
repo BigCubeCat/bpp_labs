@@ -1,109 +1,89 @@
-#include <iostream>
 #include <cmath>
 #include "Algo.h"
+#include "../Util/util.h"
 
-Algo::Algo(const ConfReader &conf, double (*f)(double, double, double, double)) : config(conf), func(f) {
-    pSize = (config.Nx * config.Ny * (config.Nz + 2));
-    p = new double[pSize];
-    pTemp = new double[pSize];
+Algo::Algo(const ConfReader &conf, double (*f)(double, double, double, double), int rank) : config(conf), func(f),
+                                                                                            mpiRank(rank) {
+    extendSize = config.Nz + 2;
+    dataSize = (config.Nx * config.Ny * extendSize);
+    data = new double[dataSize];
+    tempData = new double[dataSize];
 
-    initNode(0, 0);
+    hSquare = Vector3(config.hx * config.hx, config.hy * config.hy, config.hz * config.hz);
+    // Nz = size
 
-    hSquare = Vector3(
-            1 / config.hx / config.hx,
-            1 / config.hy / config.hy,
-            1 / config.hz / config.hz
-    );
-    denumerator = conf.a + 2 * hSquare.x + 2 * hSquare.y + 2 * hSquare.z;
-    std::cout << func(1, 1, 1, 1) << std::endl;
-}
+    denumerator = config.a + 2 / hSquare.x + 2 / hSquare.y + 2 / hSquare.z;
 
-Vector3 Algo::nodeCoord(Vector3 point) {
-    return Vector3(
-            config.x0 + point.x * config.hx,
-            config.y0 + point.y * config.hy,
-            config.z0 + point.z * config.hz
-    );
-}
-
-/*
- * Returns index in 1D array;
- * It's 3D row-major order ;-)
- */
-int Algo::linearIndex(int x, int y, int z) {
-    return z * config.Nx * config.Ny + y * config.Nz + z;
-}
-
-void Algo::initNode(int z, int fz) {
-    int index;
-    for (int y = 0; y < config.Ny; ++y) {
-        for (int x = 0; x < config.Nx; ++x) {
-            index = linearIndex(x, y, z);
-            pTemp[index] = nodeCoord(Vector3(x, y, fz + z - 1)).size();
-            p[index] = pTemp[index];
-        }
-    }
-}
-
-double Algo::getValue(int x, int y, int z, int fz) {
-    if (inBounds(x, y, x)) {
-        return p[linearIndex(x, y, z)];
-    }
-    return calcOutOfBounds(x, y, z, fz);
-}
-
-bool Algo::inBounds(int x, int y, int z) const {
-    auto inBound = [](int value, int bound) -> bool { return (0 <= value && value < bound); };
-    return inBound(x, config.Nx) && inBound(y, config.Ny) && inBound(z, config.Nz);
-}
-
-double Algo::calcOutOfBounds(int x, int y, int z, int fz) {
-    // TODO переписать без вызова коструктора Vector3
-    return Vector3(config.x0 + x * config.hx, config.y0 + y * config.hy, config.z0 + (z - 1 + fz) * config.hz).size();
-}
-
-Algo::~Algo() {
-    delete[] p;
-    delete[] pTemp;
-}
-
-double Algo::calcEpsilon() {
-    double res = 0;
-    int start = linearIndex(0, 0, 1);
-    int finish = linearIndex(0, 0, config.a + 1);
-    double value;
-    for (int i = start; i < finish; ++i) {
-        value = fabs(p[i] - pTemp[i]);
-        res = (res < value) ? res : value;
-    }
-    return res;
-
-}
-
-void Algo::calcNextPhi(int a, int b, int fz) {
-    for (int z = a; z < b; ++z) {
-        for (int y = 0; y < config.Ny; ++y) {
-            for (int x = 0; x < config.Nx; ++x) {
-                calculate(x, y, z, fz);
+    Vector3 vector3 = Vector3(0, 0, 0);
+    Vector3 zeroPoint = Vector3(config.x0, config.y0, config.z0);
+    Vector3 diffVector = Vector3(config.x0 + config.Dx, config.y0 + config.Dy, config.z0 + config.Dz);
+    for (int i = 0; i < config.Nx; ++i) {
+        vector3.x = cellCoord(i, config.x0, config.hx);
+        for (int j = 0; j < config.Ny; ++j) {
+            vector3.y = cellCoord(j, config.y0, config.hy);
+            for (int k = 0; k < extendSize; ++k) {
+                vector3.z = cellCoord(i + (mpiRank * config.Nz - 1), config.z0, config.hz);
+                if ((vector3 == zeroPoint) || (vector3 == diffVector)) {
+                    data[layerIndex(i, j, k)] = vector3.size();
+                } else {
+                    data[layerIndex(i, j, k)] = 0;
+                }
             }
         }
     }
-    swap();
 }
 
-void Algo::calculate(int x, int y, int z, int fz) {
-    pTemp[linearIndex(x, y, z)] = (
-            ((getValue(x + 1, y, z, fz) + getValue(x - 1, y, z, fz)) / hSquare.x
-             +
-             (getValue(x, y + 1, z, fz) + getValue(x, y - 1, z, fz)) / hSquare.y
-             +
-             (getValue(x, y, z + 1, fz) + getValue(x, y, z - 1, fz)) / hSquare.z
-             -
-             func(
-                     config.x0 + x * config.hx, config.y0 + y * config.hy,
-                     config.z0 + (z - 1 + fz) * config.hz,
-                     config.a
-             )));
+double Algo::calcDiff() {
+    double res, x, y, z, tmp;
+    for (int i = 0; i < config.Nx; i++) {
+        x = cellCoord(i, config.Nx, config.hx);
+        for (int j = 0; j < config.Ny; j++) {
+            y = cellCoord(j, config.y0, config.hy);
+            for (int k = 0; k < config.Nz; k++) {
+                z = cellCoord(k, config.z0, config.hz);
+                tmp = fabs(data[layerIndex(i, j, k)] - vectorSize(x, y, z));
+                res = res > tmp ? res : tmp;
+            }
+        }
+    }
+    return res;
+}
+
+int Algo::layerIndex(int x, int y, int z) const {
+    // Возможно ошибка
+    return z * config.Nx * config.Ny + y * config.Nz + x;
+}
+
+
+void Algo::calcNextPhi(int layerPosition, int layerNumber) {
+    int absZ = layerNumber + layerPosition;
+    auto onBorder = [](int value, int bound) -> bool { return (value == 0 || value == bound - 1); };
+    double maximumDifference = 0; // максимальное отклонение от *искомой* функции
+
+    Vector3 vec = Vector3(0, 0, cellCoord(absZ, config.z0, config.hz));
+    int index;
+    for (int j = 0; j < config.Nx; ++j) {
+        vec.x = cellCoord(j, config.x0, config.hx);
+        for (int k = 0; k < config.Ny; ++k) {
+            vec.y = cellCoord(k, config.y0, config.hy);
+            index = layerIndex(layerNumber, j, k);
+            if (onBorder(j, config.Nx) || onBorder(k, config.Ny)) {
+                tempData[index] = data[index];
+            } else {
+                tempData[index] = calcNumerator(vec, layerNumber, j, k) / denumerator;
+                maximumDifference = maximumDouble(fabs(tempData[index] - data[index]), maximumDifference);
+            }
+        }
+    }
+}
+
+double Algo::calcNumerator(Vector3 vec, int i, int j, int k) {
+    return (
+            (data[layerIndex(i + 1, j, k)] + data[layerIndex(i - 1, j, k)]) / hSquare.x +
+            (data[layerIndex(i, j + 1, k)] + data[layerIndex(i, j - 1, k)]) / hSquare.y +
+            (data[layerIndex(i, j, k + 1)] + data[layerIndex(i, j, k - 1)]) / hSquare.z +
+            func(vec.x, vec.y, vec.z, config.a)
+    );
 }
 
 bool Algo::isRunning() const {
@@ -111,7 +91,7 @@ bool Algo::isRunning() const {
 }
 
 void Algo::swap() {
-    std::swap(p, pTemp);
+    std::swap(data, tempData);
 }
 
 double Algo::getMaxDelta() {
@@ -120,10 +100,19 @@ double Algo::getMaxDelta() {
     for (int i = 0; i < config.Nx; ++i) {
         for (int j = 0; j < config.Ny; ++j) {
             for (int k = 0; k < config.Nz; ++k) {
-                diff = fabs(getValue(i, j, k, 0) - func(i, j, k, config.a));
-                maximum = (diff > maximum) ? diff : maximum;
+                diff = fabs(getValue(i, j, k) - func(i, j, k, config.a));
+                maximum = maximumDouble(maximum, diff);
             }
         }
     }
     return maximum;
+}
+
+double Algo::getValue(int x, int y, int z) {
+    return data[layerIndex(x, y, z)];
+}
+
+Algo::~Algo() {
+    delete[] data;
+    delete[] tempData;
 }

@@ -9,4 +9,5 @@ add_executable(Jacobi src/main.cpp
         src/Algo/Algo.h
         src/Algo/Algo.cpp
         src/Algo/Vector3.h
-        src/Algo/Vector3.cpp)
+        src/Algo/Vector3.cpp
+        src/Util/util.cpp)

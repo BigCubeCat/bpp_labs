@@ -5,7 +5,9 @@
 struct Vector3 {
     double x, y, z;
     explicit Vector3(double x, double y, double z);
-    double size();
+    double size() const;
+
+    bool operator==(const Vector3 &other) const;
 };
 
 

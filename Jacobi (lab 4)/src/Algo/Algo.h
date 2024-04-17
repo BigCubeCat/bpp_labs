@@ -6,7 +6,23 @@
 #include "Vector3.h"
 
 class Algo {
+public:
+    Algo(const ConfReader &conf, double (*f)(double, double, double, double), int rank);
+
+    ~Algo();
+
+    bool isRunning() const;
+
+    void calcNextPhi(int layerPosition, int layerNumber);
+
+    double getMaxDelta();
+
 private:
+    int mpiRank;
+    int dataSize;
+    int extendSize;
+    double *data;
+    double *tempData;
     ConfReader config;
 
     double (*func)(double, double, double, double);
@@ -14,38 +30,30 @@ private:
     bool needExit = false;
     Vector3 hSquare = Vector3(0, 0, 0);
     double denumerator = 1;
-    double *p;
-    double *pTemp;
-    int pSize;
 
-    Vector3 nodeCoord(Vector3 ijk);
+    /*
+     * double getValue(int x, int y, int z);
+     * return function value in cell
+     */
+    double getValue(int x, int y, int z);
 
-    void initNode(int z, int fz);
+    /*
+     * double calcDiff()
+     * find absolute maximum difference btw
+     * current result and original function result
+     */
+    double calcDiff();
 
-    double getValue(int x, int y, int z, int fz);
+    /*
+     * Returns index in 1D array;
+     * It's 3D row-major order ;-)
+     */
+    int layerIndex(int x, int y, int z) const;
 
-    bool inBounds(int x, int y, int z) const;
-
-    double calcOutOfBounds(int x, int y, int z, int fz);
-
-    void calculate(int x, int y, int z, int fz);
-
-    double calcEpsilon();
-
-    int linearIndex(int x, int y, int z);
+    double calcNumerator(Vector3 vec, int i, int j, int k);
 
     void swap();
 
-public:
-    Algo(const ConfReader &conf, double (*f)(double, double, double, double));
-
-    ~Algo();
-
-    bool isRunning() const;
-
-    void calcNextPhi(int a, int b, int fz);
-
-    double getMaxDelta();
 };
 
 
