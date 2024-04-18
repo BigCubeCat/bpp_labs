@@ -4,6 +4,7 @@
 
 Algo::Algo(const ConfReader &conf, double (*f)(double, double, double, double), int rank) : config(conf), func(f),
                                                                                             mpiRank(rank) {
+    layerSize = config.Nx * config.Ny;
     extendSize = config.Nz + 2;
     dataSize = (config.Nx * config.Ny * extendSize);
     data = new double[dataSize];
@@ -58,7 +59,7 @@ int Algo::layerIndex(int x, int y, int z) const {
 void Algo::calcNextPhi(int layerPosition, int layerNumber) {
     int absZ = layerNumber + layerPosition;
     auto onBorder = [](int value, int bound) -> bool { return (value == 0 || value == bound - 1); };
-    double maximumDifference = 0; // максимальное отклонение от *искомой* функции
+    maximumDifference = 0;
 
     Vector3 vec = Vector3(0, 0, cellCoord(absZ, config.z0, config.hz));
     int index;
@@ -86,11 +87,11 @@ double Algo::calcNumerator(Vector3 vec, int i, int j, int k) {
     );
 }
 
-bool Algo::isRunning() const {
-    return !needExit;
+bool Algo::isStopped() const {
+    return stopped;
 }
 
-void Algo::swap() {
+void Algo::swapArrays() {
     std::swap(data, tempData);
 }
 
@@ -115,4 +116,8 @@ double Algo::getValue(int x, int y, int z) {
 Algo::~Algo() {
     delete[] data;
     delete[] tempData;
+}
+
+void Algo::checkStopped() {
+    stopped = maximumDifference <= config.epsilon;
 }
