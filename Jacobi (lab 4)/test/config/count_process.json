@@ -1,0 +1,77 @@
+[
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "@name1",
+      "time": "01:00:00",
+      "err": "@path/err/1.err",
+      "out": "@path/out/1.out",
+      "nodes": 1,
+      "mpi_process": 1,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "@name1"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "@name2",
+      "time": "01:00:00",
+      "err": "@path/err/2.err",
+      "out": "@path/out/2.out",
+      "nodes": 1,
+      "mpi_process": 2,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "@name2"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "@name4",
+      "time": "01:00:00",
+      "err": "@path/err/4.err",
+      "out": "@path/out/4.out",
+      "nodes": 2,
+      "mpi_process": 4,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "@name4"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 100,
+      "job": "@name8",
+      "time": "01:00:00",
+      "err": "@path/err/8.err",
+      "out": "@path/out/8.out",
+      "nodes": 4,
+      "mpi_process": 8,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "@name8"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "@name16",
+      "time": "01:00:00",
+      "err": "@path/err/16.err",
+      "out": "@path/out/16.out",
+      "nodes": 4,
+      "mpi_process": 16,
+      "trace": true
+    },
+    "script_config": {
+      "exe": "@name16"
+    }
+  }
+]
