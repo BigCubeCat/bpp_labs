@@ -5,7 +5,7 @@
 
 #include <mpi.h>
 
-double runCalculation(int rank, int countLayers, double (*f)(double, double, double, double) f) {
+double runCalculation(int rank, int countLayers, double (*f)(double, double, double, double)) {
     MPI_Request req[4];
     ConfReader config = ConfReader();
     Algo algo = Algo(config, f, rank);
