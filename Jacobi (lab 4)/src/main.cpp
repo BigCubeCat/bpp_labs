@@ -5,26 +5,16 @@
 
 #include <mpi.h>
 
-double runCalculation(int rank, int countLayers) {
+double runCalculation(int rank, int countLayers, double (*f)(double, double, double, double) f) {
     MPI_Request req[4];
-    double delta = 0;
     ConfReader config = ConfReader();
-    Algo algo = Algo(
-            config,
-            [](double x, double y, double z, double a) {
-                return 6 - a * Vector3(x, y, z).size();
-            },
-            rank
-    );
+    Algo algo = Algo(config, f, rank);
 
-    int size, extendSize;
+    int size;
     int commonLayerSize = config.Nz / countLayers;
     size = rank == countLayers - 1 ? (config.Nz - commonLayerSize * rank) : commonLayerSize;
-    extendSize = size + 2;
 
     int z = rank * size - 1;
-
-    double *omega;
 
     int leftNeighbor = rank - 1;
     int rightNeighbor = rank + 1;
@@ -67,28 +57,29 @@ double runCalculation(int rank, int countLayers) {
         curDelta = maximumDouble(algo.maximumDifference, curDelta);
         algo.swapArrays();
 
-        // TODO: IAllreduce
-        MPI_Allreduce(&curDelta, &delta, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+        MPI_Allreduce(&curDelta, &algo.maximumDifference, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
         algo.checkStopped();
     }
-
 
     return algo.getMaxDelta();
 }
 
 int main() {
-    int rank, countLayers;
+    // funciton to edit
+    auto srcFunction = [](double x, double y, double z, double a) {
+        return 6 - a * vectorSize(x, y, z);
+    };
 
+    int rank, countLayers;
     MPI_Init(nullptr, nullptr);
     MPI_Comm_size(MPI_COMM_WORLD, &countLayers);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     double startTime = MPI_Wtime();
-    double maximumDelta = runCalculation(rank, countLayers);
+    double maximumDelta = runCalculation(rank, countLayers, srcFunction);
     double finishTime = MPI_Wtime();
 
-    std::cout << "rank = " << rank << " time = " << (finishTime - startTime) << " result = " << maximumDelta << "\n";
-
     MPI_Finalize();
+
     return 0;
 }

@@ -1,3 +1,0 @@
-/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi (lab 4)/build/CMakeFiles/Jacobi.dir
-/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi (lab 4)/build/CMakeFiles/edit_cache.dir
-/home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/Jacobi (lab 4)/build/CMakeFiles/rebuild_cache.dir

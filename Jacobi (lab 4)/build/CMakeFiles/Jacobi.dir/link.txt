@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/Jacobi.dir/src/main.cpp.o CMakeFiles/Jacobi.dir/src/Conf/ConfReader.cpp.o CMakeFiles/Jacobi.dir/src/Algo/Algo.cpp.o CMakeFiles/Jacobi.dir/src/Algo/Vector3.cpp.o -o Jacobi
