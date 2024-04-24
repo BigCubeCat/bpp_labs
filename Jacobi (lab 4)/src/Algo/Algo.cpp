@@ -1,78 +1,45 @@
 #include <cmath>
+#include <cstring>
 #include "Algo.h"
 #include "../Util/util.h"
 
-Algo::Algo(const ConfReader &conf, double (*f)(double, double, double, double), int rank) : config(conf), func(f),
-                                                                                            mpiRank(rank) {
-    layerSize = config.Nx * config.Ny;
-    extendSize = config.Nz + 2;
-    dataSize = (config.Nx * config.Ny * extendSize);
-    data = new double[dataSize];
-    tempData = new double[dataSize];
+Algo::Algo(
+        const ConfReader &conf,
+        double (*f)(double, double, double, double),
+        int rank,
+        int size,
+        int cntz,
+        int fz,
+        int cntEl
+) : countElements(cntEl), countZ(cntz), firstZ(fz), config(conf), func(f) {
 
+    // "сетка" с значениями
+    data = new double[countElements];
+    tempData = new double[countElements];
+    memset(data, 0, countElements);
+
+    // вектор с квадратами h. Считаем так как значение не меняется в дальнейшем
     hSquare = Vector3(config.hx * config.hx, config.hy * config.hy, config.hz * config.hz);
-    // Nz = size
 
+    // считаем знаменатель, так как его значение не меняется от итерации к итерации
     denumerator = config.a + 2 / hSquare.x + 2 / hSquare.y + 2 / hSquare.z;
 
-    Vector3 vector3 = Vector3(0, 0, 0);
-    Vector3 zeroPoint = Vector3(config.x0, config.y0, config.z0);
-    Vector3 diffVector = Vector3(config.x0 + config.Dx, config.y0 + config.Dy, config.z0 + config.Dz);
-    for (int i = 0; i < config.Nx; ++i) {
-        vector3.x = cellCoord(i, config.x0, config.hx);
-        for (int j = 0; j < config.Ny; ++j) {
-            vector3.y = cellCoord(j, config.y0, config.hy);
-            for (int k = 0; k < extendSize; ++k) {
-                vector3.z = cellCoord(i + (mpiRank * config.Nz - 1), config.z0, config.hz);
-                if ((vector3 == zeroPoint) || (vector3 == diffVector)) {
-                    data[layerIndex(i, j, k)] = vector3.size();
-                } else {
-                    data[layerIndex(i, j, k)] = 0;
-                }
-            }
-        }
-    }
-}
-
-double Algo::calcDiff() {
-    double res, x, y, z, tmp;
-    for (int i = 0; i < config.Nx; i++) {
-        x = cellCoord(i, config.Nx, config.hx);
-        for (int j = 0; j < config.Ny; j++) {
-            y = cellCoord(j, config.y0, config.hy);
-            for (int k = 0; k < config.Nz; k++) {
-                z = cellCoord(k, config.z0, config.hz);
-                tmp = fabs(data[layerIndex(i, j, k)] - vectorSize(x, y, z));
-                res = res > tmp ? res : tmp;
-            }
-        }
-    }
-    return res;
+    initEdge();
 }
 
 int Algo::layerIndex(int x, int y, int z) const {
-    // Возможно ошибка
-    return z * config.Nx * config.Ny + y * config.Nz + x;
+    return z * config.Nx * config.Ny + y * config.Nx + x;
 }
 
-
-void Algo::calcNextPhi(int layerPosition, int layerNumber) {
-    int absZ = layerNumber + layerPosition;
-    auto onBorder = [](int value, int bound) -> bool { return (value == 0 || value == bound - 1); };
-    maximumDifference = 0;
-
-    Vector3 vec = Vector3(0, 0, cellCoord(absZ, config.z0, config.hz));
-    int index;
-    for (int j = 0; j < config.Nx; ++j) {
-        vec.x = cellCoord(j, config.x0, config.hx);
-        for (int k = 0; k < config.Ny; ++k) {
-            vec.y = cellCoord(k, config.y0, config.hy);
-            index = layerIndex(layerNumber, j, k);
-            if (onBorder(j, config.Nx) || onBorder(k, config.Ny)) {
-                tempData[index] = data[index];
-            } else {
-                tempData[index] = calcNumerator(vec, layerNumber, j, k) / denumerator;
-                maximumDifference = maximumDouble(fabs(tempData[index] - data[index]), maximumDifference);
+void Algo::calculate(int a, int b) {
+    Vector3 vec = Vector3(0, 0, 0);
+    for (int z = a; z < b; ++z) {
+        vec.z = config.z0 + (z - 1 + firstZ) * config.hz;
+        for (int y = 0; y < config.Ny; ++y) {
+            vec.y = config.y0 + y * config.hy;
+            for (int x = 0; x < config.Nx; ++x) {
+                vec.x = config.x0 + x * config.hx;
+                tempData[layerIndex(x, y, z)] = calcNumerator(vec, x, y, z) / denumerator;
             }
         }
     }
@@ -80,37 +47,26 @@ void Algo::calcNextPhi(int layerPosition, int layerNumber) {
 
 double Algo::calcNumerator(Vector3 vec, int i, int j, int k) {
     return (
-            (data[layerIndex(i + 1, j, k)] + data[layerIndex(i - 1, j, k)]) / hSquare.x +
-            (data[layerIndex(i, j + 1, k)] + data[layerIndex(i, j - 1, k)]) / hSquare.y +
-            (data[layerIndex(i, j, k + 1)] + data[layerIndex(i, j, k - 1)]) / hSquare.z +
+            (getValue(i + 1, j, k) + getValue(i - 1, j, k)) / hSquare.x +
+            (getValue(i, j + 1, k) + getValue(i, j - 1, k)) / hSquare.y +
+            (getValue(i, j, k + 1) + getValue(i, j, k - 1)) / hSquare.z -
             func(vec.x, vec.y, vec.z, config.a)
     );
-}
-
-bool Algo::isStopped() const {
-    return stopped;
 }
 
 void Algo::swapArrays() {
     std::swap(data, tempData);
 }
 
-double Algo::getMaxDelta() {
-    double maximum = 0;
-    double diff;
-    for (int i = 0; i < config.Nx; ++i) {
-        for (int j = 0; j < config.Ny; ++j) {
-            for (int k = 0; k < config.Nz; ++k) {
-                diff = fabs(getValue(i, j, k) - func(i, j, k, config.a));
-                maximum = maximumDouble(maximum, diff);
-            }
-        }
-    }
-    return maximum;
-}
-
 double Algo::getValue(int x, int y, int z) {
-    return data[layerIndex(x, y, z)];
+    if (inBounds(x, y, z, config.Nx, config.Ny, config.Nz)) {
+        return data[layerIndex(x, y, z)];
+    }
+    return vectorSize(
+            config.x0 + x * config.hx,
+            config.y0 + y * config.hy,
+            config.z0 + z * config.hz
+    );
 }
 
 Algo::~Algo() {
@@ -118,6 +74,33 @@ Algo::~Algo() {
     delete[] tempData;
 }
 
-void Algo::checkStopped() {
-    stopped = maximumDifference <= config.epsilon;
+void Algo::initEdge() const {
+    for (int y = 0; y < config.Ny; ++y) {
+        for (int x = 0; x < config.Nx; ++x) {
+            data[layerIndex(x, y, 0)] = tempData[layerIndex(x, y, 0)] = vectorSize(
+                    config.x0 + x * config.hx,
+                    config.y0 + y * config.hy,
+                    config.z0 + (firstZ - 1) * config.hz
+            );
+            data[layerIndex(x, y, countZ + 1)] = tempData[layerIndex(x, y, countZ + 1)] = vectorSize(
+                    config.x0 + x * config.hx,
+                    config.y0 + y * config.hy,
+                    config.z0 + (firstZ + countZ) * config.hz
+            );
+        }
+    }
+}
+
+double *Algo::getDataPointer(int z) {
+    return data + layerIndex(0, 0, z);
+}
+
+double Algo::getEpslion(const int cntz) {
+    double res = 0;
+    int begin = layerIndex(0, 0, 1);
+    int end = layerIndex(0, 0, cntz + 1);
+    for (int i = begin; i < end; ++i) {
+        res = maximumDouble(res, data[i] - tempData[i]);
+    }
+    return 0;
 }

@@ -7,36 +7,46 @@
 
 class Algo {
 public:
-    int mpiRank;
-    int dataSize;
-    int extendSize;
     double *data;
     double *tempData;
-    double maximumDifference = 0; // максимальное отклонение от *искомой* функции
-    int layerSize;
 
-    Algo(const ConfReader &conf, double (*f)(double, double, double, double), int rank);
+    Algo(
+            const ConfReader &conf,
+            double (*f)(double, double, double, double),
+            int rank,
+            int size,
+            int cntz,
+            int fz,
+            int cntEl
+    );
 
     ~Algo();
 
-    bool isStopped() const;
+    double *getDataPointer(int z);
 
-    void calcNextPhi(int layerPosition, int layerNumber);
-
-    double getMaxDelta();
+    void calculate(int a, int b);
 
     void swapArrays();
 
-    void checkStopped();
+    double getEpslion(const int cntz);
 
 private:
     ConfReader config;
+    int countElements;
+    int countZ;
+    int firstZ;
 
     double (*func)(double, double, double, double);
 
     bool stopped = false;
-    Vector3 hSquare = Vector3(0, 0, 0); // вектор с квадратами h
-    double denumerator = 1; // Знаменатель в формуле (он константен по сути)
+    Vector3 hSquare = Vector3(0, 0, 0);
+    double denumerator = 1;
+
+    /*
+     * initEdge()
+     * calculate values on deges
+     */
+    void initEdge() const;
 
     /*
      * double getValue(int x, int y, int z);
@@ -45,20 +55,16 @@ private:
     double getValue(int x, int y, int z);
 
     /*
-     * double calcDiff()
-     * find absolute maximum difference btw
-     * current result and original function result
-     */
-    double calcDiff();
-
-    /*
      * Returns index in 1D array;
      * It's 3D row-major order ;-)
      */
     int layerIndex(int x, int y, int z) const;
 
+    /*
+     * calcNumerator(Vector3 vec, int x, int y, int z)
+     * calculate numerator in cell
+     */
     double calcNumerator(Vector3 vec, int i, int j, int k);
-
 
 };
 

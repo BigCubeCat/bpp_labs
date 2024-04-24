@@ -5,63 +5,87 @@
 
 #include <mpi.h>
 
-double runCalculation(int rank, int countLayers, double (*f)(double, double, double, double)) {
-    MPI_Request req[4];
+double runCalculation(int rank, int size, double (*f)(double, double, double, double)) {
     ConfReader config = ConfReader();
-    Algo algo = Algo(config, f, rank);
+    int countZ = countOfLines(config.Nz, rank, size);
+    int firstZ = firstLine(config.Nz, rank, size);
+    // +2 чтобы крайнии значения попадали
+    int countElements = config.Nx * config.Ny * (countZ + 2);
+    int onePanSize = config.Nx * config.Ny;
+    Algo algo = Algo(config, f, rank, size, countZ, firstZ, countElements);
 
-    int size;
-    int commonLayerSize = config.Nz / countLayers;
-    size = rank == countLayers - 1 ? (config.Nz - commonLayerSize * rank) : commonLayerSize;
-
-    int z = rank * size - 1;
-
-    int leftNeighbor = rank - 1;
-    int rightNeighbor = rank + 1;
-
-    double curDelta;
-    while (!algo.isStopped()) {
-        curDelta = 0;
+    MPI_Request req[4];
+    double maximumEpsilon, localEpsilon;
+    do {
+        algo.calculate(1, 2);
 
         if (rank != 0) {
-            MPI_Isend(algo.tempData + algo.layerSize, algo.layerSize, MPI_DOUBLE, leftNeighbor, 0, MPI_COMM_WORLD,
-                      &req[0]);
-            MPI_Irecv(algo.tempData, algo.layerSize, MPI_DOUBLE, leftNeighbor, 0, MPI_COMM_WORLD, &req[1]);
+            MPI_Isend(
+                    algo.getDataPointer(1), onePanSize, MPI_DOUBLE,
+                    rank - 1, 0, MPI_COMM_WORLD, &req[0]
+            );
+            MPI_Irecv(
+                    algo.getDataPointer(0), onePanSize, MPI_DOUBLE,
+                    rank - 1, 0, MPI_COMM_WORLD, &req[1]
+            );
         }
 
-        if (rank != countLayers - 1) {
-            MPI_Isend(algo.tempData + algo.layerSize * size, algo.layerSize, MPI_DOUBLE, rightNeighbor, 0,
-                      MPI_COMM_WORLD,
-                      &req[2]);
-            MPI_Irecv(algo.tempData + algo.layerSize * (size + 1), algo.layerSize, MPI_DOUBLE, rightNeighbor, 0,
-                      MPI_COMM_WORLD, &req[3]);
+        algo.calculate(countZ, countZ + 1);
+
+        if (rank != size - 1) {
+            MPI_Isend(algo.getDataPointer(countZ), onePanSize, MPI_DOUBLE,
+                      rank + 1, 0, MPI_COMM_WORLD, &req[2]
+            );
+
+            MPI_Irecv(
+                    algo.getDataPointer(countZ + 1), onePanSize, MPI_DOUBLE,
+                    rank + 1, 0, MPI_COMM_WORLD, &req[3]
+            );
         }
 
-        for (int i = 2; i < size; i++) {
-            algo.calcNextPhi(z, i);
-            curDelta = algo.maximumDifference;
-        }
+        algo.calculate(2, countZ);
 
-        if (rank != countLayers - 1) {
-            MPI_Wait(&req[3], MPI_STATUS_IGNORE);
-            MPI_Wait(&req[2], MPI_STATUS_IGNORE);
-        }
         if (rank != 0) {
-            MPI_Wait(&req[1], MPI_STATUS_IGNORE);
             MPI_Wait(&req[0], MPI_STATUS_IGNORE);
+            MPI_Wait(&req[1], MPI_STATUS_IGNORE);
         }
 
-        algo.calcNextPhi(z, 1);
-        curDelta = maximumDouble(algo.maximumDifference, curDelta);
-        algo.calcNextPhi(z, size);
-        curDelta = maximumDouble(algo.maximumDifference, curDelta);
+        if (rank != size - 1) {
+            MPI_Wait(&req[2], MPI_STATUS_IGNORE);
+            MPI_Wait(&req[3], MPI_STATUS_IGNORE);
+        }
+
         algo.swapArrays();
 
-        MPI_Allreduce(&curDelta, &algo.maximumDifference, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
-        algo.checkStopped();
+        localEpsilon = algo.getEpslion(countZ);
+        MPI_Allreduce(&localEpsilon, &maximumEpsilon, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+    } while (maximumEpsilon >= config.epsilon);
+
+
+    int *counts = new int[size];
+    int *displs = new int[size];
+
+    for (int i = 0; i < size; ++i) {
+        counts[i] = countOfLines(config.Nz, i, size) * onePanSize;
+        displs[i] = firstLine(config.Nz, i, size) * onePanSize;
     }
 
-    return algo.getMaxDelta();
+    int resultSize = (rank == 0) ? (onePanSize * config.Nz) : 0;
+    auto *res = new double[resultSize];
+
+    MPI_Gatherv(
+            algo.getDataPointer(1), counts[rank], MPI_DOUBLE, res,
+            counts, displs, MPI_DOUBLE, 0, MPI_COMM_WORLD
+    );
+
+    double maxDelta = 0;
+    if (rank == 0) {
+        maxDelta = calculateDelta(config, res);
+    }
+    delete[] res;
+    delete[] counts;
+    delete[] displs;
+    return maxDelta;
 }
 
 int main() {
@@ -70,14 +94,25 @@ int main() {
         return 6 - a * vectorSize(x, y, z);
     };
 
-    int rank, countLayers;
+    int rank, size;
     MPI_Init(nullptr, nullptr);
-    MPI_Comm_size(MPI_COMM_WORLD, &countLayers);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    double startTime = MPI_Wtime();
-    double maximumDelta = runCalculation(rank, countLayers, srcFunction);
-    double finishTime = MPI_Wtime();
+    double beginTime = MPI_Wtime();
+    double result = runCalculation(rank, size, srcFunction);
+    double endTime = MPI_Wtime();
+    double resultTime = endTime - beginTime;
+    double maxTime;
+
+    MPI_Reduce(
+            &resultTime, &maxTime,
+            1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD
+    );
+    if (rank == 0) {
+        std::cout << maxTime << std::endl;
+        std::cout << "delta = " << result << std::endl;
+    }
 
     MPI_Finalize();
 
