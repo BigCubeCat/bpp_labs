@@ -5,6 +5,12 @@
 
 #include <mpi.h>
 
+//#define PROFILE
+
+#ifdef PROFILE
+#include "mpe.h"
+#endif
+
 double runCalculation(int rank, int size, double (*f)(double, double, double, double)) {
     ConfReader config = ConfReader();
     int countZ = countOfLines(config.Nz, rank, size);
@@ -14,11 +20,23 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     int onePanSize = config.Nx * config.Ny;
     Algo algo = Algo(config, f, rank, size, countZ, firstZ, countElements);
 
+#ifdef PROFILE
+    int calculationBegin = MPE_Log_get_event_number();
+    int calculationEnd = MPE_Log_get_event_number();
+    MPE_Describe_state(calculationBegin, calculationEnd, "calculation", "green");
+#endif
+
     MPI_Request req[4];
     double maximumEpsilon, localEpsilon;
     do {
-        algo.calculate(1, 2);
 
+#ifdef PROFILE
+        MPE_Log_event(calculationBegin, 0, NULL);
+#endif
+        algo.calculate(1, 2);
+#ifdef PROFILE
+        MPE_Log_event(calculationEnd, 0, NULL);
+#endif
         if (rank != 0) {
             MPI_Isend(
                     algo.getDataPointer(1), onePanSize, MPI_DOUBLE,
@@ -30,8 +48,13 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
             );
         }
 
+#ifdef PROFILE
+        MPE_Log_event(calculationBegin, 0, NULL);
+#endif
         algo.calculate(countZ, countZ + 1);
-
+#ifdef PROFILE
+        MPE_Log_event(calculationEnd, 0, NULL);
+#endif
         if (rank != size - 1) {
             MPI_Isend(algo.getDataPointer(countZ), onePanSize, MPI_DOUBLE,
                       rank + 1, 0, MPI_COMM_WORLD, &req[2]
@@ -42,9 +65,13 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
                     rank + 1, 0, MPI_COMM_WORLD, &req[3]
             );
         }
-
+#ifdef PROFILE
+        MPE_Log_event(calculationEnd, 0, NULL);
+#endif
         algo.calculate(2, countZ);
-
+#ifdef PROFILE
+        MPE_Log_event(calculationEnd, 0, NULL);
+#endif
         if (rank != 0) {
             MPI_Wait(&req[0], MPI_STATUS_IGNORE);
             MPI_Wait(&req[1], MPI_STATUS_IGNORE);

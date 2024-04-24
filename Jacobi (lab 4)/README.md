@@ -50,7 +50,13 @@ mpirun -np 4 ./build/Jacobi
 ```
 **Запуск на кластере для выявления зависимости от числа процессов**
 ```bash
-./test/run.py
+python3 test/run.py test/config/count_process.json 
+```
+
+**Включить профилирование**
+В `main.cpp` раскоментировать строку 
+```cpp
+#define PROFILE
 ```
 
 ## Полный текст зания
