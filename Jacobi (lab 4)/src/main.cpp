@@ -12,7 +12,11 @@
 #endif
 
 double runCalculation(int rank, int size, double (*f)(double, double, double, double)) {
-    ConfReader config = ConfReader();
+#ifdef PROFILE
+    auto config = ConfReader(false);
+#else
+    auto config = ConfReader(true);
+#endif
     int countZ = countOfLines(config.Nz, rank, size);
     int firstZ = firstLine(config.Nz, rank, size);
     // +2 чтобы крайнии значения попадали
@@ -38,10 +42,12 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
         MPE_Log_event(calculationEnd, 0, NULL);
 #endif
         if (rank != 0) {
+            // Отправляем свое значение с верхнего краю
             MPI_Isend(
                     algo.getDataPointer(1), onePanSize, MPI_DOUBLE,
                     rank - 1, 0, MPI_COMM_WORLD, &req[0]
             );
+            // Получаем чужое значение с верхнего краю, записываем его в дополнительный "поганый" блинчик
             MPI_Irecv(
                     algo.getDataPointer(0), onePanSize, MPI_DOUBLE,
                     rank - 1, 0, MPI_COMM_WORLD, &req[1]
@@ -56,10 +62,11 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
         MPE_Log_event(calculationEnd, 0, NULL);
 #endif
         if (rank != size - 1) {
+            // Отправляем свое значение с нижнего краю
             MPI_Isend(algo.getDataPointer(countZ), onePanSize, MPI_DOUBLE,
                       rank + 1, 0, MPI_COMM_WORLD, &req[2]
             );
-
+            // Получаем чужое значение с нижниего краю, записываем его в "поганый" блинчик
             MPI_Irecv(
                     algo.getDataPointer(countZ + 1), onePanSize, MPI_DOUBLE,
                     rank + 1, 0, MPI_COMM_WORLD, &req[3]

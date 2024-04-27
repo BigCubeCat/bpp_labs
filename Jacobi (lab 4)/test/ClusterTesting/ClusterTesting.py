@@ -8,7 +8,7 @@ class ClusterTesting:
 
     def run_test(self, test: TestSetup):
         self.processor(str(test))
-        self.processor("sleep ")
+        self.processor("sleep " + str(test.delay_after))
 
     def run_all(self):
         for index, test in enumerate(self.setup):
