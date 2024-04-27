@@ -11,7 +11,7 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@name1"
+      "exe": "@path@name1"
     }
   },
   {

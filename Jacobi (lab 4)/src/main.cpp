@@ -12,11 +12,7 @@
 #endif
 
 double runCalculation(int rank, int size, double (*f)(double, double, double, double)) {
-#ifdef PROFILE
     auto config = ConfReader(false);
-#else
-    auto config = ConfReader(true);
-#endif
     int countZ = countOfLines(config.Nz, rank, size);
     int firstZ = firstLine(config.Nz, rank, size);
     // +2 чтобы крайнии значения попадали
