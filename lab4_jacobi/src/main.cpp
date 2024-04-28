@@ -20,6 +20,7 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     do {
         index = 0;
         algo.calculate(1, 2);
+        algo.calculate(countZ, countZ + 1);
         if (rank != 0) {
             // Отправляем свое значение с верхнего краю
             MPI_Isend(
@@ -32,8 +33,6 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
                     rank - 1, 0, MPI_COMM_WORLD, &req[index++]
             );
         }
-
-        algo.calculate(countZ, countZ + 1);
 
         if (rank != size - 1) {
             // Отправляем свое значение с нижнего краю
