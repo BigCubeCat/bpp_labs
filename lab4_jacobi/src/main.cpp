@@ -16,18 +16,20 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
 
     MPI_Request req[4];
     double maximumEpsilon, localEpsilon;
+    int index;
     do {
+        index = 0;
         algo.calculate(1, 2);
         if (rank != 0) {
             // Отправляем свое значение с верхнего краю
             MPI_Isend(
                     algo.getDataPointer(1), onePanSize, MPI_DOUBLE,
-                    rank - 1, 0, MPI_COMM_WORLD, &req[0]
+                    rank - 1, 0, MPI_COMM_WORLD, &req[index++]
             );
             // Получаем чужое значение с верхнего краю, записываем его в дополнительный "поганый" блинчик
             MPI_Irecv(
                     algo.getDataPointer(0), onePanSize, MPI_DOUBLE,
-                    rank - 1, 0, MPI_COMM_WORLD, &req[1]
+                    rank - 1, 0, MPI_COMM_WORLD, &req[index++]
             );
         }
 
@@ -36,26 +38,18 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
         if (rank != size - 1) {
             // Отправляем свое значение с нижнего краю
             MPI_Isend(algo.getDataPointer(countZ), onePanSize, MPI_DOUBLE,
-                      rank + 1, 0, MPI_COMM_WORLD, &req[2]
+                      rank + 1, 0, MPI_COMM_WORLD, &req[index++]
             );
             // Получаем чужое значение с нижниего краю, записываем его в "поганый" блинчик
             MPI_Irecv(
                     algo.getDataPointer(countZ + 1), onePanSize, MPI_DOUBLE,
-                    rank + 1, 0, MPI_COMM_WORLD, &req[3]
+                    rank + 1, 0, MPI_COMM_WORLD, &req[index++]
             );
         }
 
         algo.calculate(2, countZ);
 
-        if (rank != 0) {
-            MPI_Wait(&req[0], MPI_STATUS_IGNORE);
-            MPI_Wait(&req[1], MPI_STATUS_IGNORE);
-        }
-
-        if (rank != size - 1) {
-            MPI_Wait(&req[2], MPI_STATUS_IGNORE);
-            MPI_Wait(&req[3], MPI_STATUS_IGNORE);
-        }
+        MPI_Waitall(index, req, MPI_STATUS_IGNORE);
 
         algo.swapArrays();
 
