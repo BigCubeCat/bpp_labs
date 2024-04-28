@@ -4,6 +4,7 @@
 #include "Util/util.h"
 
 #include <mpi.h>
+#include <cfloat>
 
 
 double runCalculation(int rank, int size, double (*f)(double, double, double, double), const ConfReader &config) {
@@ -14,8 +15,8 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     int onePanSize = config.Nx * config.Ny;
     Algo algo = Algo(config, f, rank, size, countZ, firstZ, countElements);
 
-    MPI_Request req[4];
-    double maximumEpsilon, localEpsilon;
+    MPI_Request req[5];
+    double maximumEpsilon = DBL_MAX, localEpsilon;
     do {
         algo.calculate(1, 2);
         if (rank != 0) {
@@ -60,7 +61,7 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
         algo.swapArrays();
 
         localEpsilon = algo.getEpslion(countZ);
-        MPI_Allreduce(&localEpsilon, &maximumEpsilon, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+        MPI_Iallreduce(&localEpsilon, &maximumEpsilon, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD, &req[4]);
     } while (maximumEpsilon >= config.epsilon);
 
 
