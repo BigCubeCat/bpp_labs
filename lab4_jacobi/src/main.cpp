@@ -5,14 +5,8 @@
 
 #include <mpi.h>
 
-//#define PROFILE
 
-#ifdef PROFILE
-#include "mpe.h"
-#endif
-
-double runCalculation(int rank, int size, double (*f)(double, double, double, double)) {
-    auto config = ConfReader(false);
+double runCalculation(int rank, int size, double (*f)(double, double, double, double), const ConfReader &config) {
     int countZ = countOfLines(config.Nz, rank, size);
     int firstZ = firstLine(config.Nz, rank, size);
     // +2 чтобы крайнии значения попадали
@@ -20,23 +14,10 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     int onePanSize = config.Nx * config.Ny;
     Algo algo = Algo(config, f, rank, size, countZ, firstZ, countElements);
 
-#ifdef PROFILE
-    int calculationBegin = MPE_Log_get_event_number();
-    int calculationEnd = MPE_Log_get_event_number();
-    MPE_Describe_state(calculationBegin, calculationEnd, "calculation", "green");
-#endif
-
     MPI_Request req[4];
     double maximumEpsilon, localEpsilon;
     do {
-
-#ifdef PROFILE
-        MPE_Log_event(calculationBegin, 0, NULL);
-#endif
         algo.calculate(1, 2);
-#ifdef PROFILE
-        MPE_Log_event(calculationEnd, 0, NULL);
-#endif
         if (rank != 0) {
             // Отправляем свое значение с верхнего краю
             MPI_Isend(
@@ -50,13 +31,8 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
             );
         }
 
-#ifdef PROFILE
-        MPE_Log_event(calculationBegin, 0, NULL);
-#endif
         algo.calculate(countZ, countZ + 1);
-#ifdef PROFILE
-        MPE_Log_event(calculationEnd, 0, NULL);
-#endif
+
         if (rank != size - 1) {
             // Отправляем свое значение с нижнего краю
             MPI_Isend(algo.getDataPointer(countZ), onePanSize, MPI_DOUBLE,
@@ -68,13 +44,9 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
                     rank + 1, 0, MPI_COMM_WORLD, &req[3]
             );
         }
-#ifdef PROFILE
-        MPE_Log_event(calculationEnd, 0, NULL);
-#endif
+
         algo.calculate(2, countZ);
-#ifdef PROFILE
-        MPE_Log_event(calculationEnd, 0, NULL);
-#endif
+
         if (rank != 0) {
             MPI_Wait(&req[0], MPI_STATUS_IGNORE);
             MPI_Wait(&req[1], MPI_STATUS_IGNORE);
@@ -129,19 +101,15 @@ int main() {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    auto config = ConfReader(false);
     double beginTime = MPI_Wtime();
-    double result = runCalculation(rank, size, srcFunction);
+    double result = runCalculation(rank, size, srcFunction, config);
+    MPI_Barrier(MPI_COMM_WORLD);
     double endTime = MPI_Wtime();
     double resultTime = endTime - beginTime;
-    double maxTime;
-
-    MPI_Reduce(
-            &resultTime, &maxTime,
-            1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD
-    );
     if (rank == 0) {
-        std::cout << maxTime << std::endl;
-        std::cout << "delta = " << result << std::endl;
+        std::cout << resultTime << std::endl;
+        std::cout << result << std::endl;
     }
 
     MPI_Finalize();

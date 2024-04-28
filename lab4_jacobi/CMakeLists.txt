@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Jacobi)
 
 set(CMAKE_CXX_STANDARD 17)
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -mpilog -lm -O3 -fopenmp -ftree-vectorize")
+set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -fopenmp -ftree-vectorize")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 

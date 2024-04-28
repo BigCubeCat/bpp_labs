@@ -1,7 +1,7 @@
 [
   {
     "slurm_config": {
-      "delay": 100,
+      "delay": 10,
       "job": "@name1",
       "time": "01:00:00",
       "err": "@path/err/1.err",
@@ -11,12 +11,12 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@path@name1"
+      "exe": "@path/@name1"
     }
   },
   {
     "slurm_config": {
-      "delay": 100,
+      "delay": 10,
       "job": "@name2",
       "time": "01:00:00",
       "err": "@path/err/2.err",
@@ -26,12 +26,12 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@name2"
+      "exe": "@path/@name2"
     }
   },
   {
     "slurm_config": {
-      "delay": 100,
+      "delay": 10,
       "job": "@name4",
       "time": "01:00:00",
       "err": "@path/err/4.err",
@@ -41,12 +41,12 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@name4"
+      "exe": "@path/@name4"
     }
   },
   {
     "slurm_config": {
-      "delay": 100,
+      "delay": 10,
       "job": "@name8",
       "time": "01:00:00",
       "err": "@path/err/8.err",
@@ -56,7 +56,7 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@name8"
+      "exe": "@path/@name8"
     }
   },
   {
@@ -71,7 +71,7 @@
       "trace": true
     },
     "script_config": {
-      "exe": "@name16"
+      "exe": "@path/@name16"
     }
   }
 ]
