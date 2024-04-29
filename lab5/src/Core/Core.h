@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 
+class Core {
+public:
+    unsigned long long calculate(unsigned long long num);
+};
 
-unsigned long long factorial(unsigned long long num);
 
 #endif
