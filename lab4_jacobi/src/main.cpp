@@ -7,6 +7,7 @@
 
 
 double runCalculation(int rank, int size, double (*f)(double, double, double, double), const ConfReader &config) {
+    double beginTime = MPI_Wtime();
     int countZ = countOfLines(config.Nz, rank, size);
     int firstZ = firstLine(config.Nz, rank, size);
     // +2 чтобы крайнии значения попадали
@@ -55,7 +56,8 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
         localEpsilon = algo.getEpslion(countZ);
         MPI_Allreduce(&localEpsilon, &maximumEpsilon, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
     } while (maximumEpsilon >= config.epsilon);
-
+    MPI_Barrier(MPI_COMM_WORLD);
+    double endTime = MPI_Wtime();
 
     int *counts = new int[size];
     int *displs = new int[size];
@@ -76,14 +78,15 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     double maxDelta = 0;
     if (rank == 0) {
         maxDelta = calculateDelta(config, res);
+        std::cout << "maxDelta = " << maxDelta << std::endl;
     }
     delete[] res;
     delete[] counts;
     delete[] displs;
-    return maxDelta;
+    return endTime - beginTime;
 }
 
-int main() {
+int main(int argc, char **argv) {
     // funciton to edit
     auto srcFunction = [](double x, double y, double z, double a) {
         return 6 - a * vectorSize(x, y, z);
@@ -94,15 +97,10 @@ int main() {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    auto config = ConfReader(false);
-    double beginTime = MPI_Wtime();
+    auto config = ConfReader((argc == 2));
     double result = runCalculation(rank, size, srcFunction, config);
-    MPI_Barrier(MPI_COMM_WORLD);
-    double endTime = MPI_Wtime();
-    double resultTime = endTime - beginTime;
     if (rank == 0) {
-        std::cout << resultTime << std::endl;
-        std::cout << result << std::endl;
+        std::cout << "time = " << result << std::endl;
     }
 
     MPI_Finalize();
