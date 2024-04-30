@@ -13,8 +13,6 @@ public:
     Algo(
             const ConfReader &conf,
             double (*f)(double, double, double, double),
-            int rank,
-            int size,
             int cntz,
             int fz,
             int cntEl
