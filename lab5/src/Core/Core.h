@@ -6,7 +6,7 @@
 
 class Core {
 public:
-    unsigned long long calculate(unsigned long long num);
+    static int calculate(int num);
 };
 
 

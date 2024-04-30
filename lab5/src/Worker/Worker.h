@@ -11,16 +11,17 @@
 class Worker {
 private:
     int mpiRank, mpiSize;
+    bool isMasterProcess;
 
+    pthread_attr_t pthreadAttr;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_t threads[2];
 
-    TaskList taskList;
+    TaskList taskList{};
     Core core{};
     Storage store;
-    EStatus status;
+    LoadBalancer *loadBalancer;
 
-    unsigned long long result;
 public:
     Worker(int storeSize);
 
@@ -28,13 +29,14 @@ public:
 
     bool noTasks();
 
+    static void *calculator(void *ptr);
     static void *receiver(void *ptr);
 
     void DoOneTask();
 
-    void Run(int request);
+    void Run();
 
-    unsigned long long getResult();
+    Storage getResult();
 };
 
 

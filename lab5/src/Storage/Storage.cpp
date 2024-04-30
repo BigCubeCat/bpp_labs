@@ -26,3 +26,7 @@ std::string Storage::getValue(const std::string &key) {
     }
     return "";
 }
+
+std::string Storage::toString() {
+    return queue.front() + " " + getValue(queue.front());
+}

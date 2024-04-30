@@ -11,7 +11,10 @@ public:
     Storage(int size);
 
     void addValue(const std::string &key, const std::string &value);
+
     std::string getValue(const std::string &key);
+
+    std::string toString();
 
 private:
     int maxSize;

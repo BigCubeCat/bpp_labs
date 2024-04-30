@@ -20,6 +20,8 @@ add_executable(
         src/Worker/Worker.h
         src/Worker/Worker.cpp
         src/Worker/EStatus.h
+        src/LoadBalancer/LoadBalancer.h
+        src/LoadBalancer/LoadBalancer.cpp
 )
 
 add_subdirectory(src/Core)
