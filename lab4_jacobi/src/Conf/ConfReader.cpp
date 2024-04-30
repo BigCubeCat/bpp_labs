@@ -10,9 +10,9 @@ ConfReader::ConfReader(bool useEnv) {
         Dx = 2;
         Dy = 2;
         Dz = 2;
-        Nx = 1200;
-        Ny = 1200;
-        Nz = 1200;
+        Nx = 120;
+        Ny = 120;
+        Nz = 120;
         a = 100000;
         epsilon = 0.00000001;
     }

@@ -19,6 +19,9 @@ int inBounds(int x, int y, int z, int sx, int sy, int sz) {
     return 0 <= x && x < sx && 0 <= y && y < sy && 0 <= z && z < sz;
 }
 
+/*
+ * по сути фи из условия. Надо бы тоже вынести в лямбду
+ */
 double vectorSize(double x, double y, double z) {
     return x * x + y * y + z * z;
 }

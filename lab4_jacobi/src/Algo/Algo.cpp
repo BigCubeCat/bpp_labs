@@ -44,6 +44,7 @@ void Algo::calculate(int a, int b) {
 }
 
 double Algo::calcNumerator(Vector3 vec, int i, int j, int k) {
+    // просто реализация формулы)
     return (
             (getValue(i + 1, j, k) + getValue(i - 1, j, k)) / hSquare.x +
             (getValue(i, j + 1, k) + getValue(i, j - 1, k)) / hSquare.y +

@@ -13,7 +13,7 @@ double runCalculation(int rank, int size, double (*f)(double, double, double, do
     // +2 чтобы крайнии значения попадали
     int countElements = config.Nx * config.Ny * (countZ + 2);
     int onePanSize = config.Nx * config.Ny;
-    Algo algo = Algo(config, f, rank, size, countZ, firstZ, countElements);
+    Algo algo = Algo(config, f, countZ, firstZ, countElements);
 
     MPI_Request req[4];
     double maximumEpsilon, localEpsilon;
