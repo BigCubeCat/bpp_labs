@@ -4,9 +4,11 @@
 #include <string>
 #include <vector>
 
+#include "pi/pi.h"
+
 class Core {
 public:
-    static int calculate(int num);
+    static std::string calculate(int num);
 };
 
 

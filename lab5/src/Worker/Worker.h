@@ -23,7 +23,6 @@ private:
     pthread_t threads[2];
 
     TaskList taskList{};
-    Core core{};
     Storage store;
     LoadBalancer loadBalancer{};
 

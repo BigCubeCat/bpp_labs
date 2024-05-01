@@ -9,7 +9,6 @@ Worker::Worker(const Config &conf)
           useBalance(conf.useBalance),
           delay(conf.syncDelay),
           debug(conf.debug) {
-    taskList.generateRandomList(conf.defaultCountTasks, conf.minTask, conf.maxTask);
     int threadProvided;
     MPI_Init_thread(nullptr, nullptr, MPI_THREAD_MULTIPLE, &threadProvided);
     if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
@@ -18,6 +17,7 @@ Worker::Worker(const Config &conf)
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
+    taskList.generateRandomList(mpiRank, conf.defaultCountTasks, conf.minTask, conf.maxTask);
     loadBalancer = LoadBalancer(mpiRank, mpiSize, conf.minimumCountTasks);
 
     pthread_mutex_init(&mutex, nullptr);
@@ -45,8 +45,7 @@ void Worker::DoOneTask() {
         return;
     }
     int task = taskList.getFirstTask();
-    int r = core.calculate(task);
-    store.addValue(std::to_string(task), std::to_string(r));
+    store.addValue(std::to_string(task), Core::calculate(task));
 }
 
 bool Worker::noTasks() {
@@ -110,7 +109,7 @@ void *Worker::communicator(void *ptr) {
                 &self->timeSpent, &maxTime, 1,
                 MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
         );
-        self->disbalance = self->timeSpent / maxTime;
+        self->disbalance = 1 - (self->timeSpent / maxTime);
     }
     return nullptr;
 }
