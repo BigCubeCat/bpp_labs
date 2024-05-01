@@ -3,8 +3,8 @@
 #include "Worker/Worker.h"
 
 int main(int argc, char **argv) {
-    Config conf = Config(argc, argv);
-    auto worker = Worker(conf.storeSize);
+    auto conf = Config(argc, argv);
+    auto worker = Worker(conf);
     worker.Run();
     std::cout << "res = " << worker.getResult().toString() << std::endl;
     return 0;

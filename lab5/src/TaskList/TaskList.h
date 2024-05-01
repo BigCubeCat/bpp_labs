@@ -18,6 +18,8 @@ public:
 
     bool isEmpty();
 
+    void generateRandomList(int size, int minimum, int maximum);
+
 private:
     std::deque<int> tasks{};
 };

@@ -3,27 +3,26 @@
 #include "Worker.h"
 #include "Core.h"
 
-Worker::Worker(int storeSize) : store(Storage(storeSize)) {
-    taskList.addTask(19);
+Worker::Worker(const Config &conf)
+        : store(Storage(conf.storeSize)),
+          delay(conf.syncDelay) {
+    taskList.generateRandomList(conf.defaultCountTasks, conf.minTask, conf.maxTask);
     int threadProvided;
     MPI_Init_thread(nullptr, nullptr, MPI_THREAD_MULTIPLE, &threadProvided);
-    if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
+   if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
         return;
     }
-
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
-    isMasterProcess = (mpiRank == 0);
-    if (isMasterProcess) {
-        loadBalancer = new LoadBalancer();
-    }
+
+    loadBalancer = LoadBalancer(mpiRank, mpiSize);
 
     pthread_mutex_init(&mutex, nullptr);
 
     pthread_attr_init(&pthreadAttr);
     pthread_attr_setdetachstate(&pthreadAttr, PTHREAD_CREATE_JOINABLE);
 
-    pthread_create(&threads[0], &pthreadAttr, receiver, this);
+    pthread_create(&threads[0], &pthreadAttr, communicator, this);
     pthread_create(&threads[1], &pthreadAttr, calculator, this);
 }
 
@@ -61,19 +60,26 @@ void *Worker::calculator(void *ptr) {
         return nullptr;
     }
     while (!self->noTasks()) {
-        pthread_mutex_lock(&self->mutex);
         self->DoOneTask();
-        pthread_mutex_unlock(&self->mutex);
     }
     return nullptr;
 }
 
-void *Worker::receiver(void *ptr) {
+void *Worker::communicator(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
     if (!self) {
         return nullptr;
     }
-    // Коммуникация с мастером
+    // указатель на наш элемент в массиве
+    int *myWorkloadPtr = self->loadBalancer.currentWorkload();
+    while (true) {
+        // ничего не делаем :|
+        std::this_thread::sleep_for(std::chrono::milliseconds(self->delay));
+        // узнаем, сколько у нас осталось задач
+        self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
+        // дейли митинг для бедных
+        MPI_Allgather(myWorkloadPtr, 1, MPI_INT, myWorkloadPtr, 1, MPI_INT, MPI_COMM_WORLD);
+    }
 
     return nullptr;
 }

@@ -1,19 +1,26 @@
 #ifndef LAB5_LOADBALANCER_H
 #define LAB5_LOADBALANCER_H
 
-
-#include "TaskList.h"
-
 /*
  * LoadBalancer
  * Содержит информацию о состоянии каждого из процессов,
  */
 class LoadBalancer {
 private:
-    int totalTasks;
-    std::vector<int> workload;
+    int rank;
+    int countProcess;
 public:
-    LoadBalancer(TaskList tl);
+    int *workload; // массив с информацией от
+    LoadBalancer();
+    LoadBalancer(int rank, int count);
+
+    void updateCurrentCount(int countTasks);
+
+    int *currentWorkload() const;
+
+    bool isFree();
+
+    ~LoadBalancer();
 };
 
 

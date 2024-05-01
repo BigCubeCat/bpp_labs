@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "TaskList.h"
 
 TaskList::TaskList() {
@@ -26,4 +27,15 @@ void TaskList::addTask(int task) {
 
 bool TaskList::isEmpty() {
     return (countTasks() == 0);
+}
+
+void TaskList::generateRandomList(int size, int minimum, int maximum) {
+    int rangeSize = maximum - minimum;
+    srand(0);
+    auto randrange = [&rangeSize, &minimum]() {
+        return minimum + static_cast<int>(rand() * rangeSize);
+    };
+    for (int i = 0; i < size; ++i) {
+        addTask(randrange());
+    }
 }
