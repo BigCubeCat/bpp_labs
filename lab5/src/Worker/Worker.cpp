@@ -53,13 +53,16 @@ bool Worker::noTasks() {
 }
 
 std::string Worker::getResult() {
-    std::string result = "------------------------\n";
-    result += "rank\t\t" + std::to_string(mpiRank) + "\n";
-    if (useProfile)
-        result += "disbalance\t" + std::to_string(disbalance) + "\n";
-    result += "balanced\t";
-    result += (useBalance) ? "true" : "false";
-    result += "\n------------------------\n";
+    if (mpiRank != 0) return "";
+    std::string result = "+------------------------+\n";
+    auto dis = static_cast<int>(disbalance * 10000);
+    if (useProfile) {
+        auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
+        result += "|disbalance        " + value + "%|\n";
+    }
+    result += "|balanced           ";
+    result += (useBalance) ? " true|" : "false|";
+    result += "\n+------------------------+\n";
     return result;
 }
 
@@ -76,11 +79,13 @@ void *Worker::calculator(void *ptr) {
             std::cout << "in rank " << self->mpiRank << " count tasks = " << self->taskList.countTasks() << std::endl;
         }
     }
-    self->imDone = true;
     if (self->useProfile) {
         endTime = MPI_Wtime();
         self->timeSpent = endTime - beginTime;
+        if (self->debug)
+            std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
     }
+    self->imDone = true;
     return nullptr;
 }
 
@@ -102,14 +107,20 @@ void *Worker::communicator(void *ptr) {
         );
         if (self->debug)
             std::cout << self->loadBalancer.toString() << std::endl;
-    } while (self->loadBalancer.hasAnyTasks() || !self->imDone);
+    } while (self->loadBalancer.hasAnyTasks());
+    // Вот тут надо дождаться, что все завершат последнюю операцию
+    pthread_join(self->threads[1], nullptr);
     if (self->useProfile) {
-        double maxTime;
+        double maxTime, minTime;
         MPI_Allreduce(
                 &self->timeSpent, &maxTime, 1,
                 MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
         );
-        self->disbalance = 1 - (self->timeSpent / maxTime);
+        MPI_Allreduce(
+                &self->timeSpent, &minTime, 1,
+                MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
+        );
+        self->disbalance = 1 - ((maxTime - minTime) / maxTime);
     }
     return nullptr;
 }

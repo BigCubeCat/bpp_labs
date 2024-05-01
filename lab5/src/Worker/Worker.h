@@ -32,7 +32,7 @@ private:
     int delay;
     bool debug;
 
-    double timeSpent = 0;
+    double timeSpent = -1;
     double disbalance = 0;
 public:
     Worker(const Config &conf);
