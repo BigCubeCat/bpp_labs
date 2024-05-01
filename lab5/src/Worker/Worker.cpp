@@ -5,17 +5,18 @@
 
 Worker::Worker(const Config &conf)
         : store(Storage(conf.storeSize)),
-          delay(conf.syncDelay) {
+          delay(conf.syncDelay),
+          debug(conf.debug) {
     taskList.generateRandomList(conf.defaultCountTasks, conf.minTask, conf.maxTask);
     int threadProvided;
     MPI_Init_thread(nullptr, nullptr, MPI_THREAD_MULTIPLE, &threadProvided);
-   if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
+    if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
         return;
     }
     MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
     MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
-    loadBalancer = LoadBalancer(mpiRank, mpiSize);
+    loadBalancer = LoadBalancer(mpiRank, mpiSize, conf.minimumCountTasks);
 
     pthread_mutex_init(&mutex, nullptr);
 
@@ -61,7 +62,11 @@ void *Worker::calculator(void *ptr) {
     }
     while (!self->noTasks()) {
         self->DoOneTask();
+        if (self->debug) {
+            std::cout << "in rank " << self->mpiRank << " count tasks = " << self->taskList.countTasks() << std::endl;
+        }
     }
+    self->imDone = true;
     return nullptr;
 }
 
@@ -72,14 +77,17 @@ void *Worker::communicator(void *ptr) {
     }
     // указатель на наш элемент в массиве
     int *myWorkloadPtr = self->loadBalancer.currentWorkload();
-    while (true) {
+    do {
         // ничего не делаем :|
         std::this_thread::sleep_for(std::chrono::milliseconds(self->delay));
         // узнаем, сколько у нас осталось задач
         self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
         // дейли митинг для бедных
-        MPI_Allgather(myWorkloadPtr, 1, MPI_INT, myWorkloadPtr, 1, MPI_INT, MPI_COMM_WORLD);
-    }
-
+        MPI_Allgather(
+                myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload, 1, MPI_INT, MPI_COMM_WORLD
+        );
+        if (self->debug)
+            std::cout << self->loadBalancer.toString() << std::endl;
+    } while (self->loadBalancer.hasAnyTasks() || !self->imDone);
     return nullptr;
 }

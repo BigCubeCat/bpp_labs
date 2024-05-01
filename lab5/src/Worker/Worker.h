@@ -16,6 +16,7 @@
 class Worker {
 private:
     int mpiRank, mpiSize;
+    bool imDone = false;
 
     pthread_attr_t pthreadAttr;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -28,6 +29,7 @@ private:
 
     int delay;
 
+    bool debug;
 public:
     Worker(const Config &conf);
 

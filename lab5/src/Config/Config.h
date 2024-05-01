@@ -13,6 +13,10 @@ public:
 
     int minTask = 0;
     int maxTask = 2;
+
+    int minimumCountTasks = 5;
+
+    bool debug = false;
 private:
     void parseEnv();
     static int parseEnvInt(char *variable);
