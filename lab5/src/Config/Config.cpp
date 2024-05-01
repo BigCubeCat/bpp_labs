@@ -22,7 +22,7 @@ void Config::parseEnv() {
     minTask = parseEnvInt((char *) "MINIMUM_TASK");
     maxTask = parseEnvInt((char *) "MAXIMUM_TASK");
 
-    minimumCountTasks = parseEnvInt((char *) "JOB_UNIT");
+    minimumCountTasks = parseEnvInt((char *) "DELTA");
 
     debug = parseEnvBool((char *) "DEBUG");
 }

@@ -5,15 +5,18 @@
 
 /*
  * LoadBalancer
- * Содержит информацию о состоянии каждого из процессов,
+ * Содержит информацию о состоянии каждого из процессов (workload)
+ * И информацию о требуемуих перегруппировках
  */
 class LoadBalancer {
 private:
     int rank{};
     int countProcess{};
-    int freeCount{};
+    // Число задач, которое мы предаем между двумя процессами за раз
+    int deltaCount{};
 public:
-    int *workload{}; // массив с информацией от
+    int *workload{};
+    int *reassignments{};
     LoadBalancer();
 
     LoadBalancer(int rank, int count, int fc);
@@ -22,9 +25,7 @@ public:
 
     int *currentWorkload() const;
 
-    bool isFree();
-
-    bool hasAnyTasks();
+    bool hasAnyTasks() const;
 
     ~LoadBalancer();
 
