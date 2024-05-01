@@ -22,16 +22,16 @@ void Config::parseEnv() {
     minTask = parseEnvInt((char *) "MINIMUM_TASK");
     maxTask = parseEnvInt((char *) "MAXIMUM_TASK");
 
-    minimumCountTasks = parseEnvInt((char*)"MINIMUM_COUNT_TASKS");
+    minimumCountTasks = parseEnvInt((char *) "JOB_UNIT");
 
     debug = parseEnvBool((char *) "DEBUG");
 }
 
 int Config::parseEnvInt(char *variable) {
-    return std::atoi(getenv(variable));
+    auto value = getenv(variable);
+    return std::atoi(value);
 }
 
 bool Config::parseEnvBool(char *variable) {
-    auto value = getenv(variable);
-    return true;
+    return parseEnvInt(variable) != 0;
 }

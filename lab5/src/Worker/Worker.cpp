@@ -5,6 +5,8 @@
 
 Worker::Worker(const Config &conf)
         : store(Storage(conf.storeSize)),
+          useProfile(conf.calcDisbalance),
+          useBalance(conf.useBalance),
           delay(conf.syncDelay),
           debug(conf.debug) {
     taskList.generateRandomList(conf.defaultCountTasks, conf.minTask, conf.maxTask);
@@ -32,10 +34,6 @@ void Worker::Run() {
     pthread_join(threads[1], nullptr);
 }
 
-Storage Worker::getResult() {
-    return store;
-}
-
 Worker::~Worker() {
     pthread_attr_destroy(&pthreadAttr);
     pthread_mutex_destroy(&mutex);
@@ -55,11 +53,24 @@ bool Worker::noTasks() {
     return taskList.isEmpty();
 }
 
+std::string Worker::getResult() {
+    std::string result = "------------------------\n";
+    result += "rank\t\t" + std::to_string(mpiRank) + "\n";
+    if (useProfile)
+        result += "disbalance\t" + std::to_string(disbalance) + "\n";
+    result += "balanced\t";
+    result += (useBalance) ? "true" : "false";
+    result += "\n------------------------\n";
+    return result;
+}
+
 void *Worker::calculator(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
+    double beginTime, endTime;
     if (!self) {
         return nullptr;
     }
+    if (self->useProfile) beginTime = MPI_Wtime();
     while (!self->noTasks()) {
         self->DoOneTask();
         if (self->debug) {
@@ -67,6 +78,10 @@ void *Worker::calculator(void *ptr) {
         }
     }
     self->imDone = true;
+    if (self->useProfile) {
+        endTime = MPI_Wtime();
+        self->timeSpent = endTime - beginTime;
+    }
     return nullptr;
 }
 
@@ -89,5 +104,13 @@ void *Worker::communicator(void *ptr) {
         if (self->debug)
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks() || !self->imDone);
+    if (self->useProfile) {
+        double maxTime;
+        MPI_Allreduce(
+                &self->timeSpent, &maxTime, 1,
+                MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
+        );
+        self->disbalance = self->timeSpent / maxTime;
+    }
     return nullptr;
 }

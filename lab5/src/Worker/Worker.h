@@ -27,9 +27,14 @@ private:
     Storage store;
     LoadBalancer loadBalancer{};
 
-    int delay;
+    bool useProfile;
+    bool useBalance;
 
+    int delay;
     bool debug;
+
+    double timeSpent = 0;
+    double disbalance = 0;
 public:
     Worker(const Config &conf);
 
@@ -44,7 +49,7 @@ public:
 
     void Run();
 
-    Storage getResult();
+    std::string getResult();
 };
 
 
