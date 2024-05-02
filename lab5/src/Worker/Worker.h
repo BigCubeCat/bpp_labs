@@ -16,7 +16,6 @@
 class Worker {
 private:
     int mpiRank, mpiSize;
-    bool imDone = false;
 
     pthread_attr_t pthreadAttr;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -34,6 +33,14 @@ private:
 
     double timeSpent = -1;
     double disbalance = 0;
+
+    int *swapBuff;
+    int bufferSize;
+
+    void readFromBuffer();
+
+    void writeToBuffer();
+
 public:
     Worker(const Config &conf);
 
@@ -42,11 +49,14 @@ public:
     bool noTasks();
 
     static void *calculator(void *ptr);
+
     static void *communicator(void *ptr);
 
     void DoOneTask();
 
     void Run();
+
+    void doBalance();
 
     std::string getResult();
 };

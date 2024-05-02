@@ -22,6 +22,7 @@ add_executable(
         src/Worker/EStatus.h
         src/LoadBalancer/LoadBalancer.h
         src/LoadBalancer/LoadBalancer.cpp
+        src/LoadBalancer/RankData.cpp
 )
 
 add_subdirectory(src/Core)

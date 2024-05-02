@@ -2,6 +2,8 @@
 #define LAB5_LOADBALANCER_H
 
 #include <string>
+#include <vector>
+#include "RankData.h"
 
 /*
  * LoadBalancer
@@ -14,6 +16,7 @@ private:
     int countProcess{};
     // Число задач, которое мы предаем между двумя процессами за раз
     int deltaCount{};
+    std::vector<RankData> tmp;
 public:
     int *workload{};
     int *reassignments{};
@@ -22,6 +25,8 @@ public:
     LoadBalancer(int rank, int count, int fc);
 
     void updateCurrentCount(int countTasks);
+
+    void balance();
 
     int *currentWorkload() const;
 

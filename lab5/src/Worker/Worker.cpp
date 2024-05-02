@@ -8,7 +8,8 @@ Worker::Worker(const Config &conf)
           useProfile(conf.calcDisbalance),
           useBalance(conf.useBalance),
           delay(conf.syncDelay),
-          debug(conf.debug) {
+          debug(conf.debug),
+          bufferSize(conf.minimumCountTasks) {
     int threadProvided;
     MPI_Init_thread(nullptr, nullptr, MPI_THREAD_MULTIPLE, &threadProvided);
     if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
@@ -19,6 +20,8 @@ Worker::Worker(const Config &conf)
 
     taskList.generateRandomList(mpiRank, conf.defaultCountTasks, conf.minTask, conf.maxTask);
     loadBalancer = LoadBalancer(mpiRank, mpiSize, conf.minimumCountTasks);
+
+    swapBuff = new int[bufferSize];
 
     pthread_mutex_init(&mutex, nullptr);
 
@@ -35,6 +38,7 @@ void Worker::Run() {
 }
 
 Worker::~Worker() {
+    delete[] swapBuff;
     pthread_attr_destroy(&pthreadAttr);
     pthread_mutex_destroy(&mutex);
     MPI_Finalize();
@@ -54,15 +58,15 @@ bool Worker::noTasks() {
 
 std::string Worker::getResult() {
     if (mpiRank != 0) return "";
-    std::string result = "+------------------------+\n";
+    std::string result;
     auto dis = static_cast<int>(disbalance * 10000);
     if (useProfile) {
         auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
-        result += "|disbalance        " + value + "%|\n";
+        result += "disbalance        " + value + "%\n";
     }
-    result += "|balanced           ";
-    result += (useBalance) ? " true|" : "false|";
-    result += "\n+------------------------+\n";
+    result += "balanced           ";
+    result += (useBalance) ? " true" : "false";
+    result += "\n";
     return result;
 }
 
@@ -75,9 +79,8 @@ void *Worker::calculator(void *ptr) {
     if (self->useProfile) beginTime = MPI_Wtime();
     while (!self->noTasks()) {
         self->DoOneTask();
-        if (self->debug) {
+        if (self->debug)
             std::cout << "in rank " << self->mpiRank << " count tasks = " << self->taskList.countTasks() << std::endl;
-        }
     }
     if (self->useProfile) {
         endTime = MPI_Wtime();
@@ -85,7 +88,6 @@ void *Worker::calculator(void *ptr) {
         if (self->debug)
             std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
     }
-    self->imDone = true;
     return nullptr;
 }
 
@@ -105,6 +107,10 @@ void *Worker::communicator(void *ptr) {
         MPI_Allgather(
                 myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload, 1, MPI_INT, MPI_COMM_WORLD
         );
+        if (self->useBalance) {
+            // см README.md
+            self->doBalance();
+        }
         if (self->debug)
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks());
@@ -123,4 +129,44 @@ void *Worker::communicator(void *ptr) {
         self->disbalance = 1 - ((maxTime - minTime) / maxTime);
     }
     return nullptr;
+}
+
+void Worker::doBalance() {
+    loadBalancer.balance();
+    MPI_Bcast(loadBalancer.reassignments, mpiSize, MPI_INT, 0, MPI_COMM_WORLD);
+    std::cout << "reassigments = " << loadBalancer.reassignments[0] << " " << loadBalancer.reassignments[1] << " " << loadBalancer.reassignments[2] << " " << loadBalancer.reassignments[3] << std::endl;
+    if (loadBalancer.reassignments[mpiRank] != -1) {
+        if (loadBalancer.reassignments[mpiRank] == mpiRank) {
+            // Получаем данные
+            MPI_Recv(
+                    swapBuff, bufferSize, MPI_INT,
+                    MPI_ANY_SOURCE, MPI_ANY_TAG,
+                    MPI_COMM_WORLD, MPI_STATUS_IGNORE
+            );
+            readFromBuffer();
+            if (debug)
+                std::cout << "recv " << bufferSize << " tasks\n";
+        } else {
+            writeToBuffer();
+            int dest = loadBalancer.reassignments[mpiRank];
+            std::cout << "dest = " << dest << std::endl;
+            MPI_Send(
+                    swapBuff, bufferSize, MPI_INT, dest, 0, MPI_COMM_WORLD
+            );
+            if (debug)
+                std::cout << "send " << bufferSize << " task to " << dest << "\n";
+        }
+    }
+}
+
+void Worker::writeToBuffer() {
+    for (int i = 0; i < bufferSize; ++i) {
+        swapBuff[i] = taskList.getLastTask();
+    }
+}
+
+void Worker::readFromBuffer() {
+    for (int i = 0; i < bufferSize; ++i) {
+        taskList.addTask(swapBuff[i]);
+    }
 }

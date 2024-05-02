@@ -41,8 +41,6 @@ void TaskList::generateRandomList(int seed, int size, int minimum, int maximum) 
         return minimum + static_cast<int>(randPercent() * (maximum - minimum));
     };
     for (int i = 0; i < size; ++i) {
-        auto value = randrange();
-        std::cout << "rand value = " << value << std::endl;
-        addTask(value);
+        addTask(randrange());
     }
 }

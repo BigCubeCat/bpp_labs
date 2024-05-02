@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <iostream>
 #include "LoadBalancer.h"
 
 
@@ -5,6 +7,7 @@ LoadBalancer::LoadBalancer(int r, int count, int fc) :
         rank(r), countProcess(count), deltaCount(fc) {
     workload = new int[countProcess];
     reassignments = new int[countProcess];
+    tmp.resize(countProcess);
 }
 
 LoadBalancer::~LoadBalancer() {
@@ -37,4 +40,35 @@ std::string LoadBalancer::toString() {
     }
     res += "\n-----\n";
     return res;
+}
+
+void LoadBalancer::balance() {
+    if (rank != 0) {
+        return;
+    }
+    for (int i = 0; i < countProcess; ++i) {
+        tmp[i].rank = i;
+        tmp[i].workload = workload[i];
+        reassignments[i] = -1;
+    }
+    std::sort(tmp.begin(), tmp.end());
+    std::cout << "tmp = ";
+    for (int i = 0; i < countProcess; ++i) {
+        std::cout << tmp[i].rank << ":" << tmp[i].workload << " ";
+    } std::cout << std::endl;
+    int difference;
+    int first, second;
+    for (first = 0; first < countProcess / 2; ++first) {
+        second = countProcess - first - 1;
+        std::cout << "f,s = " << first << " " << second << std::endl;
+        difference = tmp[second].workload - tmp[first].workload;
+        if (difference >= 2 * deltaCount) {
+            reassignments[tmp[first].rank] = tmp[first].rank;
+            reassignments[tmp[second].rank] = tmp[first].rank;
+        }
+    }
+    std::cout << "r = ";
+    for (int i = 0; i < countProcess; ++i) {
+        std::cout << reassignments[i] << " ";
+    } std::cout << std::endl;
 }
