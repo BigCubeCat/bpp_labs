@@ -3,13 +3,11 @@
 #include <iostream>
 
 Config::Config(int argc, char **argv) {
-    std::cout << argc << " " << argv << std::endl;
     if (argc == 2) {
-        std::cout << "Using .env\n";
+        usingEnv = true;
         parseEnv();
         return;
     }
-    std::cout << "Using default config\n";
 }
 
 void Config::parseEnv() {

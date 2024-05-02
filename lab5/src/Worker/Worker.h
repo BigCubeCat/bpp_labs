@@ -47,9 +47,9 @@ public:
 
     bool noTasks();
 
-    static void *calculator(void *ptr);
+    static void *workerThread(void *ptr);
 
-    static void *communicator(void *ptr);
+    static void *communicatorThread(void *ptr);
 
     void DoOneTask();
 

@@ -17,6 +17,8 @@ public:
     int minimumCountTasks = 5;
 
     bool debug = false;
+
+    bool usingEnv;
 private:
     void parseEnv();
     static int parseEnvInt(char *variable);

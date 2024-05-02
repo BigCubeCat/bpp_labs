@@ -27,8 +27,8 @@ Worker::Worker(const Config &conf)
     pthread_attr_init(&pthreadAttr);
     pthread_attr_setdetachstate(&pthreadAttr, PTHREAD_CREATE_JOINABLE);
 
-    pthread_create(&threads[0], &pthreadAttr, communicator, this);
-    pthread_create(&threads[1], &pthreadAttr, calculator, this);
+    pthread_create(&threads[0], &pthreadAttr, communicatorThread, this);
+    pthread_create(&threads[1], &pthreadAttr, workerThread, this);
 }
 
 void Worker::Run() {
@@ -68,7 +68,7 @@ std::string Worker::getResult() {
     return result;
 }
 
-void *Worker::calculator(void *ptr) {
+void *Worker::workerThread(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
     double beginTime, endTime;
     if (!self) {
@@ -89,7 +89,7 @@ void *Worker::calculator(void *ptr) {
     return nullptr;
 }
 
-void *Worker::communicator(void *ptr) {
+void *Worker::communicatorThread(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
     if (!self) {
         return nullptr;
@@ -101,25 +101,18 @@ void *Worker::communicator(void *ptr) {
         std::this_thread::sleep_for(std::chrono::milliseconds(self->delay));
         // узнаем, сколько у нас осталось задач
         self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
-        std::cout << self->mpiRank << " updateCurrentcount " << self->loadBalancer.workload[self->mpiRank] << "\n";
         MPI_Allgather(
                 myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload, 1, MPI_INT, MPI_COMM_WORLD
         );
         if (self->useBalance) {
-            std::cout << "use balance\n";
             // см README.md
             self->doBalance();
-            MPI_Barrier(MPI_COMM_WORLD); // дожидаемся конца балансировки
         }
         if (self->debug)
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks());
-    if (self->debug)
-        std::cout << "последняя задача в " << self->mpiRank << "\n";
     // Вот тут надо дождаться, что все завершат последнюю операцию
     pthread_join(self->threads[1], nullptr);
-    if (self->debug)
-        std::cout << "конец вычислений в " << self->mpiRank << "\n";
     if (self->useProfile) {
         double maxTime, minTime;
         MPI_Allreduce(
