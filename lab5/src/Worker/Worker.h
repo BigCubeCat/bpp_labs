@@ -34,8 +34,7 @@ private:
     double timeSpent = -1;
     double disbalance = 0;
 
-    int *swapBuff;
-    int bufferSize;
+    int swapBuff;
 
     void readFromBuffer();
 
