@@ -17,13 +17,14 @@ class Worker {
 private:
     int mpiRank, mpiSize;
 
-    pthread_attr_t pthreadAttr;
+    pthread_attr_t commThreadAttr;
+    pthread_attr_t workThreadAttr;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_t threads[2];
 
-    TaskList taskList{};
+    TaskList taskList;
     Storage store;
-    LoadBalancer loadBalancer{};
+    LoadBalancer loadBalancer;
 
     bool useProfile;
     bool useBalance;
@@ -41,7 +42,7 @@ private:
     void writeToBuffer();
 
 public:
-    Worker(const Config &conf);
+    Worker(int rank, int size, const Config &conf);
 
     ~Worker();
 

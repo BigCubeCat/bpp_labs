@@ -3,43 +3,39 @@
 #include "Worker.h"
 #include "Core.h"
 
-Worker::Worker(const Config &conf)
-        : store(Storage(conf.storeSize)),
+Worker::Worker(int rank, int size, const Config &conf)
+        : mpiRank(rank),
+          mpiSize(size),
+          store(Storage(conf.storeSize)),
+          loadBalancer(LoadBalancer(rank, size, conf.minimumCountTasks)),
           useProfile(conf.calcDisbalance),
           useBalance(conf.useBalance),
           delay(conf.syncDelay),
           debug(conf.debug) {
-    int threadProvided;
-    MPI_Init_thread(nullptr, nullptr, MPI_THREAD_MULTIPLE, &threadProvided);
-    if (threadProvided != MPI_THREAD_MULTIPLE) { // если нельзя в многопоточность
-        return;
-    }
-    MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
-    MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
     taskList.generateRandomList(mpiRank, conf.defaultCountTasks, conf.minTask, conf.maxTask);
-    loadBalancer = LoadBalancer(mpiRank, mpiSize, conf.minimumCountTasks);
 
     swapBuff = 111;
 
     pthread_mutex_init(&mutex, nullptr);
 
-    pthread_attr_init(&pthreadAttr);
-    pthread_attr_setdetachstate(&pthreadAttr, PTHREAD_CREATE_JOINABLE);
+    pthread_attr_init(&commThreadAttr);
+    pthread_attr_init(&workThreadAttr);
+    pthread_attr_setdetachstate(&workThreadAttr, PTHREAD_CREATE_JOINABLE);
+    pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_DETACHED);
 
-    pthread_create(&threads[0], &pthreadAttr, communicatorThread, this);
-    pthread_create(&threads[1], &pthreadAttr, workerThread, this);
+    pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
+    pthread_create(&threads[1], &workThreadAttr, workerThread, this);
 }
 
 void Worker::Run() {
-    pthread_join(threads[0], nullptr);
     pthread_join(threads[1], nullptr);
 }
 
 Worker::~Worker() {
-    pthread_attr_destroy(&pthreadAttr);
+    pthread_attr_destroy(&workThreadAttr);
+    pthread_attr_destroy(&commThreadAttr);
     pthread_mutex_destroy(&mutex);
-    MPI_Finalize();
 }
 
 void Worker::DoOneTask() {
@@ -102,7 +98,8 @@ void *Worker::communicatorThread(void *ptr) {
         // узнаем, сколько у нас осталось задач
         self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
         MPI_Allgather(
-                myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload, 1, MPI_INT, MPI_COMM_WORLD
+                myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload,
+                1, MPI_INT, MPI_COMM_WORLD
         );
         if (self->useBalance) {
             // см README.md

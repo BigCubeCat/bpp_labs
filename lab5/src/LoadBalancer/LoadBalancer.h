@@ -18,9 +18,8 @@ private:
     int deltaCount{};
     std::vector<RankData> tmp;
 public:
-    int *workload{};
-    int *reassignments{};
-    LoadBalancer();
+    int *workload = nullptr;
+    int *reassignments = nullptr;
 
     LoadBalancer(int rank, int count, int fc);
 

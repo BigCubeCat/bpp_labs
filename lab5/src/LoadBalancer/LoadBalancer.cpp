@@ -19,8 +19,6 @@ void LoadBalancer::updateCurrentCount(int countTasks) {
     workload[rank] = countTasks;
 }
 
-LoadBalancer::LoadBalancer() = default;
-
 int *LoadBalancer::currentWorkload() const {
     return workload + rank;
 }
