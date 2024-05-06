@@ -12,6 +12,8 @@ class TestSetup:
         self.is_trace = slurm_config["trace"]
         self.delay_after = slurm_config["delay"]
 
+        self.balance = slurm_config["balance"]
+
         script_config = data["script_config"]
         self.executable_path = script_config["exe"]
 
@@ -27,7 +29,11 @@ class TestSetup:
         if self.is_trace:
             result += '-trace '
         result += f'-ppn {self.count_nodes} -n {self.count_mpi_process} '
-        result += self.executable_path
+        result += self.executable_path + "balance="
+        if self.balance:
+            result += "true"
+        else:
+            result += "false"
         result += "\nEOF"
 
         return result

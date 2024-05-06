@@ -8,7 +8,7 @@
       "out": "@path/out/4.out",
       "nodes": 1,
       "mpi_process": 4,
-      "balance": false,
+      "balance": true,
       "trace": false
     },
     "script_config": {
@@ -24,7 +24,7 @@
       "out": "@path/out/8.out",
       "nodes": 2,
       "mpi_process": 8,
-      "balance": false,
+      "balance": true,
       "trace": false
     },
     "script_config": {
@@ -40,7 +40,7 @@
       "out": "@path/out/16.out",
       "nodes": 2,
       "mpi_process": 16,
-      "balance": false,
+      "balance": true,
       "trace": false
     },
     "script_config": {

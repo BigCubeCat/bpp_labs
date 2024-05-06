@@ -8,6 +8,7 @@
       "out": "@path/out/profile.out",
       "nodes": 1,
       "mpi_process": 4,
+      "balance": true,
       "trace": true
     },
     "script_config": {
