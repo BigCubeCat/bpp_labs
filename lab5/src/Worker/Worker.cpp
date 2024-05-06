@@ -6,6 +6,7 @@
 Worker::Worker(int rank, int size, const Config &conf)
         : mpiRank(rank),
           mpiSize(size),
+          config(conf),
           store(Storage(conf.storeSize)),
           loadBalancer(LoadBalancer(rank, size, conf.minimumCountTasks)),
           useBalance(conf.useBalance),
@@ -29,7 +30,6 @@ void Worker::Run() {
     pthread_create(&threads[1], &workThreadAttr, workerThread, this);
 
     pthread_join(threads[0], nullptr);
-    pthread_join(threads[1], nullptr);
 }
 
 Worker::~Worker() {
@@ -55,6 +55,7 @@ std::string Worker::getResult() const {
     auto dis = static_cast<int>(disbalance * 10000);
     auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
     std::string result;
+    result += "count tasks        " + std::to_string(config.defaultCountTasks) + "\n";
     result += "maximum time       " + std::to_string(maxTime) + "\n";
     result += "minimum time       " + std::to_string(minTime) + "\n";
     result += "disbalance         " + value + "%\n";
@@ -111,9 +112,8 @@ void *Worker::communicatorThread(void *ptr) {
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks());
     // Вот тут надо дождаться, что все завершат последнюю операцию
-    pthread_join(self->threads[0], nullptr);
     MPI_Barrier(MPI_COMM_WORLD);
-    std::cout << "Allreduce" << std::endl;
+    pthread_join(self->threads[0], nullptr);
     MPI_Allreduce(
             &self->timeSpent, &self->maxTime, 1,
             MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
@@ -127,9 +127,7 @@ void *Worker::communicatorThread(void *ptr) {
 }
 
 void Worker::doBalance() {
-    pthread_mutex_lock(&mutex);
     loadBalancer.balance();
-    pthread_mutex_unlock(&mutex);
     MPI_Bcast(loadBalancer.reassignments, mpiSize, MPI_INT, 0, MPI_COMM_WORLD);
     if (loadBalancer.reassignments[mpiRank] != -1) {
         if (loadBalancer.reassignments[mpiRank] == mpiRank) {

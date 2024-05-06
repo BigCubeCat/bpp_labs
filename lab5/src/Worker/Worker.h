@@ -17,6 +17,8 @@ class Worker {
 private:
     int mpiRank, mpiSize;
 
+    Config config;
+
     pthread_attr_t commThreadAttr;
     pthread_attr_t workThreadAttr;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -31,7 +33,7 @@ private:
     int delay;
     bool debug;
 
-    double timeSpent = -1;
+    double timeSpent = 0;
     double disbalance = -1;
     double maxTime = -1;
     double minTime = -1;

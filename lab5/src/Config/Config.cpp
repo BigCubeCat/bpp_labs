@@ -3,10 +3,19 @@
 #include <iostream>
 
 Config::Config(int argc, char **argv) {
+    std::string argument = std::string(argv[1]);
     if (argc == 2) {
-        usingEnv = true;
-        parseEnv();
-        return;
+        if (argument == "env") {
+            usingEnv = true;
+            parseEnv();
+            return;
+        } else {
+            if (argument == "balance=true") {
+                useBalance = true;
+            } else if (argument == "balance=false") {
+                useBalance = false;
+            }
+        }
     }
 }
 
