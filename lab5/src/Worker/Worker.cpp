@@ -8,27 +8,27 @@ Worker::Worker(int rank, int size, const Config &conf)
           mpiSize(size),
           store(Storage(conf.storeSize)),
           loadBalancer(LoadBalancer(rank, size, conf.minimumCountTasks)),
-          useProfile(conf.calcDisbalance),
           useBalance(conf.useBalance),
           delay(conf.syncDelay),
           debug(conf.debug) {
 
     taskList.generateRandomList(mpiRank, conf.defaultCountTasks, conf.minTask, conf.maxTask);
 
-    swapBuff = 111;
+    swapBuff = 0;
 
     pthread_mutex_init(&mutex, nullptr);
 
     pthread_attr_init(&commThreadAttr);
     pthread_attr_init(&workThreadAttr);
+    pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_JOINABLE);
     pthread_attr_setdetachstate(&workThreadAttr, PTHREAD_CREATE_JOINABLE);
-    pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_DETACHED);
-
-    pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
-    pthread_create(&threads[1], &workThreadAttr, workerThread, this);
 }
 
 void Worker::Run() {
+    pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
+    pthread_create(&threads[1], &workThreadAttr, workerThread, this);
+
+    pthread_join(threads[0], nullptr);
     pthread_join(threads[1], nullptr);
 }
 
@@ -50,14 +50,14 @@ bool Worker::noTasks() {
     return taskList.isEmpty();
 }
 
-std::string Worker::getResult() {
+std::string Worker::getResult() const {
     if (mpiRank != 0) return "";
-    std::string result;
     auto dis = static_cast<int>(disbalance * 10000);
-    if (useProfile) {
-        auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
-        result += "disbalance        " + value + "%\n";
-    }
+    auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
+    std::string result;
+    result += "maximum time       " + std::to_string(maxTime) + "\n";
+    result += "minimum time       " + std::to_string(minTime) + "\n";
+    result += "disbalance         " + value + "%\n";
     result += "balanced           ";
     result += (useBalance) ? " true" : "false";
     result += "\n";
@@ -66,22 +66,24 @@ std::string Worker::getResult() {
 
 void *Worker::workerThread(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
-    double beginTime, endTime;
+    double beginTime = 0, endTime = 0;
     if (!self) {
         return nullptr;
     }
-    if (self->useProfile) beginTime = MPI_Wtime();
+    beginTime = MPI_Wtime();
     while (!self->noTasks()) {
+        pthread_mutex_lock(&self->mutex);
         self->DoOneTask();
-        if (self->debug)
-            std::cout << "in rank " << self->mpiRank << " count tasks = " << self->taskList.countTasks() << std::endl;
+        pthread_mutex_unlock(&self->mutex);
     }
-    if (self->useProfile) {
-        endTime = MPI_Wtime();
-        self->timeSpent = endTime - beginTime;
-        if (self->debug)
-            std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
-    }
+    endTime = MPI_Wtime();
+
+    pthread_mutex_lock(&self->mutex);
+    self->timeSpent = endTime - beginTime;
+    pthread_mutex_unlock(&self->mutex);
+
+    if (self->debug)
+        std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
     return nullptr;
 }
 
@@ -109,24 +111,25 @@ void *Worker::communicatorThread(void *ptr) {
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks());
     // Вот тут надо дождаться, что все завершат последнюю операцию
-    pthread_join(self->threads[1], nullptr);
-    if (self->useProfile) {
-        double maxTime, minTime;
-        MPI_Allreduce(
-                &self->timeSpent, &maxTime, 1,
-                MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
-        );
-        MPI_Allreduce(
-                &self->timeSpent, &minTime, 1,
-                MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
-        );
-        self->disbalance = ((maxTime - minTime) / maxTime);
-    }
+    pthread_join(self->threads[0], nullptr);
+    MPI_Barrier(MPI_COMM_WORLD);
+    std::cout << "Allreduce" << std::endl;
+    MPI_Allreduce(
+            &self->timeSpent, &self->maxTime, 1,
+            MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
+    );
+    MPI_Allreduce(
+            &self->timeSpent, &self->minTime, 1,
+            MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
+    );
+    self->disbalance = ((self->maxTime - self->minTime) / self->maxTime);
     return nullptr;
 }
 
 void Worker::doBalance() {
+    pthread_mutex_lock(&mutex);
     loadBalancer.balance();
+    pthread_mutex_unlock(&mutex);
     MPI_Bcast(loadBalancer.reassignments, mpiSize, MPI_INT, 0, MPI_COMM_WORLD);
     if (loadBalancer.reassignments[mpiRank] != -1) {
         if (loadBalancer.reassignments[mpiRank] == mpiRank) {
@@ -140,9 +143,7 @@ void Worker::doBalance() {
         } else {
             writeToBuffer();
             int dest = loadBalancer.reassignments[mpiRank];
-            MPI_Send(
-                    &swapBuff, 1, MPI_INT, dest, 0, MPI_COMM_WORLD
-            );
+            MPI_Send(&swapBuff, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
         }
     }
 }

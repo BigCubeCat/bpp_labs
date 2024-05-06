@@ -26,14 +26,15 @@ private:
     Storage store;
     LoadBalancer loadBalancer;
 
-    bool useProfile;
     bool useBalance;
 
     int delay;
     bool debug;
 
     double timeSpent = -1;
-    double disbalance = 0;
+    double disbalance = -1;
+    double maxTime = -1;
+    double minTime = -1;
 
     int swapBuff;
 
@@ -58,7 +59,7 @@ public:
 
     void doBalance();
 
-    std::string getResult();
+    std::string getResult() const;
 };
 
 

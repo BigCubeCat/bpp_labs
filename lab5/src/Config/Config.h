@@ -7,7 +7,6 @@ public:
     Config(int argc, char *argv[]);
     int defaultCountTasks = 10;
     bool useBalance = false;
-    bool calcDisbalance = false;
     int syncDelay = 10;
     int storeSize = 100;
 

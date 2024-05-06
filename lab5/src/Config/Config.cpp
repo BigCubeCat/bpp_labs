@@ -13,7 +13,6 @@ Config::Config(int argc, char **argv) {
 void Config::parseEnv() {
     defaultCountTasks = parseEnvInt((char *) "COUNT_TASKS");
     useBalance = parseEnvBool((char *) "BALANCE");
-    calcDisbalance = parseEnvBool((char *) "PROFILE");
     syncDelay = parseEnvInt((char *) "SYNC");
     storeSize = parseEnvInt((char *) "SIZE");
 
