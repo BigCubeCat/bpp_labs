@@ -8,7 +8,7 @@ public:
 
     int defaultCountTasks = 19;
     bool useBalance = false;
-    int syncDelay = 1000;
+    int syncDelay = 60;
     int storeSize = 100;
 
     int minTask = 100;

@@ -15,19 +15,19 @@ Worker::Worker(int rank, int size, MutualMem *m, const Config &conf)
     pthread_attr_init(&commThreadAttr);
     pthread_attr_init(&blncThreadAttr);
     pthread_attr_init(&workThreadAttr);
-    // pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_JOINABLE);
+    pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_JOINABLE);
     pthread_attr_setdetachstate(&blncThreadAttr, PTHREAD_CREATE_JOINABLE);
     pthread_attr_setdetachstate(&workThreadAttr, PTHREAD_CREATE_JOINABLE);
 }
 
 void Worker::Run() {
-    // pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
+    pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
     pthread_create(&threads[1], &blncThreadAttr, balancerThread, this);
     pthread_create(&threads[2], &workThreadAttr, workerThread, this);
 
-    // pthread_join(threads[0], nullptr);
-    pthread_join(threads[2], nullptr);
+    pthread_join(threads[0], nullptr);
     pthread_join(threads[1], nullptr);
+    pthread_join(threads[2], nullptr);
 }
 
 Worker::~Worker() {
@@ -53,11 +53,13 @@ void *Worker::workerThread(void *ptr) {
     self->profiler.timeSpent = 0;
     do {
         pthread_mutex_lock(&self->mem->mutex);
-        std::cout << "worker " << self->mpiRank << std::endl;
+        std::cout << "worker " << self->mpiRank << " " << self->profiler.timeSpent << "\ttasks "
+                  << self->core.countTaskToDelegate() << " " << self->core.isBusy() << std::endl;
         beginTime = MPI_Wtime();
         self->core.calculate();
         self->profiler.timeSpent += MPI_Wtime() - beginTime;
         if (!self->core.isBusy()) {
+            std::cout << self->mpiRank << "\tsend signal\n";
             pthread_cond_signal(&self->mem->cond);
         }
         pthread_mutex_unlock(&self->mem->mutex);
@@ -71,12 +73,13 @@ void *Worker::balancerThread(void *ptr) {
     if (!self) {
         return nullptr;
     }
-    std::this_thread::sleep_for(std::chrono::seconds(self->config.syncDelay));
+    std::cout << "balancer " << self->mpiRank << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(self->config.syncDelay));
     std::cout << "balancerThread " << self->mpiRank << std::endl;
     pthread_mutex_lock(&self->mem->mutex);
     pthread_cond_wait(&self->mem->cond, &self->mem->mutex);
-    std::cout << "балансировка \n";
-    //self->askForTask(); // обрабатываем отсутствие задач
+    std::cout << "bbb\n";
+    self->askForTask(); // обрабатываем отсутствие задач
     pthread_mutex_unlock(&self->mem->mutex);
 
     return nullptr;
@@ -102,7 +105,8 @@ void *Worker::communicatorThread(void *ptr) {
         std::this_thread::sleep_for(std::chrono::seconds(self->config.syncDelay));
         MPI_Test(&request, &flag, &status);
 
-        if (flag == 0) {
+        if (flag) {
+            std::cout << "process rank = " << processRank << std::endl;
             self->giveTask(processRank);
         } else {
             MPI_Cancel(&request);
@@ -142,6 +146,9 @@ void Worker::askForTask() {
             return;
         }
     }
+    pthread_mutex_lock(&mem->mutex);
+    mem->flag = END;
+    pthread_mutex_unlock(&mem->mutex);
 }
 
 void Worker::giveTask(int rank) {
