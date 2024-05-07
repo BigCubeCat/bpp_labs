@@ -9,7 +9,7 @@ class Storage {
 public:
     Storage(int size, bool limit);
 
-    void addValue(const std::string &key, const std::string &value);
+    void addValue(const std::string &value);
 
     std::string toString() ;
 

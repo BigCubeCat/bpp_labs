@@ -6,11 +6,12 @@
 
 #include "pi/pi.h"
 #include "TaskList/TaskList.h"
+#include "Storage/Storage.h"
 
 class Core {
 private:
     int rank;
-    TaskList taskList;
+    TaskList taskList{};
     Storage storage;
 
     bool imDone = false; // все задачи решениы
@@ -18,7 +19,7 @@ private:
 public:
     Core(int rank, int countTasks, int minimumTask, int maximumTask);
 
-    std::string toString() const;
+    std::string toString();
 
     void calculate();
 

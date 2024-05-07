@@ -4,8 +4,8 @@
 Storage::Storage(int size, bool limit) : maxSize(size), limitedSize(limit) {
 }
 
-void Storage::addValue(const std::string &key, const std::string &value) {
-    queue.push(key);
+void Storage::addValue(const std::string &value) {
+    queue.push(value);
 
     if (limitedSize && queue.size() > maxSize) {
         removeOldest();

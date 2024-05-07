@@ -11,7 +11,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(src/Core)
 include_directories(src/Config)
-include_directories(src/Storage)
 
 add_executable(
         lab5
@@ -22,11 +21,11 @@ add_executable(
         src/LoadBalancer/LoadBalancer.h
         src/LoadBalancer/LoadBalancer.cpp
         src/LoadBalancer/RankData.cpp
+        src/LoadBalancer/RankData.h
 )
 
 add_subdirectory(src/Core)
 add_subdirectory(src/Config)
-add_subdirectory(src/Storage)
 
 find_package(MPI REQUIRED)
-target_link_libraries(lab5 Core Config Storage MPI::MPI_CXX)
+target_link_libraries(lab5 Core Config MPI::MPI_CXX)

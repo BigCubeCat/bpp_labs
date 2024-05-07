@@ -1,5 +1,4 @@
 #include "Core.h"
-#include "Storage.h"
 
 void Core::calculate() {
     if (taskList.isEmpty()) {
@@ -12,10 +11,10 @@ void Core::calculate() {
     storage.addValue(std::to_string(calcPi(task)));
 }
 
-
-Core::Core(int rank, int countTasks, int minimumTask, int maximumTask) : rank(rank) {
+Core::Core(int rank, int countTasks, int minimumTask, int maximumTask) :
+        rank(rank),
+        storage(Storage(countTasks, false)) {
     storage = Storage(countTasks, false);
-    taskList = TaskList();
     taskList.generateRandomList(rank, countTasks, minimumTask, maximumTask);
 }
 
@@ -23,7 +22,6 @@ bool Core::isBusy() {
     return imBusy;
 }
 
-std::string Core::toString() const {
+std::string Core::toString() {
     return "rank " + std::to_string(rank) + "\n" + storage.toString();
 }
-
