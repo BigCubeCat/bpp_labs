@@ -2,9 +2,9 @@
 #include <mpi.h>
 #include "Config.h"
 #include "Worker/Worker.h"
+#include "Worker/MutualMem.h"
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+MutualMem mem;
 
 int main(int argc, char **argv) {
     auto conf = Config(argc, argv);
@@ -20,10 +20,10 @@ int main(int argc, char **argv) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    pthread_mutex_init(&mutex, nullptr);
-    pthread_cond_init(&cond, nullptr);
+    pthread_mutex_init(&mem.mutex, nullptr);
+    pthread_cond_init(&mem.cond, nullptr);
 
-    auto worker = Worker(rank, size, &mutex, &cond, conf);
+    auto worker = Worker(rank, size, &mem, conf);
     worker.Run();
     std::cout << worker.getResult();
 

@@ -23,9 +23,13 @@ public:
 
     void calculate();
 
-    bool isBusy();
+    bool isBusy() const;
 
-    bool isDone();
+    void dumpTasks(int count, int *dest);
+
+    void loadTasks(int count, int *source);
+
+    int countTaskToDelegate();
 };
 
 

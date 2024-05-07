@@ -6,7 +6,8 @@ enum EStatus{
     BUSY,
     ZOMBIE,
     MPI_ERROR,
-    OTHER_ERROR
+    OTHER_ERROR,
+    END
 };
 
 #endif

@@ -18,10 +18,9 @@ add_executable(
         src/Worker/Worker.h
         src/Worker/Worker.cpp
         src/Worker/EStatus.h
-        src/LoadBalancer/LoadBalancer.h
-        src/LoadBalancer/LoadBalancer.cpp
-        src/LoadBalancer/RankData.cpp
-        src/LoadBalancer/RankData.h
+        src/Worker/Profiler.h
+        src/Worker/Profiler.cpp
+        src/Worker/MutualMem.h
 )
 
 add_subdirectory(src/Core)

@@ -3,88 +3,82 @@
 #include "Worker.h"
 #include "Core.h"
 
-Worker::Worker(int rank, int size, pthread_mutex_t *m, pthread_cond_t *cond, const Config &conf)
+const int ASK_FOR_A_TASK = 1;
+
+Worker::Worker(int rank, int size, MutualMem *m, const Config &conf)
         : mpiRank(rank),
           mpiSize(size),
           config(conf),
-          mutex(m),
-          cond(cond),
-          store(Storage(conf.storeSize)),
-          loadBalancer(LoadBalancer(rank, size, conf.minimumCountTasks)),
-          useBalance(conf.useBalance),
-          delay(conf.syncDelay),
+          core(Core(rank, conf.defaultCountTasks, conf.minTask, conf.maxTask)),
+          mem(m),
           debug(conf.debug) {
-    taskList.generateRandomList(
-            mpiRank, conf.defaultCountTasks,
-            conf.minTask, conf.maxTask
-    );
-
     pthread_attr_init(&commThreadAttr);
+    pthread_attr_init(&blncThreadAttr);
     pthread_attr_init(&workThreadAttr);
-    pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_JOINABLE);
+    // pthread_attr_setdetachstate(&commThreadAttr, PTHREAD_CREATE_JOINABLE);
+    pthread_attr_setdetachstate(&blncThreadAttr, PTHREAD_CREATE_JOINABLE);
     pthread_attr_setdetachstate(&workThreadAttr, PTHREAD_CREATE_JOINABLE);
 }
 
 void Worker::Run() {
-    pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
-    pthread_create(&threads[1], &workThreadAttr, workerThread, this);
+    // pthread_create(&threads[0], &commThreadAttr, communicatorThread, this);
+    pthread_create(&threads[1], &blncThreadAttr, balancerThread, this);
+    pthread_create(&threads[2], &workThreadAttr, workerThread, this);
 
-    pthread_join(threads[0], nullptr);
+    // pthread_join(threads[0], nullptr);
+    pthread_join(threads[2], nullptr);
+    pthread_join(threads[1], nullptr);
 }
 
 Worker::~Worker() {
     pthread_attr_destroy(&workThreadAttr);
+    pthread_attr_destroy(&blncThreadAttr);
     pthread_attr_destroy(&commThreadAttr);
-    pthread_mutex_destroy(mutex);
+    pthread_mutex_destroy(&mem->mutex);
 }
 
-void Worker::DoOneTask() {
-    if (taskList.isEmpty()) {
-        return;
-    }
-    int task = taskList.getFirstTask();
-    store.addValue(std::to_string(task), Core::calculate(task));
-}
-
-bool Worker::noTasks() {
-    return taskList.isEmpty();
-}
-
-std::string Worker::getResult() const {
+std::string Worker::getResult() {
     if (mpiRank != 0) return "";
-    auto dis = static_cast<int>(disbalance * 10000);
-    auto value = std::to_string(dis / 100) + "." + std::to_string(dis % 100);
-    std::string result;
-    result += "count tasks        " + std::to_string(config.defaultCountTasks) + "\n";
-    result += "maximum time       " + std::to_string(maxTime) + "\n";
-    result += "minimum time       " + std::to_string(minTime) + "\n";
-    result += "disbalance         " + value + "%\n";
-    result += "balanced           ";
-    result += (useBalance) ? " true" : "false";
-    result += "\n";
-    return result;
+    return profiler.toString(config.defaultCountTasks, config.useBalance);
 }
 
 void *Worker::workerThread(void *ptr) {
     auto *self = static_cast<Worker *>(ptr);
-    double beginTime = 0, endTime = 0;
     if (!self) {
         return nullptr;
     }
-    beginTime = MPI_Wtime();
-    while (!self->noTasks()) {
-        pthread_mutex_lock(self->mutex);
-        self->DoOneTask();
-        pthread_mutex_unlock(self->mutex);
+
+    std::cout << "workerThread " << self->mpiRank << std::endl;
+    double beginTime = 0;
+    self->profiler.timeSpent = 0;
+    do {
+        pthread_mutex_lock(&self->mem->mutex);
+        std::cout << "worker " << self->mpiRank << std::endl;
+        beginTime = MPI_Wtime();
+        self->core.calculate();
+        self->profiler.timeSpent += MPI_Wtime() - beginTime;
+        if (!self->core.isBusy()) {
+            pthread_cond_signal(&self->mem->cond);
+        }
+        pthread_mutex_unlock(&self->mem->mutex);
+    } while (self->mem->flag != END);
+
+    return nullptr;
+}
+
+void *Worker::balancerThread(void *ptr) {
+    auto *self = static_cast<Worker *>(ptr);
+    if (!self) {
+        return nullptr;
     }
-    std::cout << "send signal in " << self->mpiRank << std::endl;
-    pthread_cond_signal(self->cond);
-    endTime = MPI_Wtime();
+    std::this_thread::sleep_for(std::chrono::seconds(self->config.syncDelay));
+    std::cout << "balancerThread " << self->mpiRank << std::endl;
+    pthread_mutex_lock(&self->mem->mutex);
+    pthread_cond_wait(&self->mem->cond, &self->mem->mutex);
+    std::cout << "балансировка \n";
+    //self->askForTask(); // обрабатываем отсутствие задач
+    pthread_mutex_unlock(&self->mem->mutex);
 
-    self->timeSpent = endTime - beginTime;
-
-    if (self->debug)
-        std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
     return nullptr;
 }
 
@@ -93,82 +87,71 @@ void *Worker::communicatorThread(void *ptr) {
     if (!self) {
         return nullptr;
     }
-    // указатель на наш элемент в массиве
-    int *myWorkloadPtr = self->loadBalancer.currentWorkload();
-    do {
-        // ничего не делаем :|
-        std::this_thread::sleep_for(std::chrono::milliseconds(self->delay));
-        // узнаем, сколько у нас осталось задач
-//        pthread_mutex_lock(self->mutex);
-        std::cout << self->taskList.countTasks() << std::endl;
-        self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
-//        pthread_mutex_unlock(self->mutex);
-        MPI_Allgather(
-                myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload,
-                1, MPI_INT, MPI_COMM_WORLD
+
+    MPI_Request request;
+    int flag;
+    MPI_Status status;
+
+    int processRank;
+    while (self->mem->flag != END) {
+        MPI_Irecv(
+                &processRank, 1, MPI_INT, MPI_ANY_SOURCE,
+                ASK_FOR_A_TASK, MPI_COMM_WORLD,
+                &request
         );
-        if (self->useBalance && self->loadBalancer.needToBalance()) {
-            // см README.md
-            self->doBalance();
+        std::this_thread::sleep_for(std::chrono::seconds(self->config.syncDelay));
+        MPI_Test(&request, &flag, &status);
+
+        if (flag == 0) {
+            self->giveTask(processRank);
+        } else {
+            MPI_Cancel(&request);
         }
-        if (self->debug)
-            std::cout << self->loadBalancer.toString() << std::endl;
-    } while (self->loadBalancer.hasAnyTasks());
-    // Вот тут надо дождаться, что все завершат последнюю операцию
-    pthread_cond_wait(self->cond, self->mutex);
-    self->getTiming();
+    }
     return nullptr;
 }
 
 void Worker::getTiming() {
-    std::cout << "before barrier " << mpiRank << "\n";
     MPI_Barrier(MPI_COMM_WORLD);
-    std::cout << "find maximum\n";
     MPI_Allreduce(
-            &timeSpent, &maxTime, 1,
+            &profiler.timeSpent, &profiler.maxTime, 1,
             MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
     );
-    std::cout << "find minimum\n";
-    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Allreduce(
-            &timeSpent, &minTime, 1,
+            &profiler.timeSpent, &profiler.minTime, 1,
             MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
     );
-    MPI_Barrier(MPI_COMM_WORLD);
-    disbalance = ((maxTime - minTime) / maxTime);
-    std::cout << "end of " << mpiRank << std::endl;
+    profiler.calcDisbalance();
 }
 
-void Worker::doBalance() {
-    loadBalancer.balance();
-    MPI_Barrier(MPI_COMM_WORLD);
-    pthread_mutex_lock(mutex);
-    if (loadBalancer.reassignments[mpiRank] != -1) {
-        int count = loadBalancer.counts[mpiRank];
-        swapBuff = new int[count];
-        if (loadBalancer.reassignments[mpiRank] == mpiRank) {
-            // Получаем данные
+void Worker::askForTask() {
+    int rank, count = 0;
+    for (int i = mpiRank + 1; i < mpiSize - 1; ++i) {
+        rank = i % mpiSize;
+        if (debug) std::cout << mpiRank << " asking for a task " << rank << std::endl;
+        MPI_Send(&mpiRank, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
+        MPI_Recv(&count, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        if (count > 0) {
+            swapBuff = new int[count];
             MPI_Recv(
-                    swapBuff, count, MPI_INT,
-                    MPI_ANY_SOURCE, MPI_ANY_TAG,
-                    MPI_COMM_WORLD, MPI_STATUS_IGNORE
+                    swapBuff, count, MPI_INT, rank,
+                    ASK_FOR_A_TASK, MPI_COMM_WORLD, MPI_STATUS_IGNORE
             );
-            readFromBuffer(count);
-        } else {
-            writeToBuffer(count);
-            int dest = loadBalancer.reassignments[mpiRank];
-            MPI_Send(swapBuff, count, MPI_INT, dest, 0, MPI_COMM_WORLD);
+            core.loadTasks(count, swapBuff);
+            delete[] swapBuff;
+            return;
         }
+    }
+}
+
+void Worker::giveTask(int rank) {
+    int countTask = core.countTaskToDelegate();
+    if (debug) std::cout << mpiRank << " gives " << countTask << " to " << rank << std::endl;
+    MPI_Send(&countTask, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
+    if (countTask > 0) {
+        swapBuff = new int[countTask];
+        core.dumpTasks(countTask, swapBuff);
+        MPI_Send(swapBuff, countTask, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
         delete[] swapBuff;
     }
-    pthread_mutex_unlock(mutex);
-    MPI_Barrier(MPI_COMM_WORLD);
-}
-
-void Worker::writeToBuffer(int count) {
-    taskList.dumpTasks(count, swapBuff);
-}
-
-void Worker::readFromBuffer(int count) {
-    taskList.loadTasks(count, swapBuff);
 }
