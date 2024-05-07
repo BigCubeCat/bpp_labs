@@ -44,3 +44,15 @@ void TaskList::generateRandomList(int seed, int size, int minimum, int maximum) 
         addTask(randrange());
     }
 }
+
+void TaskList::dumpTasks(int count, int *destination) {
+    for (int i = 0; i < count; ++i) {
+        destination[i] = getLastTask();
+    }
+}
+
+void TaskList::loadTasks(int count, int *source) {
+    for (int i = 0; i < count; ++i) {
+        addTask(source[i]);
+    }
+}

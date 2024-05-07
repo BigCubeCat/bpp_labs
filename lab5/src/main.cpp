@@ -3,6 +3,9 @@
 #include "Config.h"
 #include "Worker/Worker.h"
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+
 int main(int argc, char **argv) {
     auto conf = Config(argc, argv);
     if (conf.debug) {
@@ -17,8 +20,10 @@ int main(int argc, char **argv) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    pthread_mutex_init(&mutex, nullptr);
+    pthread_cond_init(&cond, nullptr);
 
-    auto worker = Worker(rank, size, conf);
+    auto worker = Worker(rank, size, &mutex, &cond, conf);
     worker.Run();
     std::cout << worker.getResult();
 

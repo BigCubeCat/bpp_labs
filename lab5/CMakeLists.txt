@@ -12,7 +12,6 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(src/Core)
 include_directories(src/Config)
 include_directories(src/Storage)
-include_directories(src/TaskList)
 
 add_executable(
         lab5
@@ -28,7 +27,6 @@ add_executable(
 add_subdirectory(src/Core)
 add_subdirectory(src/Config)
 add_subdirectory(src/Storage)
-add_subdirectory(src/TaskList)
 
 find_package(MPI REQUIRED)
-target_link_libraries(lab5 Core Config Storage TaskList MPI::MPI_CXX)
+target_link_libraries(lab5 Core Config Storage MPI::MPI_CXX)

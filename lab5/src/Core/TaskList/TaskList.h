@@ -20,6 +20,10 @@ public:
 
     void generateRandomList(int seed, int size, int minimum, int maximum);
 
+    void dumpTasks(int count, int *destination);
+
+    void loadTasks(int count, int *source);
+
 private:
     std::deque<int> tasks{};
 };

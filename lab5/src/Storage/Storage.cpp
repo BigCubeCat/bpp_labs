@@ -1,13 +1,13 @@
+#include <iostream>
 #include "Storage.h"
 
-Storage::Storage(int size) : maxSize(size) {
+Storage::Storage(int size, bool limit) : maxSize(size), limitedSize(limit) {
 }
 
 void Storage::addValue(const std::string &key, const std::string &value) {
     queue.push(key);
-    map[key] = value;
 
-    if (queue.size() > maxSize) {
+    if (limitedSize && queue.size() > maxSize) {
         removeOldest();
     }
 }
@@ -16,17 +16,16 @@ void Storage::removeOldest() {
     while (queue.size() > maxSize) {
         auto k = queue.front();
         queue.pop();
-        map.erase(k);
+        std::cout << "remove " << k << std::endl;
     }
-}
-
-std::string Storage::getValue(const std::string &key) {
-    if (map.find(key) != map.end()) {
-        return map[key];
-    }
-    return "";
 }
 
 std::string Storage::toString() {
-    return queue.front() + " " + getValue(queue.front());
+    std::string result = "storage (" + std::to_string(queue.size()) + "): ";
+    while (!queue.empty()) {
+        result += queue.front() + " ";
+        queue.pop();
+    }
+    result += "\n";
+    return result;
 }

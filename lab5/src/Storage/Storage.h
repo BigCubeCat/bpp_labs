@@ -2,24 +2,20 @@
 #define LAB5_STORAGE_H
 
 
-#include <map>
 #include <queue>
 #include <string>
 
 class Storage {
 public:
-    Storage(int size);
+    Storage(int size, bool limit);
 
     void addValue(const std::string &key, const std::string &value);
 
-    std::string getValue(const std::string &key);
-
-    std::string toString();
+    std::string toString() ;
 
 private:
     int maxSize;
-    int size;
-    std::map<std::string, std::string> map{};
+    bool limitedSize;
     std::queue<std::string> queue{};
 
     void removeOldest();

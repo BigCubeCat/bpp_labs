@@ -3,10 +3,11 @@
 #include "LoadBalancer.h"
 
 
-LoadBalancer::LoadBalancer(int r, int count, int fc) :
-        rank(r), countProcess(count), deltaCount(fc) {
+LoadBalancer::LoadBalancer(int r, int count, int c) :
+        rank(r), countProcess(count), criticalDiff(c) {
     workload = new int[countProcess];
     reassignments = new int[countProcess];
+    counts = new int[countProcess];
     tmp.resize(countProcess);
 }
 
@@ -31,8 +32,8 @@ bool LoadBalancer::hasAnyTasks() const {
     return sum > 0;
 }
 
-std::string LoadBalancer::toString() {
-    std::string res = "Workload:\n";
+std::string LoadBalancer::toString() const {
+    std::string res = "-----\nWorkload:\n";
     for (int i = 0; i < countProcess; ++i) {
         res += std::to_string(workload[i]) + " ";
     }
@@ -41,9 +42,6 @@ std::string LoadBalancer::toString() {
 }
 
 void LoadBalancer::balance() {
-    if (rank != 0) {
-        return;
-    }
     for (int i = 0; i < countProcess; ++i) {
         tmp[i].rank = i;
         tmp[i].workload = workload[i];
@@ -55,9 +53,24 @@ void LoadBalancer::balance() {
     for (first = 0; first < countProcess / 2; ++first) {
         second = countProcess - first - 1;
         difference = tmp[second].workload - tmp[first].workload;
-        if (difference >= 2 * deltaCount) {
+        if (difference >= criticalDiff) {
             reassignments[tmp[first].rank] = tmp[first].rank;
             reassignments[tmp[second].rank] = tmp[first].rank;
+            counts[tmp[first].rank] = counts[tmp[second].rank] = difference / 2;
         }
     }
+}
+
+bool LoadBalancer::needToBalance() {
+    int maximum = workload[0], minimum = workload[0];
+    for (int i = 1; i < countProcess; ++i) {
+        if (workload[i] > maximum) {
+            maximum = workload[i];
+        } else if (workload[i] < minimum) {
+            minimum = workload[i];
+        }
+    }
+    maxDiff = maximum - minimum;
+    std::cout << "maxDiff = " << maxDiff << std::endl;
+    return maxDiff >= criticalDiff;
 }

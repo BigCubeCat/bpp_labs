@@ -19,10 +19,11 @@ private:
 
     Config config;
 
-    pthread_attr_t commThreadAttr;
-    pthread_attr_t workThreadAttr;
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    pthread_t threads[2];
+    pthread_attr_t commThreadAttr{};
+    pthread_attr_t workThreadAttr{};
+    pthread_mutex_t *mutex;
+    pthread_cond_t *cond;
+    pthread_t threads[2]{};
 
     TaskList taskList;
     Storage store;
@@ -38,14 +39,16 @@ private:
     double maxTime = -1;
     double minTime = -1;
 
-    int swapBuff;
+    int *swapBuff = nullptr;
 
-    void readFromBuffer();
+    void readFromBuffer(int count);
 
-    void writeToBuffer();
+    void writeToBuffer(int count);
+
+    void getTiming();
 
 public:
-    Worker(int rank, int size, const Config &conf);
+    Worker(int rank, int size, pthread_mutex_t *m, pthread_cond_t *cond, const Config &conf);
 
     ~Worker();
 

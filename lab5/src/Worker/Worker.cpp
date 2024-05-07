@@ -3,21 +3,21 @@
 #include "Worker.h"
 #include "Core.h"
 
-Worker::Worker(int rank, int size, const Config &conf)
+Worker::Worker(int rank, int size, pthread_mutex_t *m, pthread_cond_t *cond, const Config &conf)
         : mpiRank(rank),
           mpiSize(size),
           config(conf),
+          mutex(m),
+          cond(cond),
           store(Storage(conf.storeSize)),
           loadBalancer(LoadBalancer(rank, size, conf.minimumCountTasks)),
           useBalance(conf.useBalance),
           delay(conf.syncDelay),
           debug(conf.debug) {
-
-    taskList.generateRandomList(mpiRank, conf.defaultCountTasks, conf.minTask, conf.maxTask);
-
-    swapBuff = 0;
-
-    pthread_mutex_init(&mutex, nullptr);
+    taskList.generateRandomList(
+            mpiRank, conf.defaultCountTasks,
+            conf.minTask, conf.maxTask
+    );
 
     pthread_attr_init(&commThreadAttr);
     pthread_attr_init(&workThreadAttr);
@@ -35,7 +35,7 @@ void Worker::Run() {
 Worker::~Worker() {
     pthread_attr_destroy(&workThreadAttr);
     pthread_attr_destroy(&commThreadAttr);
-    pthread_mutex_destroy(&mutex);
+    pthread_mutex_destroy(mutex);
 }
 
 void Worker::DoOneTask() {
@@ -73,15 +73,15 @@ void *Worker::workerThread(void *ptr) {
     }
     beginTime = MPI_Wtime();
     while (!self->noTasks()) {
-        pthread_mutex_lock(&self->mutex);
+        pthread_mutex_lock(self->mutex);
         self->DoOneTask();
-        pthread_mutex_unlock(&self->mutex);
+        pthread_mutex_unlock(self->mutex);
     }
+    std::cout << "send signal in " << self->mpiRank << std::endl;
+    pthread_cond_signal(self->cond);
     endTime = MPI_Wtime();
 
-    pthread_mutex_lock(&self->mutex);
     self->timeSpent = endTime - beginTime;
-    pthread_mutex_unlock(&self->mutex);
 
     if (self->debug)
         std::cout << self->mpiRank << " time = " << self->timeSpent << std::endl;
@@ -99,12 +99,15 @@ void *Worker::communicatorThread(void *ptr) {
         // ничего не делаем :|
         std::this_thread::sleep_for(std::chrono::milliseconds(self->delay));
         // узнаем, сколько у нас осталось задач
+//        pthread_mutex_lock(self->mutex);
+        std::cout << self->taskList.countTasks() << std::endl;
         self->loadBalancer.updateCurrentCount(self->taskList.countTasks());
+//        pthread_mutex_unlock(self->mutex);
         MPI_Allgather(
                 myWorkloadPtr, 1, MPI_INT, self->loadBalancer.workload,
                 1, MPI_INT, MPI_COMM_WORLD
         );
-        if (self->useBalance) {
+        if (self->useBalance && self->loadBalancer.needToBalance()) {
             // см README.md
             self->doBalance();
         }
@@ -112,44 +115,60 @@ void *Worker::communicatorThread(void *ptr) {
             std::cout << self->loadBalancer.toString() << std::endl;
     } while (self->loadBalancer.hasAnyTasks());
     // Вот тут надо дождаться, что все завершат последнюю операцию
+    pthread_cond_wait(self->cond, self->mutex);
+    self->getTiming();
+    return nullptr;
+}
+
+void Worker::getTiming() {
+    std::cout << "before barrier " << mpiRank << "\n";
     MPI_Barrier(MPI_COMM_WORLD);
-    pthread_join(self->threads[0], nullptr);
+    std::cout << "find maximum\n";
     MPI_Allreduce(
-            &self->timeSpent, &self->maxTime, 1,
+            &timeSpent, &maxTime, 1,
             MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD
     );
+    std::cout << "find minimum\n";
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Allreduce(
-            &self->timeSpent, &self->minTime, 1,
+            &timeSpent, &minTime, 1,
             MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
     );
-    self->disbalance = ((self->maxTime - self->minTime) / self->maxTime);
-    return nullptr;
+    MPI_Barrier(MPI_COMM_WORLD);
+    disbalance = ((maxTime - minTime) / maxTime);
+    std::cout << "end of " << mpiRank << std::endl;
 }
 
 void Worker::doBalance() {
     loadBalancer.balance();
-    MPI_Bcast(loadBalancer.reassignments, mpiSize, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
+    pthread_mutex_lock(mutex);
     if (loadBalancer.reassignments[mpiRank] != -1) {
+        int count = loadBalancer.counts[mpiRank];
+        swapBuff = new int[count];
         if (loadBalancer.reassignments[mpiRank] == mpiRank) {
             // Получаем данные
             MPI_Recv(
-                    &swapBuff, 1, MPI_INT,
+                    swapBuff, count, MPI_INT,
                     MPI_ANY_SOURCE, MPI_ANY_TAG,
                     MPI_COMM_WORLD, MPI_STATUS_IGNORE
             );
-            readFromBuffer();
+            readFromBuffer(count);
         } else {
-            writeToBuffer();
+            writeToBuffer(count);
             int dest = loadBalancer.reassignments[mpiRank];
-            MPI_Send(&swapBuff, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
+            MPI_Send(swapBuff, count, MPI_INT, dest, 0, MPI_COMM_WORLD);
         }
+        delete[] swapBuff;
     }
+    pthread_mutex_unlock(mutex);
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 
-void Worker::writeToBuffer() {
-    swapBuff = taskList.getLastTask();
+void Worker::writeToBuffer(int count) {
+    taskList.dumpTasks(count, swapBuff);
 }
 
-void Worker::readFromBuffer() {
-    taskList.addTask(swapBuff);
+void Worker::readFromBuffer(int count) {
+    taskList.loadTasks(count, swapBuff);
 }

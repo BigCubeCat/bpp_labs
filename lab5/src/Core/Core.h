@@ -5,10 +5,26 @@
 #include <vector>
 
 #include "pi/pi.h"
+#include "TaskList/TaskList.h"
 
 class Core {
+private:
+    int rank;
+    TaskList taskList;
+    Storage storage;
+
+    bool imDone = false; // все задачи решениы
+    bool imBusy = true; // есть задачи кроме текущей
 public:
-    static std::string calculate(int num);
+    Core(int rank, int countTasks, int minimumTask, int maximumTask);
+
+    std::string toString() const;
+
+    void calculate();
+
+    bool isBusy();
+
+    bool isDone();
 };
 
 

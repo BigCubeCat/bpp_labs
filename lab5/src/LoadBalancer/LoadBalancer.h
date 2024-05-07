@@ -14,12 +14,14 @@ class LoadBalancer {
 private:
     int rank{};
     int countProcess{};
-    // Число задач, которое мы предаем между двумя процессами за раз
-    int deltaCount{};
+    // Число задач, при которых нужно делать балансировку
+    int criticalDiff{};
     std::vector<RankData> tmp;
+    int maxDiff = 0;
 public:
     int *workload = nullptr;
     int *reassignments = nullptr;
+    int *counts = nullptr;
 
     LoadBalancer(int rank, int count, int fc);
 
@@ -31,9 +33,11 @@ public:
 
     bool hasAnyTasks() const;
 
+    bool needToBalance() ;
+
     ~LoadBalancer();
 
-    std::string toString();
+    std::string toString() const;
 };
 
 
