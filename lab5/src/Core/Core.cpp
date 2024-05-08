@@ -6,9 +6,12 @@ void Core::calculate() {
         return;
     }
     auto task = taskList.getFirstTask();
-    std::cout << "COunt tasks at " << rank << " " << taskList.countTasks() << std::endl;
-    if (taskList.isEmpty()) {
+    needMore = false;
+    if (taskList.countTasks() == 0) {
+        needMore = true;
         imBusy = false;
+    } else if (taskList.countTasks() <= 1) {
+        needMore = true;
     }
     storage.addValue(std::to_string(calcPi(task)));
 }
@@ -40,4 +43,12 @@ void Core::loadTasks(int count, int *source) {
 
 int Core::countTaskToDelegate() {
     return taskList.countTasks() / 2;
+}
+
+bool Core::needMoreTasks() const {
+    return needMore;
+}
+
+int Core::countTasks() {
+    return taskList.countTasks();
 }

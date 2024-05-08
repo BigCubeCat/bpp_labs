@@ -2,11 +2,9 @@
 #define LAB5_ESTATUS_H
 
 enum EStatus{
-    FREE,
-    BUSY,
-    ZOMBIE,
-    MPI_ERROR,
-    OTHER_ERROR,
+    WORKER,
+    BALANCER,
+    COMMUNICATOR,
     END
 };
 

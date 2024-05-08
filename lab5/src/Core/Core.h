@@ -14,7 +14,7 @@ private:
     TaskList taskList{};
     Storage storage;
 
-    bool imDone = false; // все задачи решениы
+    bool needMore = false; // нужно ли больше задач
     bool imBusy = true; // есть задачи кроме текущей
 public:
     Core(int rank, int countTasks, int minimumTask, int maximumTask);
@@ -25,11 +25,15 @@ public:
 
     bool isBusy() const;
 
+    bool needMoreTasks() const;
+
     void dumpTasks(int count, int *dest);
 
     void loadTasks(int count, int *source);
 
     int countTaskToDelegate();
+
+    int countTasks();
 };
 
 

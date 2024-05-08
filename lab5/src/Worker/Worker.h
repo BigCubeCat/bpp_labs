@@ -31,15 +31,23 @@ private:
 
     void getTiming();
 
-    void askForTask();
+    void fetchTasks(int rank, int count);
 
     void giveTask(int rank);
 
-    static void *workerThread(void *ptr);
+    // функции потоков
+    void workerThread();
 
-    static void *communicatorThread(void *ptr);
+    void communicatorThread();
 
-    static void *balancerThread(void *ptr);
+    void balancerThread();
+
+    // точки входа в потоки
+    static void *workerThreadFunction(void *ptr);
+
+    static void *communicatorThreadFunction(void *ptr);
+
+    static void *balancerThreadFunction(void *ptr);
 
 public:
     Worker(

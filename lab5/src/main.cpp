@@ -21,11 +21,12 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     pthread_mutex_init(&mem.mutex, nullptr);
-    pthread_cond_init(&mem.cond, nullptr);
+
+    std::cout << WORKER << " " << BALANCER << " " << COMMUNICATOR << " " << END << std::endl;
 
     auto worker = Worker(rank, size, &mem, conf);
     worker.Run();
-    std::cout << worker.getResult();
+    std::cout << worker.getResult() << std::endl;
 
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Finalize();
