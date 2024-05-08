@@ -25,9 +25,14 @@ void Worker::Run() {
     pthread_create(&threads[1], &blncThreadAttr, balancerThreadFunction, this);
     pthread_create(&threads[2], &workThreadAttr, workerThreadFunction, this);
 
+    std::cout << "Run\n";
+
     pthread_join(threads[0], nullptr);
+    std::cout << "end0\n";
     pthread_join(threads[1], nullptr);
+    std::cout << "end1\n";
     pthread_join(threads[2], nullptr);
+    std::cout << "end2\n";
 }
 
 Worker::~Worker() {
@@ -57,6 +62,7 @@ void Worker::getTiming() {
     );
     std::cout << "afterAllreduce second " << mpiRank << std::endl;
     profiler.calcDisbalance();
+    std::cout << " here " << mpiRank << std::endl;
 }
 
 void Worker::fetchTasks(int rank, int count) {
@@ -87,6 +93,7 @@ void Worker::workerThread() {
     double beginTime = 0;
     profiler.timeSpent = 0;
     while (mem->flag != END){
+        std::cout << "worker" << mpiRank << " " << core.countTasks() << " flag: " << mem->flag << std::endl;
         if (mem->flag != WORKER) {
             continue;
         }
@@ -101,16 +108,17 @@ void Worker::workerThread() {
         }
         pthread_mutex_unlock(&mem->mutex);
     }
-    pthread_exit(nullptr);
 }
 
 void Worker::balancerThread() {
     // балансировщик должен запуститься после рабочего потока
     std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
     while(mem->flag != END) {
+        std::cout << "bb" << mpiRank << " " << mem->flag << std::endl;
         if (mem->flag != BALANCER) {
             continue;
         }
+        std::cout << "balancing " << mpiRank << std::endl;
         int rank, count = 0;
         bool processFound = false;
         for (int i = mpiRank + 1; i < mpiSize - 1; ++i) {
@@ -140,8 +148,6 @@ void Worker::balancerThread() {
     pthread_mutex_lock(&mem->mutex);
     getTiming();
     pthread_mutex_unlock(&mem->mutex);
-
-    pthread_exit(nullptr);
 }
 
 void Worker::communicatorThread() {
@@ -150,23 +156,25 @@ void Worker::communicatorThread() {
     MPI_Status status;
     while (mem->flag != END) {
         std::cout << mpiRank << " comm\n";
-        std::this_thread::sleep_for(std::chrono::seconds(config.syncDelay)); // надо ли это?
         MPI_Irecv(
                 &processRank, 1, MPI_INT, MPI_ANY_SOURCE,
                 ASK_FOR_A_TASK, MPI_COMM_WORLD,
                 &request
         );
-        std::this_thread::sleep_for(std::chrono::seconds(config.syncDelay)); // надо ли это?
+        std::cout << "Irecv " << mpiRank << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(config.syncDelay));
+        std::cout << "Testing " << mpiRank << std::endl;
         MPI_Test(&request, &flag, &status);
-        if (flag) {
+        std::cout << "tested " << mpiRank << ", response " << flag << std::endl;
+        if (flag != 0) {
             pthread_mutex_lock(&mem->mutex);
+            std::cout << "give the task! " << mpiRank << std::endl;
             giveTask(processRank);
             pthread_mutex_unlock(&mem->mutex);
         } else {
             MPI_Cancel(&request);
         }
     }
-    pthread_exit(nullptr);
 }
 
 void *Worker::workerThreadFunction(void *ptr) {
@@ -175,6 +183,8 @@ void *Worker::workerThreadFunction(void *ptr) {
         return nullptr;
     }
     self->workerThread();
+    std::cout << "work thread ends " << self->mpiRank << std::endl;
+    pthread_exit(nullptr);
     return nullptr;
 }
 
@@ -184,6 +194,8 @@ void *Worker::balancerThreadFunction(void *ptr) {
         return nullptr;
     }
     self->balancerThread();
+    std::cout << "balancer thread ends " << self->mpiRank << std::endl;
+    pthread_exit(nullptr);
     return nullptr;
 }
 
@@ -193,5 +205,7 @@ void *Worker::communicatorThreadFunction(void *ptr) {
         return nullptr;
     }
     self->communicatorThread();
+    std::cout << "comm thread ends " << self->mpiRank << std::endl;
+    pthread_exit(nullptr);
     return nullptr;
 }
