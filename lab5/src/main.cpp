@@ -22,8 +22,6 @@ int main(int argc, char **argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     pthread_mutex_init(&mem.mutex, nullptr);
 
-    std::cout << WORKER << " " << BALANCER << " " << COMMUNICATOR << " " << END << std::endl;
-
     auto worker = Worker(rank, size, &mem, conf);
     worker.Run();
     std::cout << worker.getResult() << std::endl;

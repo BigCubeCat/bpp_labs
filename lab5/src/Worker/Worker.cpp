@@ -66,18 +66,22 @@ void Worker::fetchTasks(int rank, int count) {
             swapBuff, count, MPI_INT, rank,
             ASK_FOR_A_TASK, MPI_COMM_WORLD, MPI_STATUS_IGNORE
     );
+
+    pthread_mutex_lock(&mem->mutex);
     core.loadTasks(count, swapBuff);
+    pthread_mutex_unlock(&mem->mutex);
     delete[] swapBuff;
 
 }
 
 void Worker::giveTask(int rank) {
-    logger.debug("giveTask");
     int countTask = core.countTaskToDelegate();
+    logger.debug("give " + std::to_string(countTask) + " to " + std::to_string(rank));
     MPI_Send(&countTask, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
     if (countTask > 0) {
         swapBuff = new int[countTask];
         core.dumpTasks(countTask, swapBuff);
+        logger.debug("send " + std::to_string(countTask) + " to " + std::to_string(rank));
         MPI_Send(swapBuff, countTask, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
         delete[] swapBuff;
     }
@@ -87,18 +91,18 @@ void Worker::workerThread() {
     double beginTime = 0;
     profiler.timeSpent = 0;
     while (mem->flag != END) {
-        logger.debug("worker, flag = " + std::to_string(mem->flag));
-        if (mem->flag != WORKER) {
-            continue;
-        }
+        // logger.debug("worker, " + std::to_string(core.countTasks()) + ", flag = " + std::to_string(mem->flag));
+        // работа не должна блокироваться
         beginTime = MPI_Wtime();
-        pthread_mutex_lock(&mem->mutex);
         logger.info(" calculating " + std::to_string(core.countTasks()));
+        pthread_mutex_lock(&mem->mutex);
         core.calculate();
         profiler.timeSpent += MPI_Wtime() - beginTime;
-        if (core.needMoreTasks()) {
-            logger.debug("call balancer");
-            mem->flag = BALANCER; // Нужна балансировка
+        if (config.useBalance) {
+            if (core.needMoreTasks()) {
+                logger.debug("call balancer");
+                mem->flag = BALANCER; // Нужна балансировка
+            }
         }
         pthread_mutex_unlock(&mem->mutex);
     }
@@ -108,35 +112,38 @@ void Worker::balancerThread() {
     // балансировщик должен запуститься после рабочего потока
     std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
     while (mem->flag != END) {
-        std::cout << "bb" << mpiRank << " " << mem->flag << std::endl;
+        logger.debug("bb + " + std::to_string(mem->flag));
         if (mem->flag != BALANCER) {
             continue;
         }
-        std::cout << "balancing " << mpiRank << std::endl;
+        logger.debug("balancing");
         int rank, count = 0;
         bool processFound = false;
-        for (int i = mpiRank + 1; i < mpiSize - 1; ++i) {
-            rank = i % mpiSize;
+        for (int i = 1; i < mpiSize; ++i) {
+            rank = (mpiRank + 1) % mpiSize;
+            logger.debug(" try " + std::to_string(rank));
             // сообщаем, что мы хотим задачу и отправляем свой ранг
             MPI_Send(&mpiRank, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
             // получаем ответ - сколько задач нам готовы выдать
             MPI_Recv(&count, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            logger.debug(" recieved answer from  " + std::to_string(rank) + " is " + std::to_string(count));
             // если задачи есть, то их надо получить
             if (count > 0) {
+                logger.info("succes at " + std::to_string(rank));
                 processFound = true;
                 // получаем count задач
-                pthread_mutex_lock(&mem->mutex);
+                logger.info("mutex lock ");
                 fetchTasks(rank, count);
-                pthread_mutex_unlock(&mem->mutex);
             }
         }
+        // если у всех ничего - это конец
+        pthread_mutex_lock(&mem->mutex);
         if (!processFound) {
-            // если у всех ничего - это конец
-            pthread_mutex_lock(&mem->mutex);
-            logger.info("END");
             mem->flag = END;
-            pthread_mutex_unlock(&mem->mutex);
+        } else {
+            mem->flag = WORKER;
         }
+        pthread_mutex_unlock(&mem->mutex);
     }
 
     pthread_mutex_lock(&mem->mutex);

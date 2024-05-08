@@ -3,7 +3,7 @@
 
 
 std::string Logger::getLogString(const std::string &logMessage) {
-    return "rank" + rank + logMessage + "\n";
+    return "rank" + rank + "\t" + logMessage + "\n";
 }
 
 Logger::Logger(int mpiRank, LOG_LEVEL level) : logLevel(level) {

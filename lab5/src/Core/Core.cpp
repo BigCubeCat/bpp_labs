@@ -10,7 +10,7 @@ void Core::calculate() {
     if (taskList.countTasks() == 0) {
         needMore = true;
         imBusy = false;
-    } else if (taskList.countTasks() <= 1) {
+    } else if (taskList.countTasks() <= 4) {
         needMore = true;
     }
     storage.addValue(std::to_string(calcPi(task)));
