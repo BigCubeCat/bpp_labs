@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(src/Core)
 include_directories(src/Config)
+include_directories(src/Logger)
 
 add_executable(
         lab5
@@ -25,6 +26,7 @@ add_executable(
 
 add_subdirectory(src/Core)
 add_subdirectory(src/Config)
+add_subdirectory(src/Logger)
 
 find_package(MPI REQUIRED)
-target_link_libraries(lab5 Core Config MPI::MPI_CXX)
+target_link_libraries(lab5 Core Config Logger MPI::MPI_CXX)

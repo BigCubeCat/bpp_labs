@@ -9,6 +9,7 @@
 #include "Config.h"
 #include "Profiler.h"
 #include "MutualMem.h"
+#include "Logger.h"
 
 
 class Worker {
@@ -19,6 +20,8 @@ private:
     Core core;
     Profiler profiler;
     MutualMem *mem;
+
+    Logger logger;
 
     pthread_attr_t commThreadAttr{};
     pthread_attr_t blncThreadAttr{};
