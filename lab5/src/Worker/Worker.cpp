@@ -27,8 +27,6 @@ void Worker::Run() {
     pthread_create(&threads[1], &blncThreadAttr, balancerThreadFunction, this);
     pthread_create(&threads[2], &workThreadAttr, workerThreadFunction, this);
 
-    pthread_join(threads[0], nullptr);
-    pthread_join(threads[1], nullptr);
     pthread_join(threads[2], nullptr);
 }
 
@@ -71,6 +69,9 @@ void Worker::workerThread() {
         beginTime = MPI_Wtime();
         logger.info(" calculating " + std::to_string(core.countTasks()));
         pthread_mutex_lock(&mem->mutex);
+        if (core.countTasks() == 0) {
+            mem->flag = END;
+        }
         core.calculate();
         profiler.timeSpent += MPI_Wtime() - beginTime;
         pthread_mutex_unlock(&mem->mutex);
@@ -88,7 +89,7 @@ void Worker::balancerThread() {
     while (mem->flag != END) {
         if (!core.needMoreTasks()) {
             // нет смысла сразу проверять, так на необходимость балансировки наш процесс
-            std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
+            // std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
             continue;
         }
         int rank;
@@ -108,7 +109,7 @@ void Worker::balancerThread() {
             } else {
                 processFound = true;
                 pthread_mutex_lock(&mem->mutex);
-                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " + std::to_string(swapBuff[1]));
+                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " + std::to_string(swapBuff[1]) + " from " + std::to_string(rank));
                 core.loadTasks(config.minimumCountTasks, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
             }
