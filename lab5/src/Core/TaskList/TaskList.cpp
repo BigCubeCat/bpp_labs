@@ -32,17 +32,11 @@ bool TaskList::isEmpty() {
     return (countTasks() == 0);
 }
 
-void TaskList::generateRandomList(int seed, int size, int minimum, int maximum) {
-    srand(seed);
-    auto randPercent = []() -> double {
-        return static_cast<double>(static_cast<int>(static_cast<double>(rand()) / static_cast<double>(RAND_MAX) * 10)) / 10;
-    };
-    auto randrange = [&minimum, &maximum, &randPercent]() {
-        return minimum + static_cast<int>(randPercent() * (maximum - minimum));
-    };
+void TaskList::generateCurrentTask(int rank, int size, int minimum, int maximum) {
     for (int i = 0; i < size; ++i) {
-        addTask(randrange());
+        addTask(2 * (rank + 1) + i);
     }
+    std:: cout << rank << tasks.front() << std::endl;
 }
 
 void TaskList::dumpTasks(int count, int *destination) {

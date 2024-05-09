@@ -17,10 +17,10 @@ void Core::calculate() {
 }
 
 Core::Core(int rank, int countTasks, int minimumTask, int maximumTask) :
-        rank(rank), startCount(countTasks), cheapTaskCount(2),
+        rank(rank), startCount(countTasks), cheapTaskCount(countTasks / 2 + 1),
         storage(Storage(countTasks, false)) {
     storage = Storage(countTasks, false);
-    taskList.generateRandomList(rank, countTasks, minimumTask, maximumTask);
+    taskList.generateCurrentTask(rank, countTasks, minimumTask, maximumTask);
 }
 
 bool Core::isBusy() const {
@@ -42,9 +42,7 @@ void Core::loadTasks(int count, int *source) {
 }
 
 int Core::countTaskToDelegate() {
-    int res = (taskList.countTasks() - cheapTaskCount) / 2;
-    if (res > 0) return res;
-    return 0;
+    return taskList.countTasks();
 }
 
 bool Core::needMoreTasks() const {

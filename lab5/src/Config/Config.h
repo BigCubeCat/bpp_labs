@@ -6,13 +6,13 @@ class Config {
 public:
     Config(int argc, char *argv[]);
 
-    int defaultCountTasks = 20;
+    int defaultCountTasks = 7;
     bool useBalance = true;
-    int syncDelay = 60;
+    int syncDelay = 1;
     int storeSize = 100;
 
     int minTask = 1;
-    int maxTask = 200000000;
+    int maxTask = 25000000;
 
     int minimumCountTasks = 1;
 

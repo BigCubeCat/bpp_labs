@@ -18,7 +18,7 @@ public:
 
     bool isEmpty();
 
-    void generateRandomList(int seed, int size, int minimum, int maximum);
+    void generateCurrentTask(int rank, int size, int minimum, int maximum);
 
     void dumpTasks(int count, int *destination);
 

@@ -88,8 +88,9 @@ void Worker::workerThread() {
 void Worker::balancerThread() {
     if (!config.useBalance) return;
     MPI_Status responseStatus;
+    MPI_Request req;
+    int flag;
     // балансировщик должен запуститься после рабочего потока
-    std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
     while (mem->flag != END) {
         if (!core.needMoreTasks()) {
             // нет смысла сразу проверять, так на необходимость балансировки наш процесс
@@ -99,11 +100,17 @@ void Worker::balancerThread() {
         int rank;
         bool processFound = false;
         for (int i = 1; i < mpiSize; ++i) {
-            rank = (mpiRank + 1) % mpiSize;
+            rank = (mpiSize + mpiRank - 1) % mpiSize;
             logger.debug(" try " + std::to_string(rank));
             // сообщаем, что мы хотим задачу и отправляем свой ранг
-            MPI_Send(&mpiRank, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
-            // получаем ответ - сколько задач нам готовы выдать
+            MPI_Isend(&mpiRank, 1, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD, &req);
+            std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
+            MPI_Test(&req, &flag, MPI_STATUS_IGNORE);
+            if (flag == 0) { // если не дождались по таймаут - останавливаем запрос
+                MPI_Cancel(&req);
+                logger.warn("timeout");
+                continue;
+            }
             MPI_Recv(swapBuff, config.minimumCountTasks,
                      MPI_INT, rank, MPI_ANY_TAG,
                      MPI_COMM_WORLD, &responseStatus
@@ -113,10 +120,11 @@ void Worker::balancerThread() {
             } else {
                 processFound = true;
                 pthread_mutex_lock(&mem->mutex);
-                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " + std::to_string(swapBuff[1]) +
+                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " +
                             " from " + std::to_string(rank));
                 core.loadTasks(config.minimumCountTasks, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
+                break;
             }
         }
         // если у всех ничего - это конец
