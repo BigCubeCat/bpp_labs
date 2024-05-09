@@ -11,10 +11,10 @@ public:
     int syncDelay = 60;
     int storeSize = 100;
 
-    int minTask = 100;
+    int minTask = 10000;
     int maxTask = 100000000;
 
-    int minimumCountTasks = 1;
+    int minimumCountTasks = 2;
 
     bool debug = true;
 

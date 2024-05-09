@@ -34,10 +34,6 @@ private:
 
     void getTiming();
 
-    void fetchTasks(int rank, int count);
-
-    void giveTask(int rank);
-
     // функции потоков
     void workerThread();
 
