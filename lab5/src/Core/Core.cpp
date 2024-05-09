@@ -10,14 +10,14 @@ void Core::calculate() {
     if (taskList.countTasks() == 0) {
         needMore = true;
         imBusy = false;
-    } else if (taskList.countTasks() <= 4) {
+    } else if (taskList.countTasks() <= cheapTaskCount) {
         needMore = true;
     }
     storage.addValue(std::to_string(calcPi(task)));
 }
 
 Core::Core(int rank, int countTasks, int minimumTask, int maximumTask) :
-        rank(rank),
+        rank(rank), startCount(countTasks), cheapTaskCount(2),
         storage(Storage(countTasks, false)) {
     storage = Storage(countTasks, false);
     taskList.generateRandomList(rank, countTasks, minimumTask, maximumTask);
@@ -42,7 +42,9 @@ void Core::loadTasks(int count, int *source) {
 }
 
 int Core::countTaskToDelegate() {
-    return taskList.countTasks() / 2;
+    int res = (taskList.countTasks() - cheapTaskCount) / 2;
+    if (res > 0) return res;
+    return 0;
 }
 
 bool Core::needMoreTasks() const {

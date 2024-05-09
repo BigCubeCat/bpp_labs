@@ -10,7 +10,7 @@
 
 class Core {
 private:
-    int rank;
+    int rank, startCount, cheapTaskCount;
     TaskList taskList{};
     Storage storage;
 

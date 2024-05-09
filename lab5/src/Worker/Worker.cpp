@@ -40,7 +40,10 @@ Worker::~Worker() {
 
 std::string Worker::getResult() {
     if (mpiRank != 0) return "";
-    return profiler.toString(config.defaultCountTasks, config.useBalance);
+    std::string result = "rank               " + std::to_string(mpiRank) + "\n";
+    result += "local time         " + std::to_string(profiler.timeSpent) + "\n";
+    result += profiler.toString(config.defaultCountTasks, config.useBalance);
+    return result;
 }
 
 void Worker::getTiming() {
@@ -83,6 +86,7 @@ void Worker::workerThread() {
 }
 
 void Worker::balancerThread() {
+    if (!config.useBalance) return;
     MPI_Status responseStatus;
     // балансировщик должен запуститься после рабочего потока
     std::this_thread::sleep_for(std::chrono::milliseconds(config.syncDelay));
@@ -109,7 +113,8 @@ void Worker::balancerThread() {
             } else {
                 processFound = true;
                 pthread_mutex_lock(&mem->mutex);
-                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " + std::to_string(swapBuff[1]) + " from " + std::to_string(rank));
+                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " + std::to_string(swapBuff[1]) +
+                            " from " + std::to_string(rank));
                 core.loadTasks(config.minimumCountTasks, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
             }
@@ -129,6 +134,7 @@ void Worker::balancerThread() {
 }
 
 void Worker::communicatorThread() {
+    if (!config.useBalance) return;
     MPI_Request request;
     int flag, processRank, countTask;
     MPI_Status status;

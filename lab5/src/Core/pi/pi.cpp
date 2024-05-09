@@ -1,6 +1,7 @@
 #include "pi.h"
 
 #include <cstdlib>
+#include <csignal>
 
 struct TPoint {
     double_t x, y;
