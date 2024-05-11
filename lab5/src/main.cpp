@@ -4,13 +4,13 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
-const int MINIMUM_TASK_SIZE = 1;
-const int MAXIMUM_TASK_SIZE = 10;
+const int MIN_TASK = 1;
+const int MAX_DIFF = 50;
 
 void randomizeTask(int *arr, int size) {
     srand(time(nullptr));
     for (int i = 0; i < size; ++i) {
-        arr[i] = (rand() % MAXIMUM_TASK_SIZE) + MINIMUM_TASK_SIZE;
+        arr[i] = MIN_TASK + (rand() % MAX_DIFF);
     }
 }
 
@@ -40,11 +40,17 @@ int main(int argc, char **argv) {
     }
 
     int countTasks = Worker::countTasksInProcess(conf.defaultCountTasks, rank, size);
-    int *inputArray = (rank == 0) ? new int[conf.defaultCountTasks] : new int[0];
+    //int *inputArray = (rank == 0) ? new int[conf.defaultCountTasks] : new int[0];
+    int inputArray[20] = {
+            1, 1, 1, 1, 1,
+            10, 10, 10, 10, 10,
+            7, 7, 7, 8, 10,
+            9, 8, 1, 2, 10,
+    };
     int *initialArray = new int[counts[rank]];
     if (rank == 0) {
-        randomizeTask(inputArray, conf.defaultCountTasks);
-        for (int i = 0; i < conf.defaultCountTasks; ++i) std::cout << inputArray[i] << " ";
+        //randomizeTask(inputArray, conf.defaultCountTasks);
+        for (int i = 0; i < conf.defaultCountTasks; ++i) std::cout << inputArray[i] << ", ";
         std::cout << "\n";
     }
 
@@ -65,6 +71,5 @@ int main(int argc, char **argv) {
     delete[] counts;
     delete[] disps;
     delete[] initialArray;
-    delete[] inputArray;
     return 0;
 }

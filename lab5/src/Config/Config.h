@@ -12,8 +12,8 @@ public:
     int defaultCountTasks = 20;
     bool useBalance = true;
     int timeout = 500;
-    int swapSize = 2;
-    int critical = 2;
+    int swapSize = 1;
+    int critical = 3;
     bool debug = true;
 
     bool usingEnv = false;

@@ -5,7 +5,8 @@
 #include "Worker.h"
 #include "Core.h"
 
-const int ASK_FOR_A_TASK = INT_MAX;
+const int ASK_FOR_A_TASK = 128;
+const int ACCEPT_TASKS = 256;
 
 Worker::Worker(int rank, int size, Core core, MutualMem *m, const Config &conf)
         : mpiRank(rank),
@@ -78,6 +79,7 @@ void Worker::workerThread() {
         core.print();
         pthread_mutex_lock(&mem->mutex);
         if (core.countTasks() <= 0) {
+            // Ожидается, что балансировщик работает эффеткивно
             mem->flag = END;
         }
         pthread_mutex_unlock(&mem->mutex);
@@ -90,93 +92,65 @@ void Worker::workerThread() {
 
 void Worker::balancerThread() {
     if (!config.useBalance) return;
-    MPI_Status responseStatus;
-    MPI_Request req[2];
-    int flags[2], rank, first, last, countTasks;
-    bool processFound;
+    int rank, first, last;
     while (mem->flag != END) {
         if (core.countTasks() > config.critical) {
             // задач еще много
             continue;
         }
-        processFound = false;
-        first = rand() % mpiSize;
+        first = (mpiRank + 1) % mpiSize;
         last = first + mpiSize;
         for (int i = first; i < last; ++i) {
             rank = i % mpiSize;
             if (rank == mpiRank) continue;
             if (processWorkload[rank] == UNKNOWN) {
-                countTasks = core.countTasks();
-                MPI_Send(&countTasks, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
-                MPI_Recv(&countTasks, 1, MPI_INT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-                if (countTasks == 0) {
-                    logger.warn("received: no tasks");
-                    processWorkload[rank] = NO_TASKS;
-                    continue;
-                }
-                swapBuff = new int[countTasks];
-                MPI_Recv(swapBuff, countTasks,
-                         MPI_INT, rank, MPI_ANY_TAG,
-                         MPI_COMM_WORLD, MPI_STATUS_IGNORE
-                );
-                logger.warn("received: success " + std::to_string(swapBuff[0]) + " " +
-                            " from " + std::to_string(rank));
-                pthread_mutex_lock(&mem->mutex);
-                core.loadTasks(countTasks, swapBuff);
-                pthread_mutex_unlock(&mem->mutex);
-                delete[] swapBuff;
-
-                processFound = true;
-                break;
+                MPI_Send(swapBuff, config.swapSize, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
+                processWorkload[rank] = NO_TASKS;
             }
         }
-        // если у всех ничего - это конец
-        pthread_mutex_lock(&mem->mutex);
-        if (!processFound) {
-            if (core.countTasks() == 0) mem->flag = END;
-        } else {
-            logger.debug("more tasks, continue working");
-            mem->flag = WORKER;
-        }
-        pthread_mutex_unlock(&mem->mutex);
     }
 }
 
 void Worker::communicatorThread() {
     if (!config.useBalance) return;
     MPI_Request request;
-    int flag, rank, countTasks, myCountTasks, countTasksToSend;
+    int flag, rank, myCountTasks, diff, tag;
     MPI_Status status;
     while (mem->flag != END) {
         MPI_Irecv(
-                &countTasks, 1, MPI_INT, MPI_ANY_SOURCE,
-                MPI_ANY_TAG, MPI_COMM_WORLD,
+                swapBuff, config.swapSize, MPI_INT,
+                MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD,
                 &request
         );
-        std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout * 2));
+        std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout));
         MPI_Test(&request, &flag, &status);
         if (flag != 0) {
             rank = status.MPI_SOURCE;
-            myCountTasks = core.countTasks();
-            logger.debug(
-                    "request from " + std::to_string(rank) +
-                    "; countTasks = " + std::to_string(countTasks)
-            );
-            // если процесс просит задачу у нас, значит у него нечего брать
+            tag = status.MPI_TAG;
+            // либо нам уже все отдали, либо у нас просят
             processWorkload[status.MPI_SOURCE] = NO_TASKS;
-            countTasksToSend = (myCountTasks - countTasks) / 2;
-            if (myCountTasks <= config.critical || countTasksToSend <= 0) {
-                int answer = 0;
-                MPI_Send(&answer, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
-            } else {
-                MPI_Send(&countTasksToSend, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
-                swapBuff = new int[countTasksToSend];
+            if (tag == ACCEPT_TASKS) { // принимаем задачи
+                logger.warn("accept: success from " + std::to_string(rank));
                 pthread_mutex_lock(&mem->mutex);
-                core.dumpTasks(countTasksToSend, swapBuff);
+                core.loadTasks(config.swapSize, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
-                MPI_Send(swapBuff, countTasksToSend, MPI_INT, rank, 0, MPI_COMM_WORLD);
-                logger.warn("send: success to " + std::to_string(rank));
-                delete[] swapBuff;
+            } else if (tag == ASK_FOR_A_TASK) {
+                myCountTasks = core.countTasks();
+                logger.debug(
+                        "request from " + std::to_string(rank) +
+                        "; countTasks = " + std::to_string(myCountTasks)
+                );
+                // если процесс просит задачу у нас, значит у него нечего брать
+                diff = myCountTasks - config.swapSize;
+                if (diff <= 0) {
+                    MPI_Send(swapBuff, config.swapSize, MPI_INT, rank, 0, MPI_COMM_WORLD);
+                } else {
+                    pthread_mutex_lock(&mem->mutex);
+                    core.dumpTasks(config.swapSize, swapBuff);
+                    pthread_mutex_unlock(&mem->mutex);
+                    MPI_Send(swapBuff, config.swapSize, MPI_INT, rank, ACCEPT_TASKS, MPI_COMM_WORLD);
+                    logger.warn("send: success to " + std::to_string(rank));
+                }
             }
         } else {
             MPI_Cancel(&request);
