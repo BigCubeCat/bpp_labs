@@ -18,11 +18,13 @@ public:
 
     bool isEmpty();
 
-    void generateCurrentTask(int rank, int size, int minimum, int maximum);
+    void generateCurrentTask(int rank, int size);
 
     void dumpTasks(int count, int *destination);
 
     void loadTasks(int count, int *source);
+
+    void print();
 
 private:
     std::deque<int> tasks{};

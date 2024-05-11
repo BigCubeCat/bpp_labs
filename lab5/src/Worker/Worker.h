@@ -28,7 +28,7 @@ private:
     pthread_attr_t workThreadAttr{};
     pthread_t threads[3]{};
 
-    bool debug;
+    int *workload;
 
     int *swapBuff = nullptr;
 
@@ -51,6 +51,7 @@ private:
 public:
     Worker(
             int rank, int size,
+            Core core,
             MutualMem *m,
             const Config &conf
     );
@@ -60,6 +61,10 @@ public:
     void Run();
 
     std::string getResult();
+
+    static int countTasksInProcess(int n, int rank, int size);
+
+    static int firstLine(int n, int rank, int size);
 
 };
 

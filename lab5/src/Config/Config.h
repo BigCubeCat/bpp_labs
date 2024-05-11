@@ -2,29 +2,27 @@
 #define LAB5_PARSER_H
 
 
+#include <string>
+
 class Config {
 public:
     Config(int argc, char *argv[]);
 
+    // .env variables
     int defaultCountTasks = 7;
     bool useBalance = true;
-    int syncDelay = 1;
-    int storeSize = 100;
-
-    int minTask = 1;
-    int maxTask = 25000000;
-
-    int minimumCountTasks = 1;
-
+    int timeout = 1000;
+    int swapSize = 2;
+    int critical = 4;
     bool debug = true;
 
     bool usingEnv = false;
 private:
     void parseEnv();
 
-    static int parseEnvInt(char *variable);
+    static int parseEnvInt(const std::string &variable);
 
-    static bool parseEnvBool(char *variable);
+    static bool parseEnvBool(const std::string &variable);
 };
 
 #endif

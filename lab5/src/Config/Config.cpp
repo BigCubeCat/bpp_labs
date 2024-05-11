@@ -1,7 +1,5 @@
 #include "Config.h"
 
-#include <iostream>
-
 Config::Config(int argc, char **argv) {
     std::string argument = std::string(argv[1]);
     if (argc == 2) {
@@ -20,24 +18,17 @@ Config::Config(int argc, char **argv) {
 }
 
 void Config::parseEnv() {
-    defaultCountTasks = parseEnvInt((char *) "COUNT_TASKS");
-    useBalance = parseEnvBool((char *) "BALANCE");
-    syncDelay = parseEnvInt((char *) "SYNC");
-    storeSize = parseEnvInt((char *) "SIZE");
-
-    minTask = parseEnvInt((char *) "MINIMUM_TASK");
-    maxTask = parseEnvInt((char *) "MAXIMUM_TASK");
-
-    minimumCountTasks = parseEnvInt((char *) "DELTA");
-
-    debug = parseEnvBool((char *) "DEBUG");
+    defaultCountTasks = parseEnvInt("COUNT_TASKS");
+    useBalance = parseEnvBool("BALANCE");
+    timeout = parseEnvInt("TIMEOUT");
+    swapSize = parseEnvInt("SWAP_SIZE");
+    debug = parseEnvBool("DEBUG");
 }
 
-int Config::parseEnvInt(char *variable) {
-    auto value = getenv(variable);
-    return std::atoi(value);
+int Config::parseEnvInt(const std::string &variable) {
+    return std::atoi(getenv(variable.c_str()));
 }
 
-bool Config::parseEnvBool(char *variable) {
+bool Config::parseEnvBool(const std::string &variable) {
     return parseEnvInt(variable) != 0;
 }

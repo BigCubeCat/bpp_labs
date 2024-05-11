@@ -32,11 +32,13 @@ bool TaskList::isEmpty() {
     return (countTasks() == 0);
 }
 
-void TaskList::generateCurrentTask(int rank, int size, int minimum, int maximum) {
+void TaskList::generateCurrentTask(int rank, int size) {
+    int m = (rank % 2) * rank;
     for (int i = 0; i < size; ++i) {
-        addTask(2 * (rank + 1) + i);
+        addTask(m * (rank + 1) + 2 * i);
     }
-    std:: cout << rank << tasks.front() << std::endl;
+    std::cout << rank;
+    print();
 }
 
 void TaskList::dumpTasks(int count, int *destination) {
@@ -49,4 +51,11 @@ void TaskList::loadTasks(int count, int *source) {
     for (int i = 0; i < count; ++i) {
         addTask(source[i]);
     }
+}
+
+void TaskList::print() {
+    for (int i = 0; i < tasks.size(); ++i) {
+        std::cout << tasks[i] << " ";
+    }
+    std::cout << std::endl;
 }

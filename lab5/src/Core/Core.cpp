@@ -6,21 +6,16 @@ void Core::calculate() {
         return;
     }
     auto task = taskList.getFirstTask();
-    needMore = false;
-    if (taskList.countTasks() == 0) {
-        needMore = true;
-        imBusy = false;
-    } else if (taskList.countTasks() <= cheapTaskCount) {
-        needMore = true;
-    }
-    storage.addValue(std::to_string(calcPi(task)));
+    imBusy = taskList.countTasks() > 0;
+    storage.addValue(std::to_string(doTask(task)));
 }
 
-Core::Core(int rank, int countTasks, int minimumTask, int maximumTask) :
-        rank(rank), startCount(countTasks), cheapTaskCount(countTasks / 2 + 1),
+Core::Core(int rank, int *input, int countTasks) :
+        rank(rank), startCount(countTasks),
+        cheapTaskCount(countTasks - countTasks / 3),
         storage(Storage(countTasks, false)) {
     storage = Storage(countTasks, false);
-    taskList.generateCurrentTask(rank, countTasks, minimumTask, maximumTask);
+    loadTasks(countTasks, input);
 }
 
 bool Core::isBusy() const {
@@ -41,14 +36,10 @@ void Core::loadTasks(int count, int *source) {
     imBusy = !taskList.isEmpty();
 }
 
-int Core::countTaskToDelegate() {
-    return taskList.countTasks();
-}
-
-bool Core::needMoreTasks() const {
-    return needMore;
-}
-
 int Core::countTasks() {
     return taskList.countTasks();
+}
+
+void Core::print() {
+    taskList.print();
 }
