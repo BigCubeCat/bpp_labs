@@ -107,23 +107,8 @@ void Worker::balancerThread() {
             if (rank == mpiRank) continue;
             if (processWorkload[rank] == UNKNOWN) {
                 countTasks = core.countTasks();
-                // Отправляем, сколько у нас задач
-                MPI_Isend(&countTasks, 1, MPI_INT, rank, 0, MPI_COMM_WORLD, &req[0]);
-                std::this_thread::sleep_for(std::chrono::milliseconds(smolTimeout));
-                MPI_Irecv(&countTasks, 1, MPI_INT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, &req[1]);
-                std::this_thread::sleep_for(std::chrono::milliseconds(smolTimeout));
-
-                logger.debug("balanc 1");
-                MPI_Test(&req[0], &flags[0], &responseStatus);
-                logger.debug("balanc 2");
-                MPI_Test(&req[1], &flags[1], &responseStatus);
-                if (flags[0] == 0 && flags[1] == 0) { // если не дождались по таймаут - останавливаем запрос
-                    processWorkload[rank] = NO_ANSWER;
-                    MPI_Cancel(&req[0]);
-                    MPI_Cancel(&req[1]);
-                    logger.warn("timeout");
-                    continue;
-                }
+                MPI_Send(&countTasks, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
+                MPI_Recv(&countTasks, 1, MPI_INT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 if (countTasks == 0) {
                     logger.warn("received: no tasks");
                     processWorkload[rank] = NO_TASKS;
@@ -132,15 +117,16 @@ void Worker::balancerThread() {
                 swapBuff = new int[countTasks];
                 MPI_Recv(swapBuff, countTasks,
                          MPI_INT, rank, MPI_ANY_TAG,
-                         MPI_COMM_WORLD, &responseStatus
+                         MPI_COMM_WORLD, MPI_STATUS_IGNORE
                 );
-                processFound = true;
                 logger.warn("received: success " + std::to_string(swapBuff[0]) + " " +
                             " from " + std::to_string(rank));
                 pthread_mutex_lock(&mem->mutex);
                 core.loadTasks(countTasks, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
                 delete[] swapBuff;
+
+                processFound = true;
                 break;
             }
         }
@@ -167,7 +153,7 @@ void Worker::communicatorThread() {
                 MPI_ANY_TAG, MPI_COMM_WORLD,
                 &request
         );
-        std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout));
+        std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout * 2));
         MPI_Test(&request, &flag, &status);
         if (flag != 0) {
             rank = status.MPI_SOURCE;
@@ -179,22 +165,19 @@ void Worker::communicatorThread() {
             // если процесс просит задачу у нас, значит у него нечего брать
             processWorkload[status.MPI_SOURCE] = NO_TASKS;
             countTasksToSend = (myCountTasks - countTasks) / 2;
-            if (myCountTasks <= config.critical || myCountTasks <= countTasks) {
+            if (myCountTasks <= config.critical || countTasksToSend <= 0) {
                 int answer = 0;
-                MPI_Isend(&answer, 1, MPI_INT, rank, 0, MPI_COMM_WORLD, &request);
-                continue;
+                MPI_Send(&answer, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
+            } else {
+                MPI_Send(&countTasksToSend, 1, MPI_INT, rank, 0, MPI_COMM_WORLD);
+                swapBuff = new int[countTasksToSend];
+                pthread_mutex_lock(&mem->mutex);
+                core.dumpTasks(countTasksToSend, swapBuff);
+                pthread_mutex_unlock(&mem->mutex);
+                MPI_Send(swapBuff, countTasksToSend, MPI_INT, rank, 0, MPI_COMM_WORLD);
+                logger.warn("send: success to " + std::to_string(rank));
+                delete[] swapBuff;
             }
-            swapBuff = new int[countTasksToSend];
-            pthread_mutex_lock(&mem->mutex);
-            core.dumpTasks(countTasksToSend, swapBuff);
-            pthread_mutex_unlock(&mem->mutex);
-            MPI_Isend(swapBuff, countTasks, MPI_INT, rank, 0, MPI_COMM_WORLD, &request);
-            logger.warn("send: success to" + std::to_string(rank));
-            delete[] swapBuff;
-            std::this_thread::sleep_for(std::chrono::milliseconds(smolTimeout));
-            logger.debug("communicator 2");
-            MPI_Test(&request, &flag, &status);
-            if (flag == 0) MPI_Cancel(&request);
         } else {
             MPI_Cancel(&request);
         }

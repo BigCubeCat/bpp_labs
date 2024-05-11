@@ -4,8 +4,8 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
-const int MINIMUM_TASK_SIZE = 10;
-const int MAXIMUM_TASK_SIZE = 40;
+const int MINIMUM_TASK_SIZE = 1;
+const int MAXIMUM_TASK_SIZE = 10;
 
 void randomizeTask(int *arr, int size) {
     srand(time(nullptr));
