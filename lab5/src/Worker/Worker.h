@@ -28,8 +28,9 @@ private:
     pthread_attr_t workThreadAttr{};
     pthread_t threads[3]{};
 
-    int *workload;
+    EProcessStatus *processWorkload;
 
+    int smolTimeout = 0;
     int *swapBuff = nullptr;
 
     void getTiming();

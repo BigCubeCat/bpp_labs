@@ -4,10 +4,13 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
+const int MINIMUM_TASK_SIZE = 10;
+const int MAXIMUM_TASK_SIZE = 40;
+
 void randomizeTask(int *arr, int size) {
     srand(time(nullptr));
     for (int i = 0; i < size; ++i) {
-        arr[i] = rand() % 10 + 1;
+        arr[i] = (rand() % MAXIMUM_TASK_SIZE) + MINIMUM_TASK_SIZE;
     }
 }
 
@@ -39,7 +42,11 @@ int main(int argc, char **argv) {
     int countTasks = Worker::countTasksInProcess(conf.defaultCountTasks, rank, size);
     int *inputArray = (rank == 0) ? new int[conf.defaultCountTasks] : new int[0];
     int *initialArray = new int[counts[rank]];
-    if (rank == 0) randomizeTask(inputArray, countTasks);
+    if (rank == 0) {
+        randomizeTask(inputArray, conf.defaultCountTasks);
+        for (int i = 0; i < conf.defaultCountTasks; ++i) std::cout << inputArray[i] << " ";
+        std::cout << "\n";
+    }
 
     MPI_Scatterv(
             inputArray, counts, disps,

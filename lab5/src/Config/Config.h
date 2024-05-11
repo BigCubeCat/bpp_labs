@@ -9,11 +9,11 @@ public:
     Config(int argc, char *argv[]);
 
     // .env variables
-    int defaultCountTasks = 7;
+    int defaultCountTasks = 30;
     bool useBalance = true;
-    int timeout = 1000;
+    int timeout = 100;
     int swapSize = 2;
-    int critical = 4;
+    int critical = 2;
     bool debug = true;
 
     bool usingEnv = false;
