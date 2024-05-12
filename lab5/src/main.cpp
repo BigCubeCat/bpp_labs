@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
             MPI_INT, initialArray, counts[rank],
             MPI_INT, 0, MPI_COMM_WORLD
     );
-
+    conf.critical = countTasks / 2;
     auto core = Core(rank, initialArray, countTasks);
     auto worker = Worker(rank, size, core, &mem, conf);
 
