@@ -29,7 +29,7 @@ class TestSetup:
         if self.is_trace:
             result += '-trace '
         result += f'-ppn {self.count_nodes} -n {self.count_mpi_process} '
-        result += self.executable_path + "balance="
+        result += self.executable_path + " balance="
         if self.balance:
             result += "true"
         else:
