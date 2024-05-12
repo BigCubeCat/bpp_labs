@@ -10,27 +10,34 @@
 
 class Core {
 private:
-    int rank, startCount, cheapTaskCount;
+    int rank;
     TaskList taskList{};
     Storage storage;
-
-    bool imBusy = true; // есть задачи кроме текущей
 public:
     Core(int rank, int *input, int countTasks);
 
     std::string toString();
 
+    /*
+     * do Task.h
+     */
     void calculate();
 
-    bool isBusy() const;
-
+    /*
+     * returns count tasks in queue
+     */
     int countTasks();
 
     void print();
 
-    // изменеие списка задач
+    /*
+     * see TaskList.h
+     */
     void dumpTasks(int count, int *dest);
 
+    /*
+     * see TaskList.h
+     */
     void loadTasks(int count, int *source);
 
 };

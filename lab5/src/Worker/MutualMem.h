@@ -7,7 +7,7 @@
 
 struct MutualMem {
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    EStatus flag = WORKER;
+    EStatus flag = RUNNING;
 };
 
 #endif

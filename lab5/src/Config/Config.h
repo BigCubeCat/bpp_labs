@@ -20,6 +20,8 @@ public:
 private:
     void parseEnv();
 
+    static std::string parseEnvVar(const std::string &variable);
+
     static int parseEnvInt(const std::string &variable);
 
     static bool parseEnvBool(const std::string &variable);

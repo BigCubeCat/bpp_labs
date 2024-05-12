@@ -3,6 +3,9 @@
 
 #include <cmath>
 
+/*
+ * Task simulation
+ */
 int doTask(int num);
 
 #endif

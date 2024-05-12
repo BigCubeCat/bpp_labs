@@ -1,8 +1,8 @@
 #include "Task.h"
 
-#include <csignal>
+#include <unistd.h>
 
 int doTask(int count) {
-    sleep(count);
+    usleep(count * 1000);
     return count;
 }

@@ -1,6 +1,4 @@
-#include <cstdlib>
 #include <iostream>
-#include <random>
 
 #include "TaskList.h"
 
@@ -28,17 +26,8 @@ void TaskList::addTask(int task) {
     tasks.push_back(task);
 }
 
-bool TaskList::isEmpty() {
+bool TaskList::isEmpty() const {
     return (countTasks() == 0);
-}
-
-void TaskList::generateCurrentTask(int rank, int size) {
-    int m = (rank % 2) * rank;
-    for (int i = 0; i < size; ++i) {
-        addTask(m * (rank + 1) + 2 * i);
-    }
-    std::cout << rank;
-    print();
 }
 
 void TaskList::dumpTasks(int count, int *destination) {
@@ -54,8 +43,8 @@ void TaskList::loadTasks(int count, int *source) {
 }
 
 void TaskList::print() {
-    for (int i = 0; i < tasks.size(); ++i) {
-        std::cout << tasks[i] << " ";
+    for (int task : tasks) {
+        std::cout << task << " ";
     }
     std::cout << std::endl;
 }

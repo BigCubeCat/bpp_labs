@@ -1,6 +1,5 @@
 #include <mpi.h>
 #include <iostream>
-#include <climits>
 #include <utility>
 #include "Worker.h"
 #include "Core.h"
@@ -14,7 +13,7 @@ Worker::Worker(int rank, int size, Core core, MutualMem *m, const Config &conf)
           config(conf),
           core(std::move(core)),
           mem(m),
-          logger(Logger(rank, (conf.debug) ? DEBUG : ERROR)) {
+          logger(Logger(rank, (conf.debug) ? INFO : ERROR)) {
     swapBuff = new int[config.swapSize];
     smolTimeout = conf.timeout / 2;
     processWorkload = new EProcessStatus[size];
@@ -49,14 +48,13 @@ Worker::~Worker() {
 
 std::string Worker::getResult() {
     if (mpiRank != 0) return "";
-    std::string result = "rank               " + std::to_string(mpiRank) + "\n";
-    result += "local time         " + std::to_string(profiler.timeSpent) + "\n";
+    std::string result = "local time         " + std::to_string(profiler.timeSpent) + "\n";
     result += profiler.toString(config.defaultCountTasks, config.useBalance);
     return result;
 }
 
 void Worker::getTiming() {
-    logger.debug("TIMING");
+    logger.info("TIMING");
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Allreduce(
             &profiler.timeSpent, &profiler.maxTime, 1,
@@ -67,7 +65,7 @@ void Worker::getTiming() {
             MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD
     );
     profiler.calcDisbalance();
-    logger.debug("end getTiming()");
+    logger.info("end getTiming()");
 }
 
 void Worker::workerThread() {
@@ -123,7 +121,7 @@ void Worker::communicatorThread() {
                 &request
         );
         std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout));
-        if (mem->flag == END) break;
+        if (mem->flag == END) break; // Если процесс завершился, а мы это проспали
         MPI_Test(&request, &flag, &status);
         if (flag != 0) {
             rank = status.MPI_SOURCE;
@@ -131,16 +129,12 @@ void Worker::communicatorThread() {
             // либо нам уже все отдали, либо у нас просят
             processWorkload[status.MPI_SOURCE] = NO_TASKS;
             if (tag == ACCEPT_TASKS) { // принимаем задачи
-                logger.warn("accept: success from " + std::to_string(rank));
+                logger.info("accept: success from " + std::to_string(rank));
                 pthread_mutex_lock(&mem->mutex);
                 core.loadTasks(config.swapSize, swapBuff);
                 pthread_mutex_unlock(&mem->mutex);
             } else if (tag == ASK_FOR_A_TASK) {
                 myCountTasks = core.countTasks();
-                logger.debug(
-                        "request from " + std::to_string(rank) +
-                        "; countTasks = " + std::to_string(myCountTasks)
-                );
                 // если процесс просит задачу у нас, значит у него нечего брать
                 diff = myCountTasks - config.swapSize;
                 if (diff <= 0) {
@@ -150,7 +144,7 @@ void Worker::communicatorThread() {
                     core.dumpTasks(config.swapSize, swapBuff);
                     pthread_mutex_unlock(&mem->mutex);
                     MPI_Send(swapBuff, config.swapSize, MPI_INT, rank, ACCEPT_TASKS, MPI_COMM_WORLD);
-                    logger.warn("send: success to " + std::to_string(rank));
+                    logger.info("send: success to " + std::to_string(rank));
                 }
             }
         } else {

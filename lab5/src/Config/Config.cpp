@@ -22,13 +22,19 @@ void Config::parseEnv() {
     useBalance = parseEnvBool("BALANCE");
     timeout = parseEnvInt("TIMEOUT");
     swapSize = parseEnvInt("SWAP_SIZE");
+    critical = parseEnvInt("CRIT");
     debug = parseEnvBool("DEBUG");
 }
 
 int Config::parseEnvInt(const std::string &variable) {
-    return std::atoi(getenv(variable.c_str()));
+    return std::atoi(parseEnvVar(variable).c_str());
 }
 
 bool Config::parseEnvBool(const std::string &variable) {
-    return parseEnvInt(variable) != 0;
+    return parseEnvVar(variable) == "true";
+}
+
+std::string Config::parseEnvVar(const std::string &variable) {
+    char *val = getenv(variable.c_str());
+    return (val == nullptr) ? std::string("") : std::string(val);
 }

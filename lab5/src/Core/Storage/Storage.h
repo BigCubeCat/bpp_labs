@@ -5,13 +5,19 @@
 #include <queue>
 #include <string>
 
+/*
+ * Storage use to save Task simulation result (useless for time::sleep)
+ */
 class Storage {
 public:
     Storage(int size, bool limit);
 
+    /*
+     * add value in answer queue
+     */
     void addValue(const std::string &value);
 
-    std::string toString() ;
+    std::string toString();
 
 private:
     int maxSize;
