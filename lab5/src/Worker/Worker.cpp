@@ -110,8 +110,8 @@ void Worker::balancerThread() {
             }
         }
         if (allProcessVisited) {
-            for (int i = first; i < last; ++i) {
-                processWorkload[i % mpiSize] = UNKNOWN;
+            for (int i = 0; i < mpiSize; ++i) {
+                processWorkload[i] = UNKNOWN;
             }
         }
     }

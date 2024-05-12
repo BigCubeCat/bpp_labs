@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     );
 
     conf.critical = countTasks * 2 / 5;
-    conf.swapSize = conf.critical / 5 + 1;
+    conf.swapSize = (conf.defaultCountTasks / size) > 10 ? 2 : 1;
 
     auto core = Core(rank, initialArray, countTasks);
     auto worker = Worker(rank, size, core, &mem, conf);
