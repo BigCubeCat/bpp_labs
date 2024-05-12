@@ -9,7 +9,7 @@ const int MAX_DIFF = 4;
 void randomizeTask(int *arr, int size) {
     srand(time(nullptr));
     for (int i = 0; i < size; ++i) {
-        arr[i] = (MAX_DIFF * (i + 1)) % 80;
+        arr[i] = i + 1;
     }
 }
 
