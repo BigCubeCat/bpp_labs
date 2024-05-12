@@ -1,8 +1,8 @@
 #include "Task.h"
 
-#include <unistd.h>
+#include <thread>
 
 int doTask(int count) {
-    sleep(count);
+    std::this_thread::sleep_for(std::chrono::seconds (count));
     return count;
 }
