@@ -1,2 +1,0 @@
-/usr/bin/ar qc libLoadBalancer.a CMakeFiles/LoadBalancer.dir/LoadBalancer.cpp.o CMakeFiles/LoadBalancer.dir/RankData.cpp.o
-/usr/bin/ranlib libLoadBalancer.a

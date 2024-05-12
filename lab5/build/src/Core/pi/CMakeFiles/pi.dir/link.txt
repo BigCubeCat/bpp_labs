@@ -1,2 +1,0 @@
-/usr/bin/ar qc libpi.a CMakeFiles/pi.dir/pi.cpp.o
-/usr/bin/ranlib libpi.a

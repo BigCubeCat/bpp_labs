@@ -1,2 +1,0 @@
-/usr/bin/ar qc libTaskList.a CMakeFiles/TaskList.dir/TaskList.cpp.o
-/usr/bin/ranlib libTaskList.a

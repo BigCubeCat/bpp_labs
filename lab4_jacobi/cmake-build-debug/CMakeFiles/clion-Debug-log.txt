@@ -1,4 +1,0 @@
-cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/lab4_jacobi -B /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/lab4_jacobi/cmake-build-debug
--- Configuring done (0.5s)
--- Generating done (0.0s)
--- Build files have been written to: /home/bigcubecat/Projects/NSU/sem4/pp/bpp_labs/lab4_jacobi/cmake-build-debug
