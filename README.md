@@ -9,3 +9,5 @@
 [Метод Якоби](lab4_jacobi/README.md)
 
 [Балансировщик нагрузки](lab5/README.md)
+
+![meme](assets/image.png)
