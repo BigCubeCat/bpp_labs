@@ -1,0 +1,50 @@
+[
+  {
+    "slurm_config": {
+      "delay": 40,
+      "job": "@name",
+      "time": "01:00:00",
+      "err": "@path/err/1_node.err",
+      "out": "@path/out/1_node.out",
+      "nodes": 1,
+      "mpi_process": 4,
+      "balance": true,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "@path/@name"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 40,
+      "job": "@name",
+      "time": "01:00:00",
+      "err": "@path/err/2_node.err",
+      "out": "@path/out/2_node.out",
+      "nodes": 2,
+      "mpi_process": 4,
+      "balance": true,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "@path/@name"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "@name4",
+      "time": "01:00:00",
+      "err": "@path/err/4_node.err",
+      "out": "@path/out/.out",
+      "nodes": 4,
+      "mpi_process": 4,
+      "balance": true,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "@path/@name"
+    }
+  }
+]
