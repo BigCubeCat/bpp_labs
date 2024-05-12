@@ -1,4 +1,9 @@
 # Matrix multiplicatoin using MPI
+
+## Result
+
+In `res` folder.
+
 ## Usage
 ```bash
 mpirun -np 4 ./matmult data.mat result.mat

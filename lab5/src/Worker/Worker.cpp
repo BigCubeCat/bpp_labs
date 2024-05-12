@@ -123,6 +123,7 @@ void Worker::communicatorThread() {
                 &request
         );
         std::this_thread::sleep_for(std::chrono::milliseconds(config.timeout));
+        if (mem->flag == END) break;
         MPI_Test(&request, &flag, &status);
         if (flag != 0) {
             rank = status.MPI_SOURCE;
