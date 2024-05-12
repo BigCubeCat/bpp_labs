@@ -4,13 +4,12 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
-const int MIN_TASK = 1;
-const int MAX_DIFF = 50;
+const int MAX_DIFF = 4;
 
 void randomizeTask(int *arr, int size) {
     srand(time(nullptr));
     for (int i = 0; i < size; ++i) {
-        arr[i] = 4 * (i + 1); //  MIN_TASK + (rand() % MAX_DIFF);
+        arr[i] = (MAX_DIFF * (i + 1)) % 80;
     }
 }
 
