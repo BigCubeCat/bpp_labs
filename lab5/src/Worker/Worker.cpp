@@ -91,6 +91,7 @@ void Worker::workerThread() {
 void Worker::balancerThread() {
     if (!config.useBalance) return;
     int rank, first, last;
+    bool allProcessVisited;
     while (mem->flag != END) {
         if (core.countTasks() > config.critical) {
             // задач еще много
@@ -98,12 +99,19 @@ void Worker::balancerThread() {
         }
         first = (mpiRank + 1) % mpiSize;
         last = first + mpiSize;
+        allProcessVisited = true;
         for (int i = first; i < last; ++i) {
             rank = i % mpiSize;
             if (rank == mpiRank) continue;
             if (processWorkload[rank] == UNKNOWN) {
+                allProcessVisited = false;
                 MPI_Send(swapBuff, config.swapSize, MPI_INT, rank, ASK_FOR_A_TASK, MPI_COMM_WORLD);
                 processWorkload[rank] = NO_TASKS;
+            }
+        }
+        if (allProcessVisited) {
+            for (int i = first; i < last; ++i) {
+                processWorkload[i % mpiSize] = UNKNOWN;
             }
         }
     }

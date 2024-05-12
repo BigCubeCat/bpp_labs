@@ -4,12 +4,11 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
-const int MAX_DIFF = 4;
+const int MAX_DIFF = 2;
 
 void randomizeTask(int *arr, int size) {
-    srand(time(nullptr));
     for (int i = 0; i < size; ++i) {
-        arr[i] = i + 1;
+        arr[i] = MAX_DIFF * (i + 1);
     }
 }
 
@@ -53,6 +52,7 @@ int main(int argc, char **argv) {
     );
 
     conf.critical = countTasks * 2 / 5;
+    conf.swapSize = conf.critical / 5 + 1;
 
     auto core = Core(rank, initialArray, countTasks);
     auto worker = Worker(rank, size, core, &mem, conf);
