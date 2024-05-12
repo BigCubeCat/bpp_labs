@@ -14,7 +14,7 @@ public:
     int timeout = 500;
     int swapSize = 1;
     int critical = 3;
-    bool debug = true;
+    bool debug = false;
 
     bool usingEnv = false;
 private:

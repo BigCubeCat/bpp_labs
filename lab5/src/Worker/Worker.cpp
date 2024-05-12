@@ -74,7 +74,7 @@ void Worker::workerThread() {
         // работа не должна блокироваться
         logger.info(" calculating " + std::to_string(core.countTasks()));
         core.calculate();
-        core.print();
+        if (config.debug) core.print();
         pthread_mutex_lock(&mem->mutex);
         if (core.countTasks() <= 0) {
             // Ожидается, что балансировщик работает эффеткивно

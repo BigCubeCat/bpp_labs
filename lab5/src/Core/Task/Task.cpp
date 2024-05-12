@@ -3,6 +3,6 @@
 #include <unistd.h>
 
 int doTask(int count) {
-    usleep(count * 1000);
+    sleep(count);
     return count;
 }
