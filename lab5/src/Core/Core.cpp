@@ -5,8 +5,7 @@ void Core::calculate() {
     if (taskList.isEmpty()) {
         return;
     }
-    auto task = taskList.getFirstTask();
-    storage.addValue(std::to_string(doTask(task)));
+    doTask(taskList.getFirstTask());
 }
 
 Core::Core(int rank, int *input, int countTasks) :
