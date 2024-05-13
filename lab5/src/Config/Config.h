@@ -9,7 +9,7 @@ public:
     Config(int argc, char *argv[]);
 
     // .env variables
-    int defaultCountTasks = 160;
+    int defaultCountTasks = 80;
     bool useBalance = true;
     int timeout = 500;
     int swapSize = 2;
