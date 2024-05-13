@@ -4,6 +4,22 @@
       "delay": 0,
       "job": "@name",
       "time": "01:00:00",
+      "err": "@path/err/1_node.err",
+      "out": "@path/out/1_node.out",
+      "nodes": 1,
+      "mpi_process": 4,
+      "balance": false,
+      "trace": false
+    },
+    "script_config": {
+      "exe": "@path/@name"
+    }
+  },
+  {
+    "slurm_config": {
+      "delay": 0,
+      "job": "@name",
+      "time": "01:00:00",
       "err": "@path/err/1_node_balanced.err",
       "out": "@path/out/1_node_balanced.out",
       "nodes": 1,
@@ -36,8 +52,8 @@
       "delay": 0,
       "job": "@name4",
       "time": "01:00:00",
-      "err": "@path/err/4_node_balanced.balanced.err",
-      "out": "@path/out/4_node_balanced.balanced.out",
+      "err": "@path/err/4_node_balanced.err",
+      "out": "@path/out/4_node_balanced.out",
       "nodes": 4,
       "mpi_process": 4,
       "balance": true,

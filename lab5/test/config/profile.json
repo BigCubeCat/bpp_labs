@@ -6,7 +6,7 @@
       "time": "01:00:00",
       "err": "@path/err/profile.err",
       "out": "@path/out/profile.out",
-      "nodes": 1,
+      "nodes": 2,
       "mpi_process": 4,
       "balance": true,
       "trace": true
