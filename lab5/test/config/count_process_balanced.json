@@ -34,12 +34,12 @@
   {
     "slurm_config": {
       "delay": 0,
-      "job": "@name16",
+      "job": "@name",
       "time": "01:00:00",
-      "err": "@path/err/16_balanced.err",
-      "out": "@path/out/16_balanced.out",
-      "nodes": 2,
-      "mpi_process": 16,
+      "err": "@path/err/2_balanced.err",
+      "out": "@path/out/2_balanced.out",
+      "nodes": 1,
+      "mpi_process": 2,
       "balance": true,
       "trace": false
     },
