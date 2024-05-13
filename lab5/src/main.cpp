@@ -4,11 +4,9 @@
 #include "Worker/Worker.h"
 #include "Worker/MutualMem.h"
 
-const int MAX_DIFF = 2;
-
 void randomizeTask(int *arr, int size) {
     for (int i = 0; i < size; ++i) {
-        arr[i] = MAX_DIFF * (i + 1);
+        arr[i] = (i + 1);
     }
 }
 
