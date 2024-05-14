@@ -13,6 +13,7 @@ class TestSetup:
         self.delay_after = slurm_config["delay"]
 
         self.balance = slurm_config["balance"]
+        self.customSize = slurm_config["size"]
 
         script_config = data["script_config"]
         self.executable_path = script_config["exe"]
@@ -32,6 +33,8 @@ class TestSetup:
         result += self.executable_path + " balance="
         if self.balance:
             result += "true"
+        if self.customSize:
+            result += " " + str(self.customSize)
         else:
             result += "false"
         result += "\nEOF"

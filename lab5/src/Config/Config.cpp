@@ -2,7 +2,7 @@
 
 Config::Config(int argc, char **argv) {
     std::string argument = std::string(argv[1]);
-    if (argc == 2) {
+    if (argc >= 2) {
         if (argument == "env") {
             usingEnv = true;
             parseEnv();
@@ -12,6 +12,9 @@ Config::Config(int argc, char **argv) {
                 useBalance = true;
             } else if (argument == "balance=false") {
                 useBalance = false;
+            }
+            if (argc == 3) {
+                defaultCountTasks = std::atoi(argv[2]);
             }
         }
     }

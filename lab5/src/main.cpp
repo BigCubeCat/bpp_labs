@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
             MPI_INT, 0, MPI_COMM_WORLD
     );
 
+    std::cout << conf.defaultCountTasks;
     conf.critical = countTasks * 2 / 5;
     conf.swapSize = (conf.defaultCountTasks / size) > 10 ? 2 : 1;
 
